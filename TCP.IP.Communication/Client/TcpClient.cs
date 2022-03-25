@@ -9,14 +9,14 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SuperSimpleTcp
+namespace TCP
 {
     /// <summary>
-    /// SimpleTcp client with SSL support.  
+    /// Tcp client with SSL support.  
     /// Set the Connected, Disconnected, and DataReceived events.  
     /// Once set, use Connect() to connect to the server.
     /// </summary>
-    public class SimpleTcpClient : IDisposable
+    public class TcpClient : IDisposable
     {
         /// <summary>
         /// Indicates whether or not the client is connected to the server.
@@ -50,9 +50,9 @@ namespace SuperSimpleTcp
         }
 
         /// <summary>
-        /// SimpleTcp client settings.
+        /// Tcp client settings.
         /// </summary>
-        public SimpleTcpClientSettings Settings
+        public TcpClientSettings Settings
         {
             get
             {
@@ -60,15 +60,15 @@ namespace SuperSimpleTcp
             }
             set
             {
-                if (value == null) _settings = new SimpleTcpClientSettings();
+                if (value == null) _settings = new TcpClientSettings();
                 else _settings = value;
             }
         }
 
         /// <summary>
-        /// SimpleTcp client events.
+        /// Tcp client events.
         /// </summary>
-        public SimpleTcpClientEvents Events
+        public TcpClientEvents Events
         {
             get
             {
@@ -76,15 +76,15 @@ namespace SuperSimpleTcp
             }
             set
             {
-                if (value == null) _events = new SimpleTcpClientEvents();
+                if (value == null) _events = new TcpClientEvents();
                 else _events = value;
             }
         }
 
         /// <summary>
-        /// SimpleTcp statistics.
+        /// Tcp statistics.
         /// </summary>
-        public SimpleTcpStatistics Statistics
+        public TcpStatistic Statistics
         {
             get
             {
@@ -93,9 +93,9 @@ namespace SuperSimpleTcp
         }
 
         /// <summary>
-        /// SimpleTcp keepalive settings.
+        /// Tcp keepalive settings.
         /// </summary>
-        public SimpleTcpKeepaliveSettings Keepalive
+        public TcpKeepAliveSettings Keepalive
         {
             get
             {
@@ -103,7 +103,7 @@ namespace SuperSimpleTcp
             }
             set
             {
-                if (value == null) _keepalive = new SimpleTcpKeepaliveSettings();
+                if (value == null) _keepalive = new TcpKeepAliveSettings();
                 else _keepalive = value;
             }
         }
@@ -124,16 +124,16 @@ namespace SuperSimpleTcp
             }
         }
 
-        private readonly string _header = "[SimpleTcp.Client] ";
-        private SimpleTcpClientSettings _settings = new SimpleTcpClientSettings();
-        private SimpleTcpClientEvents _events = new SimpleTcpClientEvents();
-        private SimpleTcpKeepaliveSettings _keepalive = new SimpleTcpKeepaliveSettings();
-        private SimpleTcpStatistics _statistics = new SimpleTcpStatistics();
+        private readonly string _header = "[Tcp.Client] ";
+        private TcpClientSettings _settings = new TcpClientSettings();
+        private TcpClientEvents _events = new TcpClientEvents();
+        private TcpKeepAliveSettings _keepalive = new TcpKeepAliveSettings();
+        private TcpStatistic _statistics = new TcpStatistic();
 
         private string _serverIp = null;
         private int _serverPort = 0;
         private readonly IPAddress _ipAddress = null;
-        private TcpClient _client = null;
+        private System.Net.Sockets.TcpClient _client = null;
         private NetworkStream _networkStream = null;
 
         private bool _ssl = false;
@@ -159,7 +159,7 @@ namespace SuperSimpleTcp
         /// Instantiates the TCP client without SSL. Set the Connected, Disconnected, and DataReceived callbacks. Once set, use Connect() to connect to the server.
         /// </summary>
         /// <param name="ipPort">The IP:port of the server.</param> 
-        public SimpleTcpClient(string ipPort)
+        public TcpClient(string ipPort)
         {
             if (string.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
 
@@ -181,7 +181,7 @@ namespace SuperSimpleTcp
         /// <param name="ssl">Enable or disable SSL.</param>
         /// <param name="pfxCertFilename">The filename of the PFX certificate file.</param>
         /// <param name="pfxPassword">The password to the PFX certificate file.</param>
-        public SimpleTcpClient(string ipPort, bool ssl, string pfxCertFilename, string pfxPassword) : this(ipPort)
+        public TcpClient(string ipPort, bool ssl, string pfxCertFilename, string pfxPassword) : this(ipPort)
         {
             _ssl = ssl;
             _pfxCertFilename = pfxCertFilename;
@@ -193,7 +193,7 @@ namespace SuperSimpleTcp
         /// </summary>
         /// <param name="serverIpOrHostname">The server IP address or hostname.</param>
         /// <param name="port">The TCP port on which to connect.</param>
-        public SimpleTcpClient(string serverIpOrHostname, int port)
+        public TcpClient(string serverIpOrHostname, int port)
         {
             if (string.IsNullOrEmpty(serverIpOrHostname)) throw new ArgumentNullException(nameof(serverIpOrHostname));
             if (port < 0) throw new ArgumentException("Port must be zero or greater.");
@@ -216,7 +216,7 @@ namespace SuperSimpleTcp
         /// <param name="ssl">Enable or disable SSL.</param>
         /// <param name="pfxCertFilename">The filename of the PFX certificate file.</param>
         /// <param name="pfxPassword">The password to the PFX certificate file.</param>
-        public SimpleTcpClient(string serverIpOrHostname, int port, bool ssl, string pfxCertFilename, string pfxPassword) : this(serverIpOrHostname, port)
+        public TcpClient(string serverIpOrHostname, int port, bool ssl, string pfxCertFilename, string pfxPassword) : this(serverIpOrHostname, port)
         {
             _ssl = ssl;
             _pfxCertFilename = pfxCertFilename;
@@ -374,7 +374,7 @@ namespace SuperSimpleTcp
                             Logger?.Invoke(msg);
 
                             _client.Dispose();
-                            _client = new TcpClient();
+                            _client = new System.Net.Sockets.TcpClient();
                             _client.ConnectAsync(_serverIp, _serverPort).Wait(1000, connectToken);
 
                             if (_client.Connected)
@@ -616,7 +616,7 @@ namespace SuperSimpleTcp
             _ssl = ssl;
             _pfxCertFilename = pfxCertFilename;
             _pfxPassword = pfxPassword;
-            _client = new TcpClient();
+            _client = new System.Net.Sockets.TcpClient();
             _sslStream = null;
             _sslCert = null;
             _sslCertCollection = null;

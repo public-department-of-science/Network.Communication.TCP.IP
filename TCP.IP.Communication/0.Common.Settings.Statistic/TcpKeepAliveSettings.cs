@@ -1,16 +1,16 @@
 ﻿using System;
 
-namespace SuperSimpleTcp
+namespace TCP
 {
     /// <summary>
-    /// SimpleTcp keepalive settings.
+    /// TCP keepalive settings.
     /// Keepalive probes are sent after an idle period defined by TcpKeepAliveTime (seconds).
     /// Should a keepalive response not be received within TcpKeepAliveInterval (seconds), a subsequent keepalive probe will be sent.
     /// For .NET Framework, should 10 keepalive probes fail, the connection will terminate.
     /// For .NET Core, should a number of probes fail as specified in TcpKeepAliveRetryCount, the connection will terminate.
     /// TCP keepalives are not supported in .NET Standard.
     /// </summary>
-    public class SimpleTcpKeepaliveSettings
+    public class TcpKeepAliveSettings
     {
         /// <summary>
         /// Enable or disable TCP-based keepalive probes.
@@ -76,7 +76,7 @@ namespace SuperSimpleTcp
         /// <summary>
         /// Instantiate the object.
         /// </summary>
-        public SimpleTcpKeepaliveSettings()
+        public TcpKeepAliveSettings()
         {
         }
     }

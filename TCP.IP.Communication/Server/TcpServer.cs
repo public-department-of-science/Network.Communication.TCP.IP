@@ -11,14 +11,14 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SuperSimpleTcp
+namespace TCP
 {
     /// <summary>
-    /// SimpleTcp server with SSL support.  
+    /// Tcp server with SSL support.  
     /// Set the ClientConnected, ClientDisconnected, and DataReceived events.  
     /// Once set, use Start() to begin listening for connections.
     /// </summary>
-    public class SimpleTcpServer : IDisposable
+    public class TcpServer : IDisposable
     {
         /// <summary>
         /// Indicates if the server is listening for connections.
@@ -32,9 +32,9 @@ namespace SuperSimpleTcp
         }
 
         /// <summary>
-        /// SimpleTcp server settings.
+        /// Tcp server settings.
         /// </summary>
-        public SimpleTcpServerSettings Settings
+        public TcpServerSettings Settings
         {
             get
             {
@@ -42,15 +42,15 @@ namespace SuperSimpleTcp
             }
             set
             {
-                if (value == null) _settings = new SimpleTcpServerSettings();
+                if (value == null) _settings = new TcpServerSettings();
                 else _settings = value;
             }
         }
 
         /// <summary>
-        /// SimpleTcp server events.
+        /// Tcp server events.
         /// </summary>
-        public SimpleTcpServerEvents Events
+        public TcpServerEvents Events
         {
             get
             {
@@ -58,15 +58,15 @@ namespace SuperSimpleTcp
             }
             set
             {
-                if (value == null) _events = new SimpleTcpServerEvents();
+                if (value == null) _events = new TcpServerEvents();
                 else _events = value;
             }
         }
 
         /// <summary>
-        /// SimpleTcp statistics.
+        /// Tcp statistics.
         /// </summary>
-        public SimpleTcpStatistics Statistics
+        public TcpStatistic Statistics
         {
             get
             {
@@ -75,9 +75,9 @@ namespace SuperSimpleTcp
         }
 
         /// <summary>
-        /// SimpleTcp keepalive settings.
+        /// Tcp keepalive settings.
         /// </summary>
-        public SimpleTcpKeepaliveSettings Keepalive
+        public TcpKeepAliveSettings Keepalive
         {
             get
             {
@@ -85,7 +85,7 @@ namespace SuperSimpleTcp
             }
             set
             {
-                if (value == null) _keepalive = new SimpleTcpKeepaliveSettings();
+                if (value == null) _keepalive = new TcpKeepAliveSettings();
                 else _keepalive = value;
             }
         }
@@ -95,11 +95,11 @@ namespace SuperSimpleTcp
         /// </summary>
         public Action<string> Logger = null;
 
-        private readonly string _header = "[SimpleTcp.Server] ";
-        private SimpleTcpServerSettings _settings = new SimpleTcpServerSettings();
-        private SimpleTcpServerEvents _events = new SimpleTcpServerEvents();
-        private SimpleTcpKeepaliveSettings _keepalive = new SimpleTcpKeepaliveSettings();
-        private SimpleTcpStatistics _statistics = new SimpleTcpStatistics();
+        private readonly string _header = "[Tcp.Server] ";
+        private TcpServerSettings _settings = new TcpServerSettings();
+        private TcpServerEvents _events = new TcpServerEvents();
+        private TcpKeepAliveSettings _keepalive = new TcpKeepAliveSettings();
+        private TcpStatistic _statistics = new TcpStatistic();
 
         private readonly string _listenerIp = null;
         private readonly IPAddress _ipAddress = null;
@@ -128,7 +128,7 @@ namespace SuperSimpleTcp
         /// Instantiates the TCP server without SSL.  Set the ClientConnected, ClientDisconnected, and DataReceived callbacks.  Once set, use Start() to begin listening for connections.
         /// </summary>
         /// <param name="ipPort">The IP:port of the server.</param> 
-        public SimpleTcpServer(string ipPort)
+        public TcpServer(string ipPort)
         {
             if (string.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
 
@@ -162,7 +162,7 @@ namespace SuperSimpleTcp
         /// </summary>
         /// <param name="listenerIp">The listener IP address or hostname.</param>
         /// <param name="port">The TCP port on which to listen.</param>
-        public SimpleTcpServer(string listenerIp, int port)
+        public TcpServer(string listenerIp, int port)
         {
             if (port < 0) throw new ArgumentException("Port must be zero or greater.");
 
@@ -199,7 +199,7 @@ namespace SuperSimpleTcp
         /// <param name="ssl">Enable or disable SSL.</param>
         /// <param name="pfxCertFilename">The filename of the PFX certificate file.</param>
         /// <param name="pfxPassword">The password to the PFX certificate file.</param>
-        public SimpleTcpServer(string ipPort, bool ssl, string pfxCertFilename, string pfxPassword)
+        public TcpServer(string ipPort, bool ssl, string pfxCertFilename, string pfxPassword)
         {
             if (string.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
 
@@ -254,7 +254,7 @@ namespace SuperSimpleTcp
         /// <param name="ssl">Enable or disable SSL.</param>
         /// <param name="pfxCertFilename">The filename of the PFX certificate file.</param>
         /// <param name="pfxPassword">The password to the PFX certificate file.</param>
-        public SimpleTcpServer(string listenerIp, int port, bool ssl, string pfxCertFilename, string pfxPassword)
+        public TcpServer(string listenerIp, int port, bool ssl, string pfxCertFilename, string pfxPassword)
         { 
             if (port < 0) throw new ArgumentException("Port must be zero or greater.");
 
@@ -315,7 +315,7 @@ namespace SuperSimpleTcp
         /// </summary>
         public void Start()
         {
-            if (_isListening) throw new InvalidOperationException("SimpleTcpServer is already running.");
+            if (_isListening) throw new InvalidOperationException("TcpServer is already running.");
 
             _listener = new TcpListener(_ipAddress, _port);
 
@@ -327,7 +327,7 @@ namespace SuperSimpleTcp
             _listenerTokenSource = new CancellationTokenSource();
             _listenerToken = _listenerTokenSource.Token;
 
-            _statistics = new SimpleTcpStatistics();
+            _statistics = new TcpStatistic();
             
             if (_idleClientMonitor == null)
             {
@@ -343,7 +343,7 @@ namespace SuperSimpleTcp
         /// <returns>Task.</returns>
         public Task StartAsync()
         {
-            if (_isListening) throw new InvalidOperationException("SimpleTcpServer is already running.");
+            if (_isListening) throw new InvalidOperationException("TcpServer is already running.");
 
             _listener = new TcpListener(_ipAddress, _port);
 
@@ -357,7 +357,7 @@ namespace SuperSimpleTcp
             _listenerTokenSource = new CancellationTokenSource();
             _listenerToken = _listenerTokenSource.Token;
 
-            _statistics = new SimpleTcpStatistics();
+            _statistics = new TcpStatistic();
 
             if (_idleClientMonitor == null)
             {
@@ -373,7 +373,7 @@ namespace SuperSimpleTcp
         /// </summary>
         public void Stop()
         {
-            if (!_isListening) throw new InvalidOperationException("SimpleTcpServer is not running.");
+            if (!_isListening) throw new InvalidOperationException("TcpServer is not running.");
 
             _isListening = false;
             _listener.Stop();
@@ -602,7 +602,7 @@ namespace SuperSimpleTcp
             }
         }
          
-        private bool IsClientConnected(TcpClient client)
+        private bool IsClientConnected(System.Net.Sockets.TcpClient client)
         {
             if (!client.Connected)
             {
@@ -633,7 +633,7 @@ namespace SuperSimpleTcp
 
                 try
                 {
-                    TcpClient tcpClient = await _listener.AcceptTcpClientAsync().ConfigureAwait(false);
+                    System.Net.Sockets.TcpClient tcpClient = await _listener.AcceptTcpClientAsync().ConfigureAwait(false);
                     string clientIp = tcpClient.Client.RemoteEndPoint.ToString();
 
                     client = new ClientMetadata(tcpClient);
@@ -1025,7 +1025,7 @@ namespace SuperSimpleTcp
             }
         }
 
-        private void EnableKeepalives(TcpClient client)
+        private void EnableKeepalives(System.Net.Sockets.TcpClient client)
         {
             try
             {

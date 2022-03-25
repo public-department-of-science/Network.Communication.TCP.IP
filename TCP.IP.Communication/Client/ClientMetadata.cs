@@ -3,11 +3,11 @@ using System.Net.Security;
 using System.Net.Sockets;
 using System.Threading;
 
-namespace SuperSimpleTcp
+namespace TCP
 {
     internal class ClientMetadata : IDisposable
     {
-        internal TcpClient Client
+        internal System.Net.Sockets.TcpClient Client
         {
             get { return _tcpClient; }
         }
@@ -35,7 +35,7 @@ namespace SuperSimpleTcp
 
         internal CancellationToken Token { get; set; }
 
-        private TcpClient _tcpClient = null;
+        private System.Net.Sockets.TcpClient _tcpClient = null;
         private NetworkStream _networkStream = null;
         private SslStream _sslStream = null;
         private string _ipPort = null; 

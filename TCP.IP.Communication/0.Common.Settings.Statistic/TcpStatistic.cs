@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace SuperSimpleTcp
+namespace TCP
 {
     /// <summary>
-    /// SimpleTcp statistics.
+    /// TCP statistics.
     /// </summary>
-    public class SimpleTcpStatistics
+    public class TcpStatistic
     {
         /// <summary>
         /// The time at which the client or server was started.
@@ -66,7 +66,7 @@ namespace SuperSimpleTcp
         /// <summary>
         /// Initialize the statistics object.
         /// </summary>
-        public SimpleTcpStatistics()
+        public TcpStatistic()
         {
         }
 

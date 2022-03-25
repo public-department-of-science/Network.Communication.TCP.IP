@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SuperSimpleTcp
+namespace TCP
 {
     internal static class IpAndPortParser
     { 

@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace SuperSimpleTcp
+namespace TCP
 {
     /// <summary>
-    /// SimpleTcp server settings.
+    /// Tcp server settings.
     /// </summary>
-    public class SimpleTcpServerSettings
+    public class TcpServerSettings
     {
         /// <summary>
         /// Buffer size to use while interacting with streams. 
@@ -76,7 +76,7 @@ namespace SuperSimpleTcp
         /// <summary>
         /// Instantiate the object.
         /// </summary>
-        public SimpleTcpServerSettings()
+        public TcpServerSettings()
         {
 
         }

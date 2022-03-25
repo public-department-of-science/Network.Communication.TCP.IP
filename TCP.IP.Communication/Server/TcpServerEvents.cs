@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace SuperSimpleTcp
+namespace TCP
 {
     /// <summary>
-    /// SimpleTcp server events.
+    /// Tcp server events.
     /// </summary>
-    public class SimpleTcpServerEvents
+    public class TcpServerEvents
     {
         /// <summary>
         /// Event to call when a client connects.
@@ -25,7 +25,7 @@ namespace SuperSimpleTcp
         /// <summary>
         /// Instantiate the object.
         /// </summary>
-        public SimpleTcpServerEvents()
+        public TcpServerEvents()
         {
 
         }

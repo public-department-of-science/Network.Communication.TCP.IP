@@ -1,4 +1,4 @@
-﻿using SuperSimpleTcp;
+﻿using TCP;
 using System;
 using System.Text;
 using System.Windows.Forms;
@@ -7,7 +7,7 @@ namespace TCP.IP.Client.Server
 {
     public partial class Client : Form
     {
-        SimpleTcpClient tcpClient;
+        TcpClient tcpClient;
 
         public Client()
         {
@@ -62,7 +62,7 @@ namespace TCP.IP.Client.Server
 
         private void Client_Load(object sender, EventArgs e)
         {
-            tcpClient = new SimpleTcpClient(txtbServer.Text);
+            tcpClient = new TcpClient(txtbServer.Text);
             tcpClient.Events.Connected += Events_Connected;
             tcpClient.Events.DataReceived += Events_DataReceived;
             tcpClient.Events.Disconnected += Events_Disconnected;

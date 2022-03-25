@@ -1,4 +1,4 @@
-﻿using SuperSimpleTcp;
+﻿using TCP;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,7 +18,7 @@ namespace TCP.IP.Server
             InitializeComponent();
         }
 
-        SimpleTcpServer tcpServer;
+        TcpServer tcpServer;
 
         private void btnStart_Click(object sender, EventArgs e)
         {
@@ -44,7 +44,7 @@ namespace TCP.IP.Server
         private void Server_Load(object sender, EventArgs e)
         {
             btnSend.Enabled = false;
-            tcpServer = new SimpleTcpServer(serverIp.Text);
+            tcpServer = new TcpServer(serverIp.Text);
             tcpServer.Events.ClientConnected += Events_ClientConnected;
             tcpServer.Events.ClientDisconnected += Events_ClientDisconnected;
             tcpServer.Events.DataReceived += Events_DataReceived;
