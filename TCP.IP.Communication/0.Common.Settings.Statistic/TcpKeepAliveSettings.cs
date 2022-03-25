@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TCP
+namespace TCP.Settings
 {
     /// <summary>
     /// TCP keepalive settings.

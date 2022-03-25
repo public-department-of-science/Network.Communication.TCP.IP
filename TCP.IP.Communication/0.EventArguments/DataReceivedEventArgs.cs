@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TCP
+namespace TCP.EventArguments
 {
     /// <summary>
     /// Arguments for data received from connected endpoints.

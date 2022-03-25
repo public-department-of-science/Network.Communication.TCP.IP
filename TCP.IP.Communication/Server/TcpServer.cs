@@ -10,8 +10,14 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TCP.Client;
+using TCP.Common;
+using TCP.Enums;
+using TCP.EventArguments;
+using TCP.Settings;
+using TCP.Statistic;
 
-namespace TCP
+namespace TCP.Server
 {
     /// <summary>
     /// Tcp server with SSL support.  

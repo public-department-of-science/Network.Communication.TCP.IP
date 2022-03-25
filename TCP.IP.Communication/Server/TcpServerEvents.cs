@@ -1,6 +1,7 @@
 ﻿using System;
+using TCP.EventArguments;
 
-namespace TCP
+namespace TCP.Server
 {
     /// <summary>
     /// Tcp server events.

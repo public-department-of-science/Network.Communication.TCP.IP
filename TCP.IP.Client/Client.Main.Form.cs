@@ -1,7 +1,8 @@
-﻿using TCP;
-using System;
+﻿using System;
 using System.Text;
 using System.Windows.Forms;
+using TCP.Client;
+using TCP.EventArguments;
 
 namespace TCP.IP.Client.Server
 {

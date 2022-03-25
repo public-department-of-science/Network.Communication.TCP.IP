@@ -1,4 +1,4 @@
-﻿namespace TCP
+﻿namespace TCP.Enums
 {
     /// <summary>
     /// Reason why a client disconnected.

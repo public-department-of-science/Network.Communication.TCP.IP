@@ -1,24 +1,19 @@
-﻿using TCP;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
+﻿using System;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using TCP.EventArguments;
+using TCP.Server;
 
 namespace TCP.IP.Server
 {
     public partial class Server : Form
     {
+        TcpServer tcpServer;
+
         public Server()
         {
             InitializeComponent();
         }
-
-        TcpServer tcpServer;
 
         private void btnStart_Click(object sender, EventArgs e)
         {

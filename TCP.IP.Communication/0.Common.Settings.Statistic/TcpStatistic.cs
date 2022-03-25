@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TCP
+namespace TCP.Statistic
 {
     /// <summary>
     /// TCP statistics.

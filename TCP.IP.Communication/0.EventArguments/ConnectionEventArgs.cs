@@ -1,6 +1,7 @@
 ﻿using System;
+using TCP.Enums;
 
-namespace TCP
+namespace TCP.EventArguments
 {
     /// <summary>
     /// Arguments for connection events.

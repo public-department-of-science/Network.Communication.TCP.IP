@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TCP
+namespace TCP.Common
 {
     internal static class IpAndPortParser
     { 
