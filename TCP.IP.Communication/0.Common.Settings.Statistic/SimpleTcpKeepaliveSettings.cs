@@ -12,8 +12,6 @@ namespace SuperSimpleTcp
     /// </summary>
     public class SimpleTcpKeepaliveSettings
     {
-        #region Public-Members
-
         /// <summary>
         /// Enable or disable TCP-based keepalive probes.
         /// TCP keepalives are only supported in .NET Core and .NET Framework projects.  .NET Standard does not provide facilities to support TCP keepalives.
@@ -71,26 +69,15 @@ namespace SuperSimpleTcp
             }
         }
 
-        #endregion
-
-        #region Private-Members
-
         private int _tcpKeepAliveInterval = 2;
         private int _tcpKeepAliveTime = 2;
         private int _tcpKeepAliveRetryCount = 3;
-
-        #endregion
-
-        #region Constructors-and-Factories
 
         /// <summary>
         /// Instantiate the object.
         /// </summary>
         public SimpleTcpKeepaliveSettings()
         {
-
         }
-
-        #endregion
     }
 }

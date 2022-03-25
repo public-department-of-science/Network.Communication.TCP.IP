@@ -7,8 +7,6 @@ namespace SuperSimpleTcp
     /// </summary>
     public class SimpleTcpServerEvents
     {
-        #region Public-Members
-
         /// <summary>
         /// Event to call when a client connects.
         /// </summary>
@@ -24,10 +22,6 @@ namespace SuperSimpleTcp
         /// </summary>
         public event EventHandler<DataReceivedEventArgs> DataReceived;
 
-        #endregion
-
-        #region Constructors-and-Factories
-
         /// <summary>
         /// Instantiate the object.
         /// </summary>
@@ -35,10 +29,6 @@ namespace SuperSimpleTcp
         {
 
         }
-
-        #endregion
-
-        #region Public-Methods
 
         internal void HandleClientConnected(object sender, ConnectionEventArgs args)
         {
@@ -54,7 +44,5 @@ namespace SuperSimpleTcp
         {
             DataReceived?.Invoke(sender, args);
         }
-
-        #endregion
     }
 }

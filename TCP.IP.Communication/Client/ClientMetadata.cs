@@ -7,8 +7,6 @@ namespace SuperSimpleTcp
 {
     internal class ClientMetadata : IDisposable
     {
-        #region Public-Members
-
         internal TcpClient Client
         {
             get { return _tcpClient; }
@@ -37,18 +35,10 @@ namespace SuperSimpleTcp
 
         internal CancellationToken Token { get; set; }
 
-        #endregion
-
-        #region Private-Members
-         
         private TcpClient _tcpClient = null;
         private NetworkStream _networkStream = null;
         private SslStream _sslStream = null;
         private string _ipPort = null; 
-
-        #endregion
-
-        #region Constructors-and-Factories
 
         internal ClientMetadata(System.Net.Sockets.TcpClient tcp)
         {
@@ -60,10 +50,6 @@ namespace SuperSimpleTcp
             TokenSource = new CancellationTokenSource();
             Token = TokenSource.Token;
         }
-
-        #endregion
-
-        #region Public-Methods
 
         public void Dispose()
         { 
@@ -95,7 +81,5 @@ namespace SuperSimpleTcp
             SendLock.Dispose();
             ReceiveLock.Dispose();
         }
-
-        #endregion
     }
 }

@@ -7,8 +7,6 @@ namespace SuperSimpleTcp
     /// </summary>
     public class SimpleTcpStatistics
     {
-        #region Public-Members
-
         /// <summary>
         /// The time at which the client or server was started.
         /// </summary>
@@ -60,30 +58,17 @@ namespace SuperSimpleTcp
                 _sentBytes = value;
             }
         }
-         
-        #endregion
-
-        #region Private-Members
 
         private DateTime _startTime = DateTime.Now.ToUniversalTime();
         private long _receivedBytes = 0; 
         private long _sentBytes = 0; 
-
-        #endregion
-
-        #region Constructors-and-Factories
 
         /// <summary>
         /// Initialize the statistics object.
         /// </summary>
         public SimpleTcpStatistics()
         {
-
         }
-
-        #endregion
-
-        #region Public-Methods
 
         /// <summary>
         /// Return human-readable version of the object.
@@ -108,7 +93,5 @@ namespace SuperSimpleTcp
             _receivedBytes = 0; 
             _sentBytes = 0; 
         }
-
-        #endregion
     }
 }

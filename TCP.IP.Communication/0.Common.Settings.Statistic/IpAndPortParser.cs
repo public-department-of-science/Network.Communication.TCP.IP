@@ -2,7 +2,7 @@
 
 namespace SuperSimpleTcp
 {
-    internal static class Common
+    internal static class IpAndPortParser
     { 
         internal static void ParseIpPort(string ipPort, out string ip, out int port) 
         {

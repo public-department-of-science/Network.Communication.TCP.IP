@@ -20,8 +20,6 @@ namespace SuperSimpleTcp
     /// </summary>
     public class SimpleTcpServer : IDisposable
     {
-        #region Public-Members
-
         /// <summary>
         /// Indicates if the server is listening for connections.
         /// </summary>
@@ -97,10 +95,6 @@ namespace SuperSimpleTcp
         /// </summary>
         public Action<string> Logger = null;
 
-        #endregion
-
-        #region Private-Members
-
         private readonly string _header = "[SimpleTcp.Server] ";
         private SimpleTcpServerSettings _settings = new SimpleTcpServerSettings();
         private SimpleTcpServerEvents _events = new SimpleTcpServerEvents();
@@ -130,10 +124,6 @@ namespace SuperSimpleTcp
         private Task _acceptConnections = null;
         private Task _idleClientMonitor = null;
 
-        #endregion
-
-        #region Constructors-and-Factories
-
         /// <summary>
         /// Instantiates the TCP server without SSL.  Set the ClientConnected, ClientDisconnected, and DataReceived callbacks.  Once set, use Start() to begin listening for connections.
         /// </summary>
@@ -142,7 +132,7 @@ namespace SuperSimpleTcp
         {
             if (string.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
 
-            Common.ParseIpPort(ipPort, out _listenerIp, out _port);
+            IpAndPortParser.ParseIpPort(ipPort, out _listenerIp, out _port);
 
             if (_port < 0) throw new ArgumentException("Port must be zero or greater.");
             if (string.IsNullOrEmpty(_listenerIp))
@@ -213,7 +203,7 @@ namespace SuperSimpleTcp
         {
             if (string.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
 
-            Common.ParseIpPort(ipPort, out _listenerIp, out _port);
+            IpAndPortParser.ParseIpPort(ipPort, out _listenerIp, out _port);
             if (_port < 0) throw new ArgumentException("Port must be zero or greater.");
 
             if (string.IsNullOrEmpty(_listenerIp))
@@ -310,10 +300,6 @@ namespace SuperSimpleTcp
                 };
             } 
         }
-
-        #endregion
-
-        #region Public-Methods
 
         /// <summary>
         /// Dispose of the TCP server.
@@ -564,10 +550,6 @@ namespace SuperSimpleTcp
                 client.Dispose();
             }
         }
-
-        #endregion
-
-        #region Private-Methods
 
         /// <summary>
         /// Dispose of the TCP server.
@@ -1080,7 +1062,5 @@ namespace SuperSimpleTcp
                 _keepalive.EnableTcpKeepAlives = false;
             }
         }
-
-        #endregion
     }
 }

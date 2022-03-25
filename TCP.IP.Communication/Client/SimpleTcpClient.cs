@@ -18,8 +18,6 @@ namespace SuperSimpleTcp
     /// </summary>
     public class SimpleTcpClient : IDisposable
     {
-        #region Public-Members
-
         /// <summary>
         /// Indicates whether or not the client is connected to the server.
         /// </summary>
@@ -126,10 +124,6 @@ namespace SuperSimpleTcp
             }
         }
 
-        #endregion
-
-        #region Private-Members
-
         private readonly string _header = "[SimpleTcp.Client] ";
         private SimpleTcpClientSettings _settings = new SimpleTcpClientSettings();
         private SimpleTcpClientEvents _events = new SimpleTcpClientEvents();
@@ -161,10 +155,6 @@ namespace SuperSimpleTcp
         private DateTime _lastActivity = DateTime.Now;
         private bool _isTimeout = false;
 
-        #endregion
-
-        #region Constructors-and-Factories
-
         /// <summary>
         /// Instantiates the TCP client without SSL. Set the Connected, Disconnected, and DataReceived callbacks. Once set, use Connect() to connect to the server.
         /// </summary>
@@ -173,7 +163,7 @@ namespace SuperSimpleTcp
         {
             if (string.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
 
-            Common.ParseIpPort(ipPort, out _serverIp, out _serverPort);
+            IpAndPortParser.ParseIpPort(ipPort, out _serverIp, out _serverPort);
             if (_serverPort < 0) throw new ArgumentException("Port must be zero or greater.");
             if (string.IsNullOrEmpty(_serverIp)) throw new ArgumentNullException("Server IP or hostname must not be null.");
 
@@ -232,10 +222,6 @@ namespace SuperSimpleTcp
             _pfxCertFilename = pfxCertFilename;
             _pfxPassword = pfxPassword;
         }
-
-        #endregion
-
-        #region Public-Methods
 
         /// <summary>
         /// Dispose of the TCP client.
@@ -583,10 +569,6 @@ namespace SuperSimpleTcp
 
             await SendInternalAsync(contentLength, stream, token).ConfigureAwait(false);
         }
-
-        #endregion
-
-        #region Private-Methods
 
         /// <summary>
         /// Dispose of the TCP client.
@@ -954,7 +936,5 @@ namespace SuperSimpleTcp
                 return false;
             }
         }
-
-        #endregion
     }
 }

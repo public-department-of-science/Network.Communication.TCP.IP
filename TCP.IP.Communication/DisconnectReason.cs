@@ -20,6 +20,6 @@
         /// <summary>
         /// The connection was not disconnected.
         /// </summary>
-        None = 3
+        Undefined = 3
     }
 }

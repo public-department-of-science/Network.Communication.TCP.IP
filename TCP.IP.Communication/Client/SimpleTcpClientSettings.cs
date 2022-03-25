@@ -7,8 +7,6 @@ namespace SuperSimpleTcp
     /// </summary>
     public class SimpleTcpClientSettings
     {
-        #region Public-Members
-
         /// <summary>
         /// Buffer size to use while interacting with streams. 
         /// </summary>
@@ -119,20 +117,12 @@ namespace SuperSimpleTcp
         /// </summary>
         public bool MutuallyAuthenticate = true;
 
-        #endregion
-
-        #region Private-Members
-
         private int _streamBufferSize = 65536;
         private int _connectTimeoutMs = 5000;
         private int _readTimeoutMs = 1000;
         private int _idleServerTimeoutMs = 0;
         private int _idleServerEvaluationIntervalMs = 1000;
         private int _connectionLostEvaluationIntervalMs = 200;
-
-        #endregion
-
-        #region Constructors-and-Factories
 
         /// <summary>
         /// Instantiate the object.
@@ -141,7 +131,5 @@ namespace SuperSimpleTcp
         {
 
         }
-
-        #endregion
     }
 }
