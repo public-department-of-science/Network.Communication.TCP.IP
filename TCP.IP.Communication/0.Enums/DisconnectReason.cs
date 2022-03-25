@@ -6,20 +6,23 @@
     public enum DisconnectReason
     {
         /// <summary>
+        /// Impossible to get right disconnection reason.
+        /// </summary>
+        Undefined = 0,
+
+        /// <summary>
         /// Normal disconnection.
         /// </summary>
-        Normal = 0,
+        DisconnectedByClient,
+
         /// <summary>
         /// Client connection was intentionally terminated programmatically or by the server.
         /// </summary>
-        Kicked = 1,
+        KickedByServer,
+
         /// <summary>
         /// Client connection timed out; server did not receive data within the timeout window.
         /// </summary>
-        Timeout = 2,
-        /// <summary>
-        /// The connection was not disconnected.
-        /// </summary>
-        Undefined = 3
+        NoResponseTimeout,
     }
 }
