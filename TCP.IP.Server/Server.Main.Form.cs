@@ -3,6 +3,8 @@ using System.Text;
 using System.Windows.Forms;
 using TCP.EventArguments;
 using TCP.Server;
+using System.Collections.Generic;
+using static System.Windows.Forms.CheckedListBox;
 
 namespace TCP.IP.Server
 {
@@ -27,9 +29,9 @@ namespace TCP.IP.Server
         {
             if (tcpServer.IsListening)
             {
-                if (!string.IsNullOrWhiteSpace(txtMessage.Text) && lstClients.SelectedItem != null)
+                if (!string.IsNullOrWhiteSpace(txtMessage.Text) && lstBoxClients.SelectedItem != null)
                 {
-                    tcpServer.Send(lstClients.SelectedItem.ToString(), txtMessage.Text);
+                    tcpServer.Send(lstBoxClients.SelectedItem.ToString(), txtMessage.Text);
                     txtbInfo.Text += $"Server: {txtMessage.Text} {Environment.NewLine}";
                     txtMessage.Text = string.Empty;
                 }
@@ -58,7 +60,7 @@ namespace TCP.IP.Server
             this.Invoke((MethodInvoker)delegate
             {
                 txtbInfo.Text += $"{e.IpPort} disconnected. Reason: {e.Reason}. {Environment.NewLine}";
-                lstClients.Items.Remove(e.IpPort);
+                lstBoxClients.Items.Remove(e.IpPort);
             });
         }
 
@@ -67,7 +69,29 @@ namespace TCP.IP.Server
             this.Invoke((MethodInvoker)delegate
             {
                 txtbInfo.Text += $"{e.IpPort} connected. Reason: {e.Reason}. {Environment.NewLine}";
-                lstClients.Items.Add(e.IpPort);
+                lstBoxClients.Items.Add(e.IpPort);
+            });
+        }
+
+        private void disconnectClientToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Invoke((MethodInvoker)delegate
+            {
+                var selectedClientsIPs = lstBoxClients.CheckedItems;
+                if (selectedClientsIPs.Count == 0)
+                {
+                    return;
+                }
+                else
+                {
+                    do
+                    {
+                        tcpServer.DisconnectClient(selectedClientsIPs[0].ToString());
+                        txtbInfo.Text += $"{selectedClientsIPs[0].ToString()} disconnected. {Environment.NewLine}";
+                        lstBoxClients.Items.Remove(selectedClientsIPs[0]);
+                    }
+                    while (selectedClientsIPs.Count != 0);
+                }
             });
         }
     }

@@ -29,6 +29,7 @@ namespace TCP.IP.Client.Server
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.lblServer = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.txtbServer = new System.Windows.Forms.TextBox();
@@ -37,6 +38,10 @@ namespace TCP.IP.Client.Server
             this.btnSend = new System.Windows.Forms.Button();
             this.btnConnect = new System.Windows.Forms.Button();
             this.btnDisconnect = new System.Windows.Forms.Button();
+            this.connectionStatusTimer = new System.Windows.Forms.Timer(this.components);
+            this.connectionStatusStrip = new System.Windows.Forms.StatusStrip();
+            this.connectionStatusLbl = new System.Windows.Forms.ToolStripStatusLabel();
+            this.connectionStatusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblServer
@@ -111,11 +116,34 @@ namespace TCP.IP.Client.Server
             this.btnDisconnect.UseVisualStyleBackColor = true;
             this.btnDisconnect.Click += new System.EventHandler(this.btnDisconnect_Click);
             // 
+            // connectionStatusTimer
+            // 
+            this.connectionStatusTimer.Enabled = true;
+            this.connectionStatusTimer.Tick += new System.EventHandler(this.connectionStatusTimer_Tick);
+            // 
+            // connectionStatusStrip
+            // 
+            this.connectionStatusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.connectionStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.connectionStatusLbl});
+            this.connectionStatusStrip.Location = new System.Drawing.Point(0, 480);
+            this.connectionStatusStrip.Name = "connectionStatusStrip";
+            this.connectionStatusStrip.Size = new System.Drawing.Size(812, 26);
+            this.connectionStatusStrip.TabIndex = 8;
+            this.connectionStatusStrip.Text = "statusStrip1";
+            // 
+            // connectionStatusLbl
+            // 
+            this.connectionStatusLbl.Name = "connectionStatusLbl";
+            this.connectionStatusLbl.Size = new System.Drawing.Size(151, 20);
+            this.connectionStatusLbl.Text = "toolStripStatusLabel1";
+            // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(812, 506);
+            this.Controls.Add(this.connectionStatusStrip);
             this.Controls.Add(this.btnDisconnect);
             this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.btnSend);
@@ -126,8 +154,11 @@ namespace TCP.IP.Client.Server
             this.Controls.Add(this.lblServer);
             this.MinimizeBox = false;
             this.Name = "Client";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "TCP.Client";
             this.Load += new System.EventHandler(this.Client_Load);
+            this.connectionStatusStrip.ResumeLayout(false);
+            this.connectionStatusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -143,6 +174,9 @@ namespace TCP.IP.Client.Server
         private System.Windows.Forms.Button btnSend;
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.Button btnDisconnect;
+        private System.Windows.Forms.Timer connectionStatusTimer;
+        private System.Windows.Forms.StatusStrip connectionStatusStrip;
+        private System.Windows.Forms.ToolStripStatusLabel connectionStatusLbl;
     }
 }
 

@@ -57,6 +57,9 @@ namespace FlexibleBordersMenu
             this.button1 = new System.Windows.Forms.Button();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.testToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.test1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.toolStrip2.SuspendLayout();
@@ -72,6 +75,7 @@ namespace FlexibleBordersMenu
             this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
             this.splitContainer3.SuspendLayout();
+            this.contextMenuStrip2.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -271,7 +275,7 @@ namespace FlexibleBordersMenu
             this.tabPage2.Location = new System.Drawing.Point(4, 29);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(551, 126);
+            this.tabPage2.Size = new System.Drawing.Size(410, 126);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -281,7 +285,7 @@ namespace FlexibleBordersMenu
             this.tabPage3.Location = new System.Drawing.Point(4, 29);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(551, 126);
+            this.tabPage3.Size = new System.Drawing.Size(410, 126);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -292,7 +296,7 @@ namespace FlexibleBordersMenu
             this.tabPage4.Location = new System.Drawing.Point(4, 29);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(551, 126);
+            this.tabPage4.Size = new System.Drawing.Size(410, 126);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "tabPage4";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -317,7 +321,7 @@ namespace FlexibleBordersMenu
             // 
             this.splitContainer2.Panel2.Controls.Add(this.splitContainer3);
             this.splitContainer2.Size = new System.Drawing.Size(746, 369);
-            this.splitContainer2.SplitterDistance = 248;
+            this.splitContainer2.SplitterDistance = 247;
             this.splitContainer2.TabIndex = 0;
             // 
             // splitContainer3
@@ -325,9 +329,30 @@ namespace FlexibleBordersMenu
             this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer3.Location = new System.Drawing.Point(0, 0);
             this.splitContainer3.Name = "splitContainer3";
-            this.splitContainer3.Size = new System.Drawing.Size(494, 369);
+            this.splitContainer3.Size = new System.Drawing.Size(495, 369);
             this.splitContainer3.SplitterDistance = 163;
             this.splitContainer3.TabIndex = 0;
+            // 
+            // contextMenuStrip2
+            // 
+            this.contextMenuStrip2.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.testToolStripMenuItem1,
+            this.test1ToolStripMenuItem});
+            this.contextMenuStrip2.Name = "contextMenuStrip2";
+            this.contextMenuStrip2.Size = new System.Drawing.Size(111, 52);
+            // 
+            // testToolStripMenuItem1
+            // 
+            this.testToolStripMenuItem1.Name = "testToolStripMenuItem1";
+            this.testToolStripMenuItem1.Size = new System.Drawing.Size(110, 24);
+            this.testToolStripMenuItem1.Text = "test";
+            // 
+            // test1ToolStripMenuItem
+            // 
+            this.test1ToolStripMenuItem.Name = "test1ToolStripMenuItem";
+            this.test1ToolStripMenuItem.Size = new System.Drawing.Size(110, 24);
+            this.test1ToolStripMenuItem.Text = "test1";
             // 
             // Form1
             // 
@@ -360,6 +385,7 @@ namespace FlexibleBordersMenu
             this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
+            this.contextMenuStrip2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -393,5 +419,8 @@ namespace FlexibleBordersMenu
         private System.Windows.Forms.SplitContainer splitContainer3;
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
+        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem test1ToolStripMenuItem;
     }
 }

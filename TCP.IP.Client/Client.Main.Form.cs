@@ -54,6 +54,11 @@ namespace TCP.IP.Client.Server
                     btnDisconnect.Enabled = false;
                     btnConnect.Enabled = true;
                 }
+                else
+                {
+                    btnConnect.Enabled = true;
+                    btnDisconnect.Enabled = false;
+                }
             }
             catch (Exception ex)
             {
@@ -93,6 +98,26 @@ namespace TCP.IP.Client.Server
             {
                 txtbInfo.Text += $"Client connected to the {txtbServer.Text} server. {Environment.NewLine}";
             });
+        }
+
+        private void connectionStatusTimer_Tick(object sender, EventArgs e)
+        {
+            if (tcpClient.IsConnected)
+            {
+                btnDisconnect.Enabled = true;
+                btnConnect.Enabled = false;
+                btnSend.Enabled = true;
+
+                connectionStatusLbl.Text = "Connected";
+            }
+            else
+            {
+                btnDisconnect.Enabled = false;
+                btnConnect.Enabled = true;
+                btnSend.Enabled = false;
+                
+                connectionStatusLbl.Text = "Disconnected";
+            }
         }
     }
 }

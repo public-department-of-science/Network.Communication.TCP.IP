@@ -29,6 +29,7 @@ namespace TCP.IP.Server
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.txtBox_serverInfo = new System.Windows.Forms.TextBox();
             this.btnStart = new System.Windows.Forms.Button();
             this.btnSend = new System.Windows.Forms.Button();
@@ -37,7 +38,10 @@ namespace TCP.IP.Server
             this.label4 = new System.Windows.Forms.Label();
             this.txtbInfo = new System.Windows.Forms.TextBox();
             this.txtMessage = new System.Windows.Forms.TextBox();
-            this.lstClients = new System.Windows.Forms.ListBox();
+            this.ctxMenuClientsList = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.disconnectClientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lstBoxClients = new System.Windows.Forms.CheckedListBox();
+            this.ctxMenuClientsList.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtBox_serverInfo
@@ -112,21 +116,38 @@ namespace TCP.IP.Server
             this.txtMessage.Size = new System.Drawing.Size(462, 27);
             this.txtMessage.TabIndex = 8;
             // 
-            // lstClients
+            // ctxMenuClientsList
             // 
-            this.lstClients.FormattingEnabled = true;
-            this.lstClients.ItemHeight = 20;
-            this.lstClients.Location = new System.Drawing.Point(664, 86);
-            this.lstClients.Name = "lstClients";
-            this.lstClients.Size = new System.Drawing.Size(185, 204);
-            this.lstClients.TabIndex = 9;
+            this.ctxMenuClientsList.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.ctxMenuClientsList.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.ctxMenuClientsList.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.disconnectClientToolStripMenuItem});
+            this.ctxMenuClientsList.Name = "contextMenuStrip1";
+            this.ctxMenuClientsList.Size = new System.Drawing.Size(211, 56);
+            this.ctxMenuClientsList.Text = "Menu";
+            // 
+            // disconnectClientToolStripMenuItem
+            // 
+            this.disconnectClientToolStripMenuItem.Name = "disconnectClientToolStripMenuItem";
+            this.disconnectClientToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.disconnectClientToolStripMenuItem.Text = "Disconnect";
+            this.disconnectClientToolStripMenuItem.Click += new System.EventHandler(this.disconnectClientToolStripMenuItem_Click);
+            // 
+            // lstBoxClients
+            // 
+            this.lstBoxClients.ContextMenuStrip = this.ctxMenuClientsList;
+            this.lstBoxClients.FormattingEnabled = true;
+            this.lstBoxClients.Location = new System.Drawing.Point(664, 86);
+            this.lstBoxClients.Name = "lstBoxClients";
+            this.lstBoxClients.Size = new System.Drawing.Size(169, 136);
+            this.lstBoxClients.TabIndex = 9;
             // 
             // Server
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(863, 456);
-            this.Controls.Add(this.lstClients);
+            this.ClientSize = new System.Drawing.Size(886, 452);
+            this.Controls.Add(this.lstBoxClients);
             this.Controls.Add(this.txtMessage);
             this.Controls.Add(this.txtbInfo);
             this.Controls.Add(this.txtBox_serverInfo);
@@ -139,6 +160,7 @@ namespace TCP.IP.Server
             this.Name = "Server";
             this.Text = "TCP.Server";
             this.Load += new System.EventHandler(this.Server_Load);
+            this.ctxMenuClientsList.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -154,7 +176,9 @@ namespace TCP.IP.Server
         private System.Windows.Forms.TextBox txtBox_serverInfo;
         private System.Windows.Forms.TextBox txtbInfo;
         private System.Windows.Forms.TextBox txtMessage;
-        private System.Windows.Forms.ListBox lstClients;
+        private System.Windows.Forms.ContextMenuStrip ctxMenuClientsList;
+        private System.Windows.Forms.ToolStripMenuItem disconnectClientToolStripMenuItem;
+        private System.Windows.Forms.CheckedListBox lstBoxClients;
     }
 }
 
