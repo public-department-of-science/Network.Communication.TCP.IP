@@ -336,7 +336,10 @@ namespace TCP.Server
         /// </summary>
         public void Start()
         {
-            if (_isListening) throw new InvalidOperationException("TcpServer is already running.");
+            if (_isListening)
+            {
+                throw new InvalidOperationException("TcpServer is already running.");
+            }
 
             _listener = new TcpListener(_ipAddress, _port);
 
@@ -364,14 +367,20 @@ namespace TCP.Server
         /// <returns>Task.</returns>
         public Task StartAsync()
         {
-            if (_isListening) throw new InvalidOperationException("TcpServer is already running.");
+            if (_isListening)
+            {
+                throw new InvalidOperationException("TcpServer is already running.");
+            }
+            _isListening = true;
+
+
+            if (_keepalive.EnableTcpKeepAlives)
+            {
+                EnableKeepalives();
+            }
 
             _listener = new TcpListener(_ipAddress, _port);
-
-            if (_keepalive.EnableTcpKeepAlives) EnableKeepalives();
-
             _listener.Start();
-            _isListening = true;
 
             _tokenSource = new CancellationTokenSource();
             _token = _tokenSource.Token;
@@ -505,6 +514,38 @@ namespace TCP.Server
             }
 
             SendInternal(ipPort, contentLength, stream);
+        }
+
+        /// <summary>
+        /// Send data to the specified client by IP:port.
+        /// </summary>
+        /// <param name="ipPort">The client IP:port string.</param>
+        /// <param name="contentLength">The number of bytes to read from the source stream to send.</param>
+        /// <param name="stream">Stream containing the data to send.</param>
+        public void NotifyAllClients(long contentLength, Stream stream)
+        {
+            var clients = GetClients();
+            foreach (var clientIp in clients)
+            {
+                if (string.IsNullOrWhiteSpace(clientIp))
+                {
+                    throw new ArgumentNullException(nameof(clientIp));
+                }
+                if (contentLength < 1)
+                {
+                    return;
+                }
+                if (stream == null)
+                {
+                    throw new ArgumentNullException(nameof(stream));
+                }
+                if (!stream.CanRead)
+                {
+                    throw new InvalidOperationException("Cannot read from supplied stream.");
+                }
+
+                SendInternal(clientIp, contentLength, stream);
+            }
         }
 
         /// <summary>
@@ -714,14 +755,12 @@ namespace TCP.Server
             while (!_listenerToken.IsCancellationRequested)
             {
                 ClientMetadata client = null;
-
                 try
                 {
                     System.Net.Sockets.TcpClient tcpClient = await _listener.AcceptTcpClientAsync().ConfigureAwait(false);
                     string clientIp = tcpClient.Client.RemoteEndPoint.ToString();
 
                     client = new ClientMetadata(tcpClient);
-
                     if (_ssl)
                     {
                         if (_settings.AcceptInvalidCertificates)
@@ -746,7 +785,10 @@ namespace TCP.Server
                     Logger?.Invoke($"{_header}starting data receiver for: {clientIp}");
                     _events.HandleClientConnected(this, new ConnectionEventArgs(clientIp));
 
-                    if (_keepalive.EnableTcpKeepAlives) EnableKeepalives(tcpClient);
+                    if (_keepalive.EnableTcpKeepAlives)
+                    {
+                        EnableKeepalives(tcpClient);
+                    }
 
                     CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(client.Token, _token);
                     Task unawaited = Task.Run(() => DataReceiver(client), linkedCts.Token);
@@ -759,13 +801,21 @@ namespace TCP.Server
                         || ex is InvalidOperationException)
                     {
                         _isListening = false;
-                        if (client != null) client.Dispose();
+                        if (client != null)
+                        {
+                            client.Dispose();
+                        }
+
                         Logger?.Invoke($"{_header}stopped listening");
                         break;
                     }
                     else
                     {
-                        if (client != null) client.Dispose();
+                        if (client != null)
+                        {
+                            client.Dispose();
+                        }
+
                         Logger?.Invoke($"{_header}exception while awaiting connections: {ex}");
                         continue;
                     }
@@ -828,7 +878,6 @@ namespace TCP.Server
             Logger?.Invoke($"{_header}data receiver started for client {ipPort}");
 
             CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(_token, client.Token);
-
             while (true)
             {
                 try
@@ -995,8 +1044,14 @@ namespace TCP.Server
 
         private void SendInternal(string ipPort, long contentLength, Stream stream)
         {
-            if (!_clients.TryGetValue(ipPort, out ClientMetadata client)) return;
-            if (client == null) return;
+            if (!_clients.TryGetValue(ipPort, out ClientMetadata client))
+            {
+                return;
+            }
+            if (client == null)
+            {
+                return;
+            }
 
             long bytesRemaining = contentLength;
             int bytesRead = 0;
@@ -1011,17 +1066,28 @@ namespace TCP.Server
                     bytesRead = stream.Read(buffer, 0, buffer.Length);
                     if (bytesRead > 0)
                     {
-                        if (!_ssl) client.NetworkStream.Write(buffer, 0, bytesRead);
-                        else client.SslStream.Write(buffer, 0, bytesRead);
+                        if (!_ssl)
+                        {
+                            client.NetworkStream.Write(buffer, 0, bytesRead);
+                        }
+                        else
+                        {
+                            client.SslStream.Write(buffer, 0, bytesRead);
+                        }
 
                         bytesRemaining -= bytesRead;
                         _statistics.SentBytes += bytesRead;
                     }
                 }
 
-                if (!_ssl) client.NetworkStream.Flush();
-                else client.SslStream.Flush();
-            }
+                if (!_ssl)
+                {
+                    client.NetworkStream.Flush();
+                }
+                else
+                {
+                    client.SslStream.Flush();
+                }            }
             finally
             {
                 if (client != null) client.sendLock.Release();
@@ -1034,8 +1100,14 @@ namespace TCP.Server
 
             try
             {
-                if (!_clients.TryGetValue(ipPort, out client)) return;
-                if (client == null) return;
+                if (!_clients.TryGetValue(ipPort, out client))
+                {
+                    return;
+                }
+                if (client == null)
+                {
+                    return;
+                }
 
                 long bytesRemaining = contentLength;
                 int bytesRead = 0;
@@ -1048,29 +1120,41 @@ namespace TCP.Server
                     bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, token).ConfigureAwait(false);
                     if (bytesRead > 0)
                     {
-                        if (!_ssl) await client.NetworkStream.WriteAsync(buffer, 0, bytesRead, token).ConfigureAwait(false);
-                        else await client.SslStream.WriteAsync(buffer, 0, bytesRead, token).ConfigureAwait(false);
+                        if (!_ssl)
+                        {
+                            await client.NetworkStream.WriteAsync(buffer, 0, bytesRead, token).ConfigureAwait(false);
+                        }
+                        else
+                        {
+                            await client.SslStream.WriteAsync(buffer, 0, bytesRead, token).ConfigureAwait(false);
+                        }
 
                         bytesRemaining -= bytesRead;
                         _statistics.SentBytes += bytesRead;
                     }
                 }
 
-                if (!_ssl) await client.NetworkStream.FlushAsync(token).ConfigureAwait(false);
-                else await client.SslStream.FlushAsync(token).ConfigureAwait(false);
+                if (!_ssl)
+                {
+                    await client.NetworkStream.FlushAsync(token).ConfigureAwait(false);
+                }
+                else
+                {
+                    await client.SslStream.FlushAsync(token).ConfigureAwait(false);
+                }
             }
             catch (TaskCanceledException)
             {
-
             }
             catch (OperationCanceledException)
             {
-
             }
             finally
             {
-                if (client != null) client.sendLock.Release();
-            }
+                if (client != null)
+                {
+                    client.sendLock.Release();
+                }            }
         }
 
         private void EnableKeepalives()
