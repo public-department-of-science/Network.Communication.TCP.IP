@@ -7,6 +7,10 @@ namespace TCP.Statistic
     /// </summary>
     public class TcpStatistic
     {
+        private DateTime utcTime = DateTime.Now.ToUniversalTime();
+        private long receivedBytes = 0;
+        private long sentBytes = 0;
+
         /// <summary>
         /// The time at which the client or server was started.
         /// </summary>
@@ -14,7 +18,7 @@ namespace TCP.Statistic
         {
             get
             {
-                return _startTime;
+                return utcTime;
             }
         }
 
@@ -25,7 +29,7 @@ namespace TCP.Statistic
         {
             get
             {
-                return DateTime.Now.ToUniversalTime() - _startTime;
+                return DateTime.Now.ToUniversalTime() - utcTime;
             }
         }
 
@@ -36,11 +40,11 @@ namespace TCP.Statistic
         {
             get
             {
-                return _receivedBytes;
+                return receivedBytes;
             }
             internal set
             {
-                _receivedBytes = value;
+                receivedBytes = value;
             }
         }
          
@@ -51,23 +55,12 @@ namespace TCP.Statistic
         {
             get
             {
-                return _sentBytes;
+                return sentBytes;
             }
             internal set
             {
-                _sentBytes = value;
+                sentBytes = value;
             }
-        }
-
-        private DateTime _startTime = DateTime.Now.ToUniversalTime();
-        private long _receivedBytes = 0; 
-        private long _sentBytes = 0; 
-
-        /// <summary>
-        /// Initialize the statistics object.
-        /// </summary>
-        public TcpStatistic()
-        {
         }
 
         /// <summary>
@@ -78,7 +71,7 @@ namespace TCP.Statistic
         {
             string ret =
                 "--- Statistics ---" + Environment.NewLine +
-                "    Started        : " + _startTime.ToString() + Environment.NewLine +
+                "    Started        : " + utcTime.ToString() + Environment.NewLine +
                 "    Uptime         : " + UpTime.ToString() + Environment.NewLine +
                 "    Received bytes : " + ReceivedBytes + Environment.NewLine +
                 "    Sent bytes     : " + SentBytes + Environment.NewLine;
@@ -90,8 +83,8 @@ namespace TCP.Statistic
         /// </summary>
         public void Reset()
         {
-            _receivedBytes = 0; 
-            _sentBytes = 0; 
+            receivedBytes = 0; 
+            sentBytes = 0; 
         }
     }
 }

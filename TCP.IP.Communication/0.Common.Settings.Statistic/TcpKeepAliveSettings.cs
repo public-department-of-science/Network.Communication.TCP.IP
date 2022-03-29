@@ -12,6 +12,10 @@ namespace TCP.Settings
     /// </summary>
     public class TcpKeepAliveSettings
     {
+        private int tcpKeepAliveInterval = 2;
+        private int tcpKeepAliveTime = 2;
+        private int tcpKeepAliveRetryCount = 3;
+
         /// <summary>
         /// Enable or disable TCP-based keepalive probes.
         /// TCP keepalives are only supported in .NET Core and .NET Framework projects.  .NET Standard does not provide facilities to support TCP keepalives.
@@ -26,12 +30,16 @@ namespace TCP.Settings
         {
             get
             {
-                return _tcpKeepAliveInterval;
+                return tcpKeepAliveInterval;
             }
             set
             {
-                if (value < 1) throw new ArgumentException("TcpKeepAliveInterval must be greater than zero.");
-                _tcpKeepAliveInterval = value;
+                if (value < 1)
+                {
+                    throw new ArgumentException("TcpKeepAliveInterval must be greater than zero.");
+
+                }
+                tcpKeepAliveInterval = value;
             }
         }
 
@@ -43,12 +51,15 @@ namespace TCP.Settings
         {
             get
             {
-                return _tcpKeepAliveTime;
+                return tcpKeepAliveTime;
             }
             set
             {
-                if (value < 1) throw new ArgumentException("TcpKeepAliveTime must be greater than zero.");
-                _tcpKeepAliveTime = value;
+                if (value < 1)
+                {
+                    throw new ArgumentException("TcpKeepAliveTime must be greater than zero.");
+                }
+                tcpKeepAliveTime = value;
             }
         }
 
@@ -60,24 +71,16 @@ namespace TCP.Settings
         {
             get
             {
-                return _tcpKeepAliveRetryCount;
+                return tcpKeepAliveRetryCount;
             }
             set
             {
-                if (value < 1) throw new ArgumentException("TcpKeepAliveRetryCount must be greater than zero.");
-                _tcpKeepAliveRetryCount = value;
+                if (value < 1)
+                {
+                    throw new ArgumentException("TcpKeepAliveRetryCount must be greater than zero.");
+                }
+                tcpKeepAliveRetryCount = value;
             }
-        }
-
-        private int _tcpKeepAliveInterval = 2;
-        private int _tcpKeepAliveTime = 2;
-        private int _tcpKeepAliveRetryCount = 3;
-
-        /// <summary>
-        /// Instantiate the object.
-        /// </summary>
-        public TcpKeepAliveSettings()
-        {
         }
     }
 }
