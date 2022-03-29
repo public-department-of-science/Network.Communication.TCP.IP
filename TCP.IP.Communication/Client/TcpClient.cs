@@ -722,9 +722,9 @@ namespace TCP.Client
             _isConnected = false;
 
             if (!_isTimeout)
-                _events.HandleClientDisconnected(this, new ConnectionEventArgs(ServerIpPort, DisconnectReason.DisconnectedByClient));
+                _events.HandleClientDisconnected(this, new ConnectionEventArgs(ServerIpPort, ConnectionStatus.DisconnectOK_ByClient));
             else
-                _events.HandleClientDisconnected(this, new ConnectionEventArgs(ServerIpPort, DisconnectReason.NoResponseTimeout));
+                _events.HandleClientDisconnected(this, new ConnectionEventArgs(ServerIpPort, ConnectionStatus.NoResponse_Timeout));
 
             Dispose();
         }

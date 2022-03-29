@@ -16,9 +16,9 @@ namespace TCP.EventArguments
         /// <summary>
         /// The reason for the disconnection, if any.
         /// </summary>
-        public DisconnectReason Reason { get; } = DisconnectReason.Undefined;
+        public ConnectionStatus Reason { get; } = ConnectionStatus.Undefined;
 
-        internal ConnectionEventArgs(string ipPort, DisconnectReason reason = DisconnectReason.Undefined)
+        internal ConnectionEventArgs(string ipPort, ConnectionStatus reason = ConnectionStatus.Undefined)
         {
             IpPort = ipPort;
             Reason = reason;

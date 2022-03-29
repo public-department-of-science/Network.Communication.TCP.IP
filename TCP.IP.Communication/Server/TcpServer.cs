@@ -809,15 +809,15 @@ namespace TCP.Server
 
             if (_clientsKicked.ContainsKey(ipPort))
             {
-                _events.HandleClientDisconnected(this, new ConnectionEventArgs(ipPort, DisconnectReason.KickedByServer));
+                _events.HandleClientDisconnected(this, new ConnectionEventArgs(ipPort, ConnectionStatus.KickedOut_ByServer));
             }
             else if (_clientsTimedout.ContainsKey(client.IpPort))
             {
-                _events.HandleClientDisconnected(this, new ConnectionEventArgs(ipPort, DisconnectReason.NoResponseTimeout));
+                _events.HandleClientDisconnected(this, new ConnectionEventArgs(ipPort, ConnectionStatus.NoResponse_Timeout));
             }
             else
             {
-                _events.HandleClientDisconnected(this, new ConnectionEventArgs(ipPort, DisconnectReason.DisconnectedByClient));
+                _events.HandleClientDisconnected(this, new ConnectionEventArgs(ipPort, ConnectionStatus.DisconnectOK_ByClient));
             }
 
             _clients.TryRemove(ipPort, out _);

@@ -3,7 +3,7 @@
     /// <summary>
     /// Reason why a client disconnected.
     /// </summary>
-    public enum DisconnectReason
+    public enum ConnectionStatus
     {
         /// <summary>
         /// Impossible to get right disconnection reason.
@@ -13,16 +13,21 @@
         /// <summary>
         /// Normal disconnection.
         /// </summary>
-        DisconnectedByClient,
+        DisconnectOK_ByClient,
 
         /// <summary>
         /// Client connection was intentionally terminated programmatically or by the server.
         /// </summary>
-        KickedByServer,
+        KickedOut_ByServer,
 
         /// <summary>
         /// Client connection timed out; server did not receive data within the timeout window.
         /// </summary>
-        NoResponseTimeout,
+        NoResponse_Timeout,
+
+        /// <summary>
+        /// Client connection established
+        /// </summary>
+        ConnectToServerOK,
     }
 }
