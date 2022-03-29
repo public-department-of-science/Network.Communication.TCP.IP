@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiThreadingDrawSample", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeechRecognitionGeneration", "Samples\SpeechRecognitionGeneration\SpeechRecognitionGeneration.csproj", "{04590DF4-C9A6-4A75-8933-F573EF713765}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlexibleBordersMenu", "Samples\FlexibleBordersMenu\FlexibleBordersMenu.csproj", "{0A1C83F0-9836-4CEE-95C5-D9565E6575E9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,10 @@ Global
 		{04590DF4-C9A6-4A75-8933-F573EF713765}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04590DF4-C9A6-4A75-8933-F573EF713765}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04590DF4-C9A6-4A75-8933-F573EF713765}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A1C83F0-9836-4CEE-95C5-D9565E6575E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A1C83F0-9836-4CEE-95C5-D9565E6575E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A1C83F0-9836-4CEE-95C5-D9565E6575E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A1C83F0-9836-4CEE-95C5-D9565E6575E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +68,7 @@ Global
 		{81FBC081-6974-4EF1-AFE1-F1F54A5868D9} = {EFD9A01F-DD6B-468B-A9B0-6A94B08D9DA1}
 		{E27638B7-311B-40E7-B00D-20CE1685CD28} = {81FBC081-6974-4EF1-AFE1-F1F54A5868D9}
 		{04590DF4-C9A6-4A75-8933-F573EF713765} = {81FBC081-6974-4EF1-AFE1-F1F54A5868D9}
+		{0A1C83F0-9836-4CEE-95C5-D9565E6575E9} = {81FBC081-6974-4EF1-AFE1-F1F54A5868D9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {06390D9E-5E6E-4BF3-A5DE-797BE6574B4B}
