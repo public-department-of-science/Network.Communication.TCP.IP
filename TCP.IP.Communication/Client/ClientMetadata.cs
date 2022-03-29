@@ -7,52 +7,51 @@ namespace TCP.Client
 {
     internal class ClientMetadata : IDisposable
     {
-        internal System.Net.Sockets.TcpClient Client
-        {
-            get { return _tcpClient; }
-        }
-         
-        internal NetworkStream NetworkStream
-        {
-            get { return _networkStream; }
-        }
+        private System.Net.Sockets.TcpClient tcpClient;
+        private NetworkStream networkStream;
+        private SslStream sslStream;
+        private string requestedPort = string.Empty;
+
+        internal System.Net.Sockets.TcpClient Client => tcpClient;
+
+        internal NetworkStream NetworkStream => networkStream;
 
         internal SslStream SslStream
         {
-            get { return _sslStream; }
-            set { _sslStream = value; }
+            get { return sslStream; }
+            set { sslStream = value; }
         }
 
         internal string IpPort
         {
-            get { return _ipPort; }
+            get { return requestedPort; }
         }
 
-        internal SemaphoreSlim SendLock = new SemaphoreSlim(1, 1);
-        internal SemaphoreSlim ReceiveLock = new SemaphoreSlim(1, 1);
+        internal SemaphoreSlim sendLock = new SemaphoreSlim(1, 1);
+        internal SemaphoreSlim receiveLock = new SemaphoreSlim(1, 1);
 
         internal CancellationTokenSource TokenSource { get; set; }
 
         internal CancellationToken Token { get; set; }
 
-        private System.Net.Sockets.TcpClient _tcpClient = null;
-        private NetworkStream _networkStream = null;
-        private SslStream _sslStream = null;
-        private string _ipPort = null; 
-
-        internal ClientMetadata(System.Net.Sockets.TcpClient tcp)
+        internal ClientMetadata(System.Net.Sockets.TcpClient tcpClient)
         {
-            if (tcp == null) throw new ArgumentNullException(nameof(tcp));
+            if (tcpClient == null)
+            {
+                throw new ArgumentNullException(nameof(tcpClient));
+            }
 
-            _tcpClient = tcp;
-            _networkStream = tcp.GetStream();
-            _ipPort = tcp.Client.RemoteEndPoint.ToString();
+            this.tcpClient = tcpClient;
+            
+            networkStream = tcpClient.GetStream();
+            requestedPort = tcpClient.Client.RemoteEndPoint.ToString();
+
             TokenSource = new CancellationTokenSource();
             Token = TokenSource.Token;
         }
 
         public void Dispose()
-        { 
+        {
             if (TokenSource != null)
             {
                 if (!TokenSource.IsCancellationRequested)
@@ -62,24 +61,24 @@ namespace TCP.Client
                 }
             }
 
-            if (_sslStream != null)
+            if (sslStream != null)
             {
-                _sslStream.Close(); 
+                sslStream.Close();
             }
 
-            if (_networkStream != null)
+            if (networkStream != null)
             {
-                _networkStream.Close(); 
+                networkStream.Close();
             }
 
-            if (_tcpClient != null)
+            if (tcpClient != null)
             {
-                _tcpClient.Close();
-                _tcpClient.Dispose(); 
+                tcpClient.Close();
+                tcpClient.Dispose();
             }
 
-            SendLock.Dispose();
-            ReceiveLock.Dispose();
+            sendLock.Dispose();
+            receiveLock.Dispose();
         }
     }
 }

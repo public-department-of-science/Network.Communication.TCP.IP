@@ -168,7 +168,7 @@ namespace TCP.Client
         {
             if (string.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
 
-            IpAndPortParser.ParseIpPort(ipPort, out _serverIp, out _serverPort);
+            IpAddressAndPortParser.ParseIpPort(ipPort, out _serverIp, out _serverPort);
             if (_serverPort < 0) throw new ArgumentException("Port must be zero or greater.");
             if (string.IsNullOrEmpty(_serverIp)) throw new ArgumentNullException("Server IP or hostname must not be null.");
 

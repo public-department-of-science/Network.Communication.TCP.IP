@@ -138,7 +138,7 @@ namespace TCP.Server
         {
             if (string.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
 
-            IpAndPortParser.ParseIpPort(ipPort, out _listenerIp, out _port);
+            IpAddressAndPortParser.ParseIpPort(ipPort, out _listenerIp, out _port);
 
             if (_port < 0) throw new ArgumentException("Port must be zero or greater.");
             if (string.IsNullOrEmpty(_listenerIp))
@@ -209,7 +209,7 @@ namespace TCP.Server
         {
             if (string.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
 
-            IpAndPortParser.ParseIpPort(ipPort, out _listenerIp, out _port);
+            IpAddressAndPortParser.ParseIpPort(ipPort, out _listenerIp, out _port);
             if (_port < 0) throw new ArgumentException("Port must be zero or greater.");
 
             if (string.IsNullOrEmpty(_listenerIp))
@@ -925,7 +925,7 @@ namespace TCP.Server
 
             try
             {
-                client.SendLock.Wait();
+                client.sendLock.Wait();
 
                 while (bytesRemaining > 0)
                 {
@@ -945,7 +945,7 @@ namespace TCP.Server
             }
             finally
             {
-                if (client != null) client.SendLock.Release();
+                if (client != null) client.sendLock.Release();
             }
         }
 
@@ -962,7 +962,7 @@ namespace TCP.Server
                 int bytesRead = 0;
                 byte[] buffer = new byte[_settings.StreamBufferSize];
 
-                await client.SendLock.WaitAsync(token).ConfigureAwait(false);
+                await client.sendLock.WaitAsync(token).ConfigureAwait(false);
 
                 while (bytesRemaining > 0)
                 {
@@ -990,7 +990,7 @@ namespace TCP.Server
             }
             finally
             {
-                if (client != null) client.SendLock.Release();
+                if (client != null) client.sendLock.Release();
             }
         }
 
