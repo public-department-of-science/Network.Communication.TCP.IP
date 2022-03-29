@@ -16,27 +16,19 @@ namespace TCP.Server
         /// <summary>
         /// Event to call when a client disconnects.
         /// </summary>
-        public event EventHandler<ConnectionEventArgs> ClientDisconnected;
+        public event EventHandler<DisconnectionEventArgs> ClientDisconnected;
 
         /// <summary>
         /// Event to call when byte data has become available from the client.
         /// </summary>
         public event EventHandler<DataReceivedEventArgs> DataReceived;
 
-        /// <summary>
-        /// Instantiate the object.
-        /// </summary>
-        public TcpServerEvents()
-        {
-
-        }
-
         internal void HandleClientConnected(object sender, ConnectionEventArgs args)
         {
             ClientConnected?.Invoke(sender, args);
         }
 
-        internal void HandleClientDisconnected(object sender, ConnectionEventArgs args)
+        internal void HandleClientDisconnected(object sender, DisconnectionEventArgs args)
         {
             ClientDisconnected?.Invoke(sender, args);
         }

@@ -136,12 +136,18 @@ namespace TCP.Server
         /// <param name="ipPort">The IP:port of the server.</param> 
         public TcpServer(string ipPort)
         {
-            if (string.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
+            if (string.IsNullOrWhiteSpace(ipPort))
+            {
+                throw new ArgumentNullException(nameof(ipPort));
+            }
 
             IpAddressAndPortParser.ParseIpPort(ipPort, out _listenerIp, out _port);
+            if (_port < 0)
+            {
+                throw new ArgumentException("Port must be zero or greater.");
+            }
 
-            if (_port < 0) throw new ArgumentException("Port must be zero or greater.");
-            if (string.IsNullOrEmpty(_listenerIp))
+            if (string.IsNullOrWhiteSpace(_listenerIp))
             {
                 _ipAddress = IPAddress.Loopback;
                 _listenerIp = _ipAddress.ToString();
@@ -156,7 +162,7 @@ namespace TCP.Server
                 {
                     _ipAddress = Dns.GetHostEntry(_listenerIp).AddressList[0];
                     _listenerIp = _ipAddress.ToString();
-                } 
+                }
             }
 
             _isListening = false;
@@ -170,12 +176,15 @@ namespace TCP.Server
         /// <param name="port">The TCP port on which to listen.</param>
         public TcpServer(string listenerIp, int port)
         {
-            if (port < 0) throw new ArgumentException("Port must be zero or greater.");
+            if (port < 0)
+            {
+                throw new ArgumentException("Port must be zero or greater.");
+            }
 
             _listenerIp = listenerIp;
             _port = port;
 
-            if (string.IsNullOrEmpty(_listenerIp))
+            if (string.IsNullOrWhiteSpace(_listenerIp))
             {
                 _ipAddress = IPAddress.Loopback;
                 _listenerIp = _ipAddress.ToString();
@@ -186,16 +195,16 @@ namespace TCP.Server
                 _listenerIp = listenerIp;
             }
             else
-            { 
+            {
                 if (!IPAddress.TryParse(_listenerIp, out _ipAddress))
                 {
                     _ipAddress = Dns.GetHostEntry(listenerIp).AddressList[0];
                     _listenerIp = _ipAddress.ToString();
-                } 
+                }
             }
-             
+
             _isListening = false;
-            _token = _tokenSource.Token; 
+            _token = _tokenSource.Token;
         }
 
         /// <summary>
@@ -207,12 +216,18 @@ namespace TCP.Server
         /// <param name="pfxPassword">The password to the PFX certificate file.</param>
         public TcpServer(string ipPort, bool ssl, string pfxCertFilename, string pfxPassword)
         {
-            if (string.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
+            if (string.IsNullOrWhiteSpace(ipPort))
+            {
+                throw new ArgumentNullException(nameof(ipPort));
+            }
 
             IpAddressAndPortParser.ParseIpPort(ipPort, out _listenerIp, out _port);
-            if (_port < 0) throw new ArgumentException("Port must be zero or greater.");
+            if (_port < 0)
+            {
+                throw new ArgumentException("Port must be zero or greater.");
+            }
 
-            if (string.IsNullOrEmpty(_listenerIp))
+            if (string.IsNullOrWhiteSpace(_listenerIp))
             {
                 _ipAddress = IPAddress.Loopback;
                 _listenerIp = _ipAddress.ToString();
@@ -236,7 +251,7 @@ namespace TCP.Server
 
             if (_ssl)
             {
-                if (string.IsNullOrEmpty(pfxPassword))
+                if (string.IsNullOrWhiteSpace(pfxPassword))
                 {
                     _sslCertificate = new X509Certificate2(pfxCertFilename);
                 }
@@ -249,7 +264,7 @@ namespace TCP.Server
                 {
                     _sslCertificate
                 };
-            } 
+            }
         }
 
         /// <summary>
@@ -261,20 +276,20 @@ namespace TCP.Server
         /// <param name="pfxCertFilename">The filename of the PFX certificate file.</param>
         /// <param name="pfxPassword">The password to the PFX certificate file.</param>
         public TcpServer(string listenerIp, int port, bool ssl, string pfxCertFilename, string pfxPassword)
-        { 
+        {
             if (port < 0) throw new ArgumentException("Port must be zero or greater.");
 
             _listenerIp = listenerIp;
             _port = port;
 
-            if (string.IsNullOrEmpty(_listenerIp))
+            if (string.IsNullOrWhiteSpace(_listenerIp))
             {
                 _ipAddress = IPAddress.Loopback;
                 _listenerIp = _ipAddress.ToString();
             }
             else if (_listenerIp == "*" || _listenerIp == "+")
             {
-                _ipAddress = IPAddress.Any; 
+                _ipAddress = IPAddress.Any;
             }
             else
             {
@@ -284,14 +299,14 @@ namespace TCP.Server
                     _listenerIp = _ipAddress.ToString();
                 }
             }
-             
+
             _ssl = ssl;
             _isListening = false;
             _token = _tokenSource.Token;
 
             if (_ssl)
             {
-                if (string.IsNullOrEmpty(pfxPassword))
+                if (string.IsNullOrWhiteSpace(pfxPassword))
                 {
                     _sslCertificate = new X509Certificate2(pfxCertFilename);
                 }
@@ -304,7 +319,7 @@ namespace TCP.Server
                 {
                     _sslCertificate
                 };
-            } 
+            }
         }
 
         /// <summary>
@@ -334,7 +349,7 @@ namespace TCP.Server
             _listenerToken = _listenerTokenSource.Token;
 
             _statistics = new TcpStatistic();
-            
+
             if (_idleClientMonitor == null)
             {
                 _idleClientMonitor = Task.Run(() => IdleClientMonitor(), _token);
@@ -407,7 +422,10 @@ namespace TCP.Server
         /// <returns>True if connected.</returns>
         public bool IsConnected(string ipPort)
         {
-            if (string.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
+            if (string.IsNullOrWhiteSpace(ipPort))
+            {
+                throw new ArgumentNullException(nameof(ipPort));
+            }
 
             return (_clients.TryGetValue(ipPort, out _));
         }
@@ -419,10 +437,16 @@ namespace TCP.Server
         /// <param name="data">String containing data to send.</param>
         public void Send(string ipPort, string data)
         {
-            if (string.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
-            if (string.IsNullOrEmpty(data)) throw new ArgumentNullException(nameof(data));
-            byte[] bytes = Encoding.UTF8.GetBytes(data);
+            if (string.IsNullOrWhiteSpace(ipPort))
+            {
+                throw new ArgumentNullException(nameof(ipPort));
+            }
+            if (string.IsNullOrWhiteSpace(data))
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
 
+            byte[] bytes = Encoding.UTF8.GetBytes(data);
             using (MemoryStream ms = new MemoryStream())
             {
                 ms.Write(bytes, 0, bytes.Length);
@@ -438,8 +462,14 @@ namespace TCP.Server
         /// <param name="data">Byte array containing data to send.</param>
         public void Send(string ipPort, byte[] data)
         {
-            if (string.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
-            if (data == null || data.Length < 1) throw new ArgumentNullException(nameof(data));
+            if (string.IsNullOrWhiteSpace(ipPort))
+            {
+                throw new ArgumentNullException(nameof(ipPort));
+            }
+            if (data == null || data.Length < 1)
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
 
             using (MemoryStream ms = new MemoryStream())
             {
@@ -457,10 +487,22 @@ namespace TCP.Server
         /// <param name="stream">Stream containing the data to send.</param>
         public void Send(string ipPort, long contentLength, Stream stream)
         {
-            if (string.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
-            if (contentLength < 1) return;
-            if (stream == null) throw new ArgumentNullException(nameof(stream));
-            if (!stream.CanRead) throw new InvalidOperationException("Cannot read from supplied stream.");
+            if (string.IsNullOrWhiteSpace(ipPort))
+            {
+                throw new ArgumentNullException(nameof(ipPort));
+            }
+            if (contentLength < 1)
+            {
+                return;
+            }
+            if (stream == null)
+            {
+                throw new ArgumentNullException(nameof(stream));
+            }
+            if (!stream.CanRead)
+            {
+                throw new InvalidOperationException("Cannot read from supplied stream.");
+            }
 
             SendInternal(ipPort, contentLength, stream);
         }
@@ -473,9 +515,18 @@ namespace TCP.Server
         /// <param name="token">Cancellation token for canceling the request.</param>
         public async Task SendAsync(string ipPort, string data, CancellationToken token = default)
         {
-            if (string.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
-            if (string.IsNullOrEmpty(data)) throw new ArgumentNullException(nameof(data));
-            if (token == default(CancellationToken)) token = _token;
+            if (string.IsNullOrWhiteSpace(ipPort))
+            {
+                throw new ArgumentNullException(nameof(ipPort));
+            }
+            if (string.IsNullOrWhiteSpace(data))
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
+            if (token == default(CancellationToken))
+            {
+                token = _token;
+            }
 
             byte[] bytes = Encoding.UTF8.GetBytes(data);
             using (MemoryStream ms = new MemoryStream())
@@ -494,9 +545,18 @@ namespace TCP.Server
         /// <param name="token">Cancellation token for canceling the request.</param>
         public async Task SendAsync(string ipPort, byte[] data, CancellationToken token = default)
         {
-            if (string.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
-            if (data == null || data.Length < 1) throw new ArgumentNullException(nameof(data));
-            if (token == default(CancellationToken)) token = _token;
+            if (string.IsNullOrWhiteSpace(ipPort))
+            {
+                throw new ArgumentNullException(nameof(ipPort));
+            }
+            if (data == null || data.Length < 1)
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
+            if (token == default(CancellationToken))
+            {
+                token = _token;
+            }
 
             using (MemoryStream ms = new MemoryStream())
             {
@@ -515,11 +575,26 @@ namespace TCP.Server
         /// <param name="token">Cancellation token for canceling the request.</param>
         public async Task SendAsync(string ipPort, long contentLength, Stream stream, CancellationToken token = default)
         {
-            if (string.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
-            if (contentLength < 1) return;
-            if (stream == null) throw new ArgumentNullException(nameof(stream));
-            if (!stream.CanRead) throw new InvalidOperationException("Cannot read from supplied stream.");
-            if (token == default(CancellationToken)) token = _token;
+            if (string.IsNullOrWhiteSpace(ipPort))
+            {
+                throw new ArgumentNullException(nameof(ipPort));
+            }
+            if (contentLength < 1)
+            {
+                return;
+            }
+            if (stream == null)
+            {
+                throw new ArgumentNullException(nameof(stream));
+            }
+            if (!stream.CanRead)
+            {
+                throw new InvalidOperationException("Cannot read from supplied stream.");
+            }
+            if (token == default(CancellationToken))
+            {
+                token = _token;
+            }
 
             await SendInternalAsync(ipPort, contentLength, stream, token).ConfigureAwait(false);
         }
@@ -530,7 +605,10 @@ namespace TCP.Server
         /// <param name="ipPort">IP:port of the client.</param>
         public void DisconnectClient(string ipPort)
         {
-            if (string.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
+            if (string.IsNullOrWhiteSpace(ipPort))
+            {
+                throw new ArgumentNullException(nameof(ipPort));
+            }
 
             if (!_clients.TryGetValue(ipPort, out ClientMetadata client))
             {
@@ -573,7 +651,7 @@ namespace TCP.Server
                         {
                             curr.Value.Dispose();
                             Logger?.Invoke($"{_header}disconnected client: {curr.Key}");
-                        } 
+                        }
                     }
 
                     if (_tokenSource != null)
@@ -607,7 +685,7 @@ namespace TCP.Server
                 Logger?.Invoke($"{_header}disposed");
             }
         }
-         
+
         private bool IsClientConnected(System.Net.Sockets.TcpClient client)
         {
             if (!client.Connected)
@@ -622,7 +700,7 @@ namespace TCP.Server
                 {
                     return false;
                 }
-               
+
                 return true;
             }
             else
@@ -754,7 +832,7 @@ namespace TCP.Server
             while (true)
             {
                 try
-                { 
+                {
                     if (!IsClientConnected(client.Client))
                     {
                         Logger?.Invoke($"{_header}client {ipPort} disconnected");
@@ -765,7 +843,7 @@ namespace TCP.Server
                     {
                         Logger?.Invoke($"{_header}cancellation requested (data receiver for client {ipPort})");
                         break;
-                    } 
+                    }
 
                     byte[] data = await DataReadAsync(client, linkedCts.Token).ConfigureAwait(false);
                     if (data == null)
@@ -809,27 +887,30 @@ namespace TCP.Server
 
             if (_clientsKicked.ContainsKey(ipPort))
             {
-                _events.HandleClientDisconnected(this, new ConnectionEventArgs(ipPort, ConnectionStatus.KickedOut_ByServer));
+                _events.HandleClientDisconnected(this, new DisconnectionEventArgs(ipPort, DisconnectionStatus.KickedOut_ByServer));
             }
             else if (_clientsTimedout.ContainsKey(client.IpPort))
             {
-                _events.HandleClientDisconnected(this, new ConnectionEventArgs(ipPort, ConnectionStatus.NoResponse_Timeout));
+                _events.HandleClientDisconnected(this, new DisconnectionEventArgs(ipPort, DisconnectionStatus.NoResponse_Timeout));
             }
             else
             {
-                _events.HandleClientDisconnected(this, new ConnectionEventArgs(ipPort, ConnectionStatus.DisconnectOK_ByClient));
+                _events.HandleClientDisconnected(this, new DisconnectionEventArgs(ipPort, DisconnectionStatus.DisconnectOK_ByClient));
             }
 
             _clients.TryRemove(ipPort, out _);
             _clientsLastSeen.TryRemove(ipPort, out _);
             _clientsKicked.TryRemove(ipPort, out _);
-            _clientsTimedout.TryRemove(ipPort, out _); 
+            _clientsTimedout.TryRemove(ipPort, out _);
 
-            if (client != null) client.Dispose();
+            if (client != null)
+            {
+                client.Dispose();
+            }
         }
-           
+
         private async Task<byte[]> DataReadAsync(ClientMetadata client, CancellationToken token)
-        { 
+        {
             byte[] buffer = new byte[_settings.StreamBufferSize];
             int read = 0;
 
@@ -872,23 +953,21 @@ namespace TCP.Server
                         }
                     }
                 }
-            } 
+            }
         }
 
         private async Task IdleClientMonitor()
         {
             while (!_token.IsCancellationRequested)
-            { 
+            {
                 await Task.Delay(_settings.IdleClientEvaluationIntervalMs, _token).ConfigureAwait(false);
-
                 if (_settings.IdleClientTimeoutMs == 0) continue;
 
                 try
-                { 
+                {
                     DateTime idleTimestamp = DateTime.Now.AddMilliseconds(-1 * _settings.IdleClientTimeoutMs);
-
                     foreach (KeyValuePair<string, DateTime> curr in _clientsLastSeen)
-                    { 
+                    {
                         if (curr.Value < idleTimestamp)
                         {
                             _clientsTimedout.TryAdd(curr.Key, DateTime.Now);
@@ -903,14 +982,14 @@ namespace TCP.Server
                 }
             }
         }
-         
+
         private void UpdateClientLastSeen(string ipPort)
         {
             if (_clientsLastSeen.ContainsKey(ipPort))
             {
                 _clientsLastSeen.TryRemove(ipPort, out _);
             }
-             
+
             _clientsLastSeen.TryAdd(ipPort, DateTime.Now);
         }
 
@@ -932,8 +1011,8 @@ namespace TCP.Server
                     bytesRead = stream.Read(buffer, 0, buffer.Length);
                     if (bytesRead > 0)
                     {
-                        if (!_ssl) client.NetworkStream.Write(buffer, 0, bytesRead); 
-                        else client.SslStream.Write(buffer, 0, bytesRead); 
+                        if (!_ssl) client.NetworkStream.Write(buffer, 0, bytesRead);
+                        else client.SslStream.Write(buffer, 0, bytesRead);
 
                         bytesRemaining -= bytesRead;
                         _statistics.SentBytes += bytesRead;

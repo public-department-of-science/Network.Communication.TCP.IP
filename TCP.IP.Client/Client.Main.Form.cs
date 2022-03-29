@@ -71,11 +71,11 @@ namespace TCP.IP.Client.Server
             btnDisconnect.Enabled = false;
         }
 
-        private void Events_Disconnected(object sender, ConnectionEventArgs e)
+        private void Events_Disconnected(object sender, DisconnectionEventArgs e)
         {
             this.Invoke((MethodInvoker)delegate
             {
-                txtbInfo.Text += $"Server disconnected. {Environment.NewLine}";
+                txtbInfo.Text += $"Client {tcpClient.LocalEndpoint.ToString()} was disconnected from the server {txtbServer.Text}. {Environment.NewLine}";
             });
         }
 
@@ -91,7 +91,7 @@ namespace TCP.IP.Client.Server
         {
             this.Invoke((MethodInvoker)delegate
             {
-                txtbInfo.Text += $"Server connected. {Environment.NewLine}";
+                txtbInfo.Text += $"Client connected to the {txtbServer.Text} server. {Environment.NewLine}";
             });
         }
     }

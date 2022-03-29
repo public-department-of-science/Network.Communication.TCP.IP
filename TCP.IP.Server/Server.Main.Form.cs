@@ -18,7 +18,7 @@ namespace TCP.IP.Server
         private void btnStart_Click(object sender, EventArgs e)
         {
             tcpServer.Start();
-            txtbInfo.Text += $"Starting {Environment.NewLine}";
+            txtbInfo.Text += $"Server {txtBox_serverInfo.Text} Started {Environment.NewLine}";
             btnStart.Enabled = false;
             btnSend.Enabled = true;
         }
@@ -39,7 +39,7 @@ namespace TCP.IP.Server
         private void Server_Load(object sender, EventArgs e)
         {
             btnSend.Enabled = false;
-            tcpServer = new TcpServer(serverIp.Text);
+            tcpServer = new TcpServer(txtBox_serverInfo.Text);
             tcpServer.Events.ClientConnected += Events_ClientConnected;
             tcpServer.Events.ClientDisconnected += Events_ClientDisconnected;
             tcpServer.Events.DataReceived += Events_DataReceived;
@@ -53,7 +53,7 @@ namespace TCP.IP.Server
             });
         }
 
-        private void Events_ClientDisconnected(object sender, ConnectionEventArgs e)
+        private void Events_ClientDisconnected(object sender, DisconnectionEventArgs e)
         {
             this.Invoke((MethodInvoker)delegate
             {

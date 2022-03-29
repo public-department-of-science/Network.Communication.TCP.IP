@@ -7,12 +7,6 @@ namespace TCP.EventArguments
     /// </summary>
     public class DataReceivedEventArgs : EventArgs
     {
-        internal DataReceivedEventArgs(string ipPort, byte[] data)
-        {
-            IpPort = ipPort;
-            Data = data;
-        }
-
         /// <summary>
         /// The IP address and port number of the connected endpoint.
         /// </summary>
@@ -22,5 +16,11 @@ namespace TCP.EventArguments
         /// The data received from the client.
         /// </summary>
         public byte[] Data { get; }
+  
+        internal DataReceivedEventArgs(string ipPort, byte[] data)
+        {
+            IpPort = ipPort;
+            Data = data;
+        }
     }
 }

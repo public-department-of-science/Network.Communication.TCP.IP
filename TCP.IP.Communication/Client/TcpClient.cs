@@ -23,6 +23,37 @@ namespace TCP.Client
     /// </summary>
     public class TcpClient : IDisposable
     {
+        private readonly string _header = "[Tcp.Client] ";
+        private TcpClientSettings _settings = new TcpClientSettings();
+        private TcpClientEventsHandler _events = new TcpClientEventsHandler();
+        private TcpKeepAliveSettings _keepalive = new TcpKeepAliveSettings();
+        private TcpStatistic _statistics = new TcpStatistic();
+
+        private string _serverIp = null;
+        private int _serverPort = 0;
+        private readonly IPAddress _ipAddress = null;
+        private System.Net.Sockets.TcpClient _client = null;
+        private NetworkStream _networkStream = null;
+
+        private bool _ssl = false;
+        private string _pfxCertFilename = null;
+        private string _pfxPassword = null;
+        private SslStream _sslStream = null;
+        private X509Certificate2 _sslCert = null;
+        private X509Certificate2Collection _sslCertCollection = null;
+
+        private readonly SemaphoreSlim _sendLock = new SemaphoreSlim(1, 1);
+        private bool _isConnected = false;
+
+        private Task _dataReceiver = null;
+        private Task _idleServerMonitor = null;
+        private Task _connectionMonitor = null;
+        private CancellationTokenSource _tokenSource = new CancellationTokenSource();
+        private CancellationToken _token;
+
+        private DateTime _lastActivity = DateTime.Now;
+        private bool _isTimeout = false;
+
         /// <summary>
         /// Indicates whether or not the client is connected to the server.
         /// </summary>
@@ -65,15 +96,21 @@ namespace TCP.Client
             }
             set
             {
-                if (value == null) _settings = new TcpClientSettings();
-                else _settings = value;
+                if (value == null)
+                {
+                    _settings = new TcpClientSettings();
+                }
+                else
+                {
+                    _settings = value;
+                }
             }
         }
 
         /// <summary>
         /// Tcp client events.
         /// </summary>
-        public TcpClientEvents Events
+        public TcpClientEventsHandler Events
         {
             get
             {
@@ -81,8 +118,14 @@ namespace TCP.Client
             }
             set
             {
-                if (value == null) _events = new TcpClientEvents();
-                else _events = value;
+                if (value == null)
+                {
+                    _events = new TcpClientEventsHandler();
+                }
+                else
+                {
+                    _events = value;
+                }
             }
         }
 
@@ -108,8 +151,14 @@ namespace TCP.Client
             }
             set
             {
-                if (value == null) _keepalive = new TcpKeepAliveSettings();
-                else _keepalive = value;
+                if (value == null)
+                {
+                    _keepalive = new TcpKeepAliveSettings();
+                }
+                else
+                {
+                    _keepalive = value;
+                }
             }
         }
 
@@ -129,36 +178,7 @@ namespace TCP.Client
             }
         }
 
-        private readonly string _header = "[Tcp.Client] ";
-        private TcpClientSettings _settings = new TcpClientSettings();
-        private TcpClientEvents _events = new TcpClientEvents();
-        private TcpKeepAliveSettings _keepalive = new TcpKeepAliveSettings();
-        private TcpStatistic _statistics = new TcpStatistic();
 
-        private string _serverIp = null;
-        private int _serverPort = 0;
-        private readonly IPAddress _ipAddress = null;
-        private System.Net.Sockets.TcpClient _client = null;
-        private NetworkStream _networkStream = null;
-
-        private bool _ssl = false;
-        private string _pfxCertFilename = null;
-        private string _pfxPassword = null;
-        private SslStream _sslStream = null;
-        private X509Certificate2 _sslCert = null;
-        private X509Certificate2Collection _sslCertCollection = null;
-
-        private readonly SemaphoreSlim _sendLock = new SemaphoreSlim(1, 1);
-        private bool _isConnected = false;
-
-        private Task _dataReceiver = null;
-        private Task _idleServerMonitor = null;
-        private Task _connectionMonitor = null;
-        private CancellationTokenSource _tokenSource = new CancellationTokenSource();
-        private CancellationToken _token;
-
-        private DateTime _lastActivity = DateTime.Now;
-        private bool _isTimeout = false;
 
         /// <summary>
         /// Instantiates the TCP client without SSL. Set the Connected, Disconnected, and DataReceived callbacks. Once set, use Connect() to connect to the server.
@@ -166,11 +186,20 @@ namespace TCP.Client
         /// <param name="ipPort">The IP:port of the server.</param> 
         public TcpClient(string ipPort)
         {
-            if (string.IsNullOrEmpty(ipPort)) throw new ArgumentNullException(nameof(ipPort));
+            if (string.IsNullOrWhiteSpace(ipPort))
+            {
+                throw new ArgumentNullException(nameof(ipPort));
+            }
 
             IpAddressAndPortParser.ParseIpPort(ipPort, out _serverIp, out _serverPort);
-            if (_serverPort < 0) throw new ArgumentException("Port must be zero or greater.");
-            if (string.IsNullOrEmpty(_serverIp)) throw new ArgumentNullException("Server IP or hostname must not be null.");
+            if (_serverPort < 0)
+            {
+                throw new ArgumentException("Port must be zero or greater.");
+            }
+            if (string.IsNullOrWhiteSpace(_serverIp))
+            {
+                throw new ArgumentNullException("Server IP or hostname must not be null.");
+            }
 
             if (!IPAddress.TryParse(_serverIp, out _ipAddress))
             {
@@ -200,8 +229,14 @@ namespace TCP.Client
         /// <param name="port">The TCP port on which to connect.</param>
         public TcpClient(string serverIpOrHostname, int port)
         {
-            if (string.IsNullOrEmpty(serverIpOrHostname)) throw new ArgumentNullException(nameof(serverIpOrHostname));
-            if (port < 0) throw new ArgumentException("Port must be zero or greater.");
+            if (string.IsNullOrWhiteSpace(serverIpOrHostname))
+            {
+                throw new ArgumentNullException(nameof(serverIpOrHostname));
+            }
+            if (port < 0)
+            {
+                throw new ArgumentException("Port must be zero or greater.");
+            }
 
             _serverIp = serverIpOrHostname;
             _serverPort = port;
@@ -265,12 +300,18 @@ namespace TCP.Client
              {
                  if (!_ssl)
                  {
-                     if (_sslStream == null) return;
+                     if (_sslStream == null)
+                     {
+                         return;
+                     }
                      _sslStream.Close();
                  }
                  else
                  {
-                     if (_networkStream == null) return;
+                     if (_networkStream == null)
+                     {
+                         return;
+                     }
                      _networkStream.Close();
                  }
              });
@@ -293,16 +334,29 @@ namespace TCP.Client
                 if (_ssl)
                 {
                     if (_settings.AcceptInvalidCertificates)
+                    {
                         _sslStream = new SslStream(_networkStream, false, new RemoteCertificateValidationCallback(AcceptCertificate));
+                    }
                     else
+                    {
                         _sslStream = new SslStream(_networkStream, false);
+                    }
 
                     _sslStream.ReadTimeout = _settings.ReadTimeoutMs;
                     _sslStream.AuthenticateAsClient(_serverIp, _sslCertCollection, SslProtocols.Tls12, !_settings.AcceptInvalidCertificates);
 
-                    if (!_sslStream.IsEncrypted) throw new AuthenticationException("Stream is not encrypted");
-                    if (!_sslStream.IsAuthenticated) throw new AuthenticationException("Stream is not authenticated");
-                    if (_settings.MutuallyAuthenticate && !_sslStream.IsMutuallyAuthenticated) throw new AuthenticationException("Mutual authentication failed");
+                    if (!_sslStream.IsEncrypted)
+                    {
+                        throw new AuthenticationException("Stream is not encrypted");
+                    }
+                    if (!_sslStream.IsAuthenticated)
+                    {
+                        throw new AuthenticationException("Stream is not authenticated");
+                    }
+                    if (_settings.MutuallyAuthenticate && !_sslStream.IsMutuallyAuthenticated)
+                    {
+                        throw new AuthenticationException("Mutual authentication failed");
+                    }
                 }
 
                 if (_keepalive.EnableTcpKeepAlives) EnableKeepalives();
@@ -350,12 +404,18 @@ namespace TCP.Client
             {
                 if (!_ssl)
                 {
-                    if (_sslStream == null) return;
+                    if (_sslStream == null)
+                    {
+                        return;
+                    }
                     _sslStream.Close();
                 }
                 else
                 {
-                    if (_networkStream == null) return;
+                    if (_networkStream == null)
+                    {
+                        return;
+                    }
                     _networkStream.Close();
                 }
             });
@@ -375,7 +435,11 @@ namespace TCP.Client
                         try
                         {
                             string msg = $"{_header}attempting connection to {_serverIp}:{_serverPort}";
-                            if (retryCount > 0) msg += $" ({retryCount} retries)";
+                            if (retryCount > 0)
+                            {
+                                msg += $" ({retryCount} retries)";
+                            }
+
                             Logger?.Invoke(msg);
 
                             _client.Dispose();
@@ -424,19 +488,35 @@ namespace TCP.Client
                     if (_ssl)
                     {
                         if (_settings.AcceptInvalidCertificates)
+                        {
                             _sslStream = new SslStream(_networkStream, false, new RemoteCertificateValidationCallback(AcceptCertificate));
+                        }
                         else
+                        {
                             _sslStream = new SslStream(_networkStream, false);
+                        }
 
                         _sslStream.ReadTimeout = _settings.ReadTimeoutMs;
                         _sslStream.AuthenticateAsClient(_serverIp, _sslCertCollection, SslProtocols.Tls12, !_settings.AcceptInvalidCertificates);
 
-                        if (!_sslStream.IsEncrypted) throw new AuthenticationException("Stream is not encrypted");
-                        if (!_sslStream.IsAuthenticated) throw new AuthenticationException("Stream is not authenticated");
-                        if (_settings.MutuallyAuthenticate && !_sslStream.IsMutuallyAuthenticated) throw new AuthenticationException("Mutual authentication failed");
+                        if (!_sslStream.IsEncrypted)
+                        {
+                            throw new AuthenticationException("Stream is not encrypted");
+                        }
+                        if (!_sslStream.IsAuthenticated)
+                        {
+                            throw new AuthenticationException("Stream is not authenticated");
+                        }
+                        if (_settings.MutuallyAuthenticate && !_sslStream.IsMutuallyAuthenticated)
+                        {
+                            throw new AuthenticationException("Mutual authentication failed");
+                        }
                     }
 
-                    if (_keepalive.EnableTcpKeepAlives) EnableKeepalives();
+                    if (_keepalive.EnableTcpKeepAlives)
+                    {
+                        EnableKeepalives();
+                    }
                 }
                 catch (Exception)
                 {
@@ -479,9 +559,14 @@ namespace TCP.Client
         /// <param name="data">String containing data to send.</param>
         public void Send(string data)
         {
-            if (string.IsNullOrEmpty(data)) throw new ArgumentNullException(nameof(data));
-            if (!_isConnected) throw new IOException("Not connected to the server; use Connect() first.");
-
+            if (string.IsNullOrWhiteSpace(data))
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
+            if (!_isConnected)
+            {
+                throw new IOException("Not connected to the server; use Connect() first.");
+            }
             byte[] bytes = Encoding.UTF8.GetBytes(data);
             this.Send(bytes);
         }
@@ -492,8 +577,14 @@ namespace TCP.Client
         /// <param name="data">Byte array containing data to send.</param>
         public void Send(byte[] data)
         {
-            if (data == null || data.Length < 1) throw new ArgumentNullException(nameof(data));
-            if (!_isConnected) throw new IOException("Not connected to the server; use Connect() first.");
+            if (data == null || data.Length < 1)
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
+            if (!_isConnected)
+            {
+                throw new IOException("Not connected to the server; use Connect() first.");
+            }
 
             using (MemoryStream ms = new MemoryStream())
             {
@@ -510,10 +601,22 @@ namespace TCP.Client
         /// <param name="stream">Stream containing the data to send.</param>
         public void Send(long contentLength, Stream stream)
         {
-            if (contentLength < 1) return;
-            if (stream == null) throw new ArgumentNullException(nameof(stream));
-            if (!stream.CanRead) throw new InvalidOperationException("Cannot read from supplied stream.");
-            if (!_isConnected) throw new IOException("Not connected to the server; use Connect() first.");
+            if (contentLength < 1)
+            {
+                return;
+            }
+            if (stream == null)
+            {
+                throw new ArgumentNullException(nameof(stream));
+            }
+            if (!stream.CanRead)
+            {
+                throw new InvalidOperationException("Cannot read from supplied stream.");
+            }
+            if (!_isConnected)
+            {
+                throw new IOException("Not connected to the server; use Connect() first.");
+            }
 
             SendInternal(contentLength, stream);
         }
@@ -525,9 +628,18 @@ namespace TCP.Client
         /// <param name="token">Cancellation token for canceling the request.</param>
         public async Task SendAsync(string data, CancellationToken token = default)
         {
-            if (string.IsNullOrEmpty(data)) throw new ArgumentNullException(nameof(data));
-            if (!_isConnected) throw new IOException("Not connected to the server; use Connect() first.");
-            if (token == default(CancellationToken)) token = _token;
+            if (string.IsNullOrWhiteSpace(data))
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
+            if (!_isConnected)
+            {
+                throw new IOException("Not connected to the server; use Connect() first.");
+            }
+            if (token == default(CancellationToken))
+            {
+                token = _token;
+            }
 
             byte[] bytes = Encoding.UTF8.GetBytes(data);
 
@@ -546,9 +658,18 @@ namespace TCP.Client
         /// <param name="token">Cancellation token for canceling the request.</param>
         public async Task SendAsync(byte[] data, CancellationToken token = default)
         {
-            if (data == null || data.Length < 1) throw new ArgumentNullException(nameof(data));
-            if (!_isConnected) throw new IOException("Not connected to the server; use Connect() first.");
-            if (token == default(CancellationToken)) token = _token;
+            if (data == null || data.Length < 1)
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
+            if (!_isConnected)
+            {
+                throw new IOException("Not connected to the server; use Connect() first.");
+            }
+            if (token == default(CancellationToken))
+            {
+                token = _token;
+            }
 
             using (MemoryStream ms = new MemoryStream())
             {
@@ -566,11 +687,26 @@ namespace TCP.Client
         /// <param name="token">Cancellation token for canceling the request.</param>
         public async Task SendAsync(long contentLength, Stream stream, CancellationToken token = default)
         {
-            if (contentLength < 1) return;
-            if (stream == null) throw new ArgumentNullException(nameof(stream));
-            if (!stream.CanRead) throw new InvalidOperationException("Cannot read from supplied stream.");
-            if (!_isConnected) throw new IOException("Not connected to the server; use Connect() first.");
-            if (token == default(CancellationToken)) token = _token;
+            if (contentLength < 1)
+            {
+                return;
+            }
+            if (stream == null)
+            {
+                throw new ArgumentNullException(nameof(stream));
+            }
+            if (!stream.CanRead)
+            {
+                throw new InvalidOperationException("Cannot read from supplied stream.");
+            }
+            if (!_isConnected)
+            {
+                throw new IOException("Not connected to the server; use Connect() first.");
+            }
+            if (token == default(CancellationToken))
+            {
+                token = _token;
+            }
 
             await SendInternalAsync(contentLength, stream, token).ConfigureAwait(false);
         }
@@ -628,7 +764,7 @@ namespace TCP.Client
 
             if (_ssl)
             {
-                if (string.IsNullOrEmpty(pfxPassword))
+                if (string.IsNullOrWhiteSpace(pfxPassword))
                 {
                     _sslCert = new X509Certificate2(pfxCertFilename);
                 }
@@ -652,8 +788,14 @@ namespace TCP.Client
         private async Task DataReceiver(CancellationToken token)
         {
             Stream outerStream = null;
-            if (!_ssl) outerStream = _networkStream;
-            else outerStream = _sslStream;
+            if (!_ssl)
+            {
+                outerStream = _networkStream;
+            }
+            else
+            {
+                outerStream = _sslStream;
+            }
 
             while (!token.IsCancellationRequested && _client != null && _client.Connected)
             {
@@ -661,9 +803,12 @@ namespace TCP.Client
                 {
                     await DataReadAsync(token).ContinueWith(async task =>
                         {
-                            if (task.IsCanceled) return null;
-                            byte[] data = task.Result;
+                            if (task.IsCanceled)
+                            {
+                                return null;
+                            }
 
+                            byte[] data = task.Result;
                             if (data != null)
                             {
                                 _lastActivity = DateTime.Now;
@@ -722,9 +867,13 @@ namespace TCP.Client
             _isConnected = false;
 
             if (!_isTimeout)
-                _events.HandleClientDisconnected(this, new ConnectionEventArgs(ServerIpPort, ConnectionStatus.DisconnectOK_ByClient));
+            {
+                _events.HandleClientDisconnected(this, new DisconnectionEventArgs(ServerIpPort, DisconnectionStatus.DisconnectOK_ByClient));
+            }
             else
-                _events.HandleClientDisconnected(this, new ConnectionEventArgs(ServerIpPort, ConnectionStatus.NoResponse_Timeout));
+            {
+                _events.HandleClientDisconnected(this, new DisconnectionEventArgs(ServerIpPort, DisconnectionStatus.NoResponse_Timeout));
+            }
 
             Dispose();
         }
@@ -782,16 +931,28 @@ namespace TCP.Client
                     bytesRead = stream.Read(buffer, 0, buffer.Length);
                     if (bytesRead > 0)
                     {
-                        if (!_ssl) _networkStream.Write(buffer, 0, bytesRead);
-                        else _sslStream.Write(buffer, 0, bytesRead);
+                        if (!_ssl)
+                        {
+                            _networkStream.Write(buffer, 0, bytesRead);
+                        }
+                        else
+                        {
+                            _sslStream.Write(buffer, 0, bytesRead);
+                        }
 
                         bytesRemaining -= bytesRead;
                         _statistics.SentBytes += bytesRead;
                     }
                 }
 
-                if (!_ssl) _networkStream.Flush();
-                else _sslStream.Flush();
+                if (!_ssl)
+                {
+                    _networkStream.Flush();
+                }
+                else
+                {
+                    _sslStream.Flush();
+                }
             }
             finally
             {
@@ -814,24 +975,34 @@ namespace TCP.Client
                     bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, token).ConfigureAwait(false);
                     if (bytesRead > 0)
                     {
-                        if (!_ssl) await _networkStream.WriteAsync(buffer, 0, bytesRead, token).ConfigureAwait(false);
-                        else await _sslStream.WriteAsync(buffer, 0, bytesRead, token).ConfigureAwait(false);
+                        if (!_ssl)
+                        {
+                            await _networkStream.WriteAsync(buffer, 0, bytesRead, token).ConfigureAwait(false);
+                        }
+                        else
+                        {
+                            await _sslStream.WriteAsync(buffer, 0, bytesRead, token).ConfigureAwait(false);
+                        }
 
                         bytesRemaining -= bytesRead;
                         _statistics.SentBytes += bytesRead;
                     }
                 }
 
-                if (!_ssl) await _networkStream.FlushAsync(token).ConfigureAwait(false);
-                else await _sslStream.FlushAsync(token).ConfigureAwait(false);
+                if (!_ssl)
+                {
+                    await _networkStream.FlushAsync(token).ConfigureAwait(false);
+                }
+                else
+                {
+                    await _sslStream.FlushAsync(token).ConfigureAwait(false);
+                }
             }
             catch (TaskCanceledException)
             {
-
             }
             catch (OperationCanceledException)
             {
-
             }
             finally
             {
@@ -883,10 +1054,12 @@ namespace TCP.Client
             {
                 await Task.Delay(_settings.IdleServerEvaluationIntervalMs, _token).ConfigureAwait(false);
 
-                if (_settings.IdleServerTimeoutMs == 0) continue;
+                if (_settings.IdleServerTimeoutMs == 0)
+                {
+                    continue;
+                }
 
                 DateTime timeoutTime = _lastActivity.AddMilliseconds(_settings.IdleServerTimeoutMs);
-
                 if (DateTime.Now > timeoutTime)
                 {
                     Logger?.Invoke($"{_header}disconnecting from {ServerIpPort} due to timeout");
@@ -902,9 +1075,10 @@ namespace TCP.Client
             while (!_token.IsCancellationRequested)
             {
                 await Task.Delay(_settings.ConnectionLostEvaluationIntervalMs, _token).ConfigureAwait(false);
-
                 if (!_isConnected)
+                {
                     continue; //Just monitor connected clients
+                }
 
                 if (!PollSocket())
                 {
@@ -920,7 +1094,9 @@ namespace TCP.Client
             try
             {
                 if (_client.Client == null || !_client.Client.Connected)
+                {
                     return false;
+                }
 
                 /* pear to the documentation on Poll:
                  * When passing SelectMode.SelectRead as a parameter to the Poll method it will return 
@@ -930,7 +1106,9 @@ namespace TCP.Client
                  * otherwise, returns false
                  */
                 if (!_client.Client.Poll(0, SelectMode.SelectRead))
+                {
                     return true;
+                }
 
                 var buff = new byte[1];
                 var clientSentData = _client.Client.Receive(buff, SocketFlags.Peek) != 0;

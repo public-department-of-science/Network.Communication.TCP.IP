@@ -29,16 +29,24 @@ namespace TCP.IP.Server
         /// </summary>
         private void InitializeComponent()
         {
+            this.txtBox_serverInfo = new System.Windows.Forms.TextBox();
             this.btnStart = new System.Windows.Forms.Button();
             this.btnSend = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.serverIp = new System.Windows.Forms.TextBox();
             this.txtbInfo = new System.Windows.Forms.TextBox();
             this.txtMessage = new System.Windows.Forms.TextBox();
             this.lstClients = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
+            // 
+            // txtBox_serverInfo
+            // 
+            this.txtBox_serverInfo.Location = new System.Drawing.Point(126, 31);
+            this.txtBox_serverInfo.Name = "txtBox_serverInfo";
+            this.txtBox_serverInfo.Size = new System.Drawing.Size(462, 27);
+            this.txtBox_serverInfo.TabIndex = 6;
+            this.txtBox_serverInfo.Text = "127.0.0.1:9000";
             // 
             // btnStart
             // 
@@ -87,14 +95,6 @@ namespace TCP.IP.Server
             this.label4.TabIndex = 5;
             this.label4.Text = "Client IPs";
             // 
-            // serverIp
-            // 
-            this.serverIp.Location = new System.Drawing.Point(126, 31);
-            this.serverIp.Name = "serverIp";
-            this.serverIp.Size = new System.Drawing.Size(462, 27);
-            this.serverIp.TabIndex = 6;
-            this.serverIp.Text = "127.0.0.1:9000";
-            // 
             // txtbInfo
             // 
             this.txtbInfo.Location = new System.Drawing.Point(126, 86);
@@ -129,7 +129,7 @@ namespace TCP.IP.Server
             this.Controls.Add(this.lstClients);
             this.Controls.Add(this.txtMessage);
             this.Controls.Add(this.txtbInfo);
-            this.Controls.Add(this.serverIp);
+            this.Controls.Add(this.txtBox_serverInfo);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -151,7 +151,7 @@ namespace TCP.IP.Server
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox serverIp;
+        private System.Windows.Forms.TextBox txtBox_serverInfo;
         private System.Windows.Forms.TextBox txtbInfo;
         private System.Windows.Forms.TextBox txtMessage;
         private System.Windows.Forms.ListBox lstClients;

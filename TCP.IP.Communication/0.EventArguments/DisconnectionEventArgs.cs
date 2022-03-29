@@ -6,7 +6,7 @@ namespace TCP.EventArguments
     /// <summary>
     /// Arguments for connection events.
     /// </summary>
-    public class ConnectionEventArgs : EventArgs
+    public class DisconnectionEventArgs : EventArgs
     {
         /// <summary>
         /// The IP address and port number of the connected peer socket.
@@ -16,9 +16,9 @@ namespace TCP.EventArguments
         /// <summary>
         /// The reason for the disconnection, if any.
         /// </summary>
-        public ConnectionStatus Reason { get; }
+        public DisconnectionStatus Reason { get; }
 
-        internal ConnectionEventArgs(string ipPort, ConnectionStatus reason = ConnectionStatus.Undefined)
+        internal DisconnectionEventArgs(string ipPort, DisconnectionStatus reason = DisconnectionStatus.Undefined)
         {
             IpPort = ipPort;
             Reason = reason;

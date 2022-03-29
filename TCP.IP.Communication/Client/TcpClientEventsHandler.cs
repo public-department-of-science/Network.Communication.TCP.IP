@@ -4,9 +4,9 @@ using TCP.EventArguments;
 namespace TCP.Client
 {
     /// <summary>
-    /// Tcp client events.
+    /// Tcp client events handler.
     /// </summary>
-    public class TcpClientEvents
+    public class TcpClientEventsHandler
     {
         /// <summary>
         /// Event to call when the connection is established.
@@ -16,26 +16,19 @@ namespace TCP.Client
         /// <summary>
         /// Event to call when the connection is destroyed.
         /// </summary>
-        public event EventHandler<ConnectionEventArgs> Disconnected;
+        public event EventHandler<DisconnectionEventArgs> Disconnected;
 
         /// <summary>
         /// Event to call when byte data has become available from the server.
         /// </summary>
         public event EventHandler<DataReceivedEventArgs> DataReceived;
 
-        /// <summary>
-        /// Instantiate the object.
-        /// </summary>
-        public TcpClientEvents()
-        {
-        }
-
         internal void HandleConnected(object sender, ConnectionEventArgs args)
         {
             Connected?.Invoke(sender, args);
         }
 
-        internal void HandleClientDisconnected(object sender, ConnectionEventArgs args)
+        internal void HandleClientDisconnected(object sender, DisconnectionEventArgs args)
         {
             Disconnected?.Invoke(sender, args);
         }

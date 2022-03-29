@@ -8,6 +8,23 @@ namespace TCP.Client
     public class TcpClientSettings
     {
         /// <summary>
+        /// Enable or disable acceptance of invalid SSL certificates.
+        /// </summary>
+        public bool AcceptInvalidCertificates = true;
+
+        /// <summary>
+        /// Enable or disable mutual authentication of SSL client and server.
+        /// </summary>
+        public bool MutuallyAuthenticate = true;
+
+        private int _streamBufferSize = 65536;
+        private int _connectTimeoutMs = 5000;
+        private int _readTimeoutMs = 1000;
+        private int _idleServerTimeoutMs = 0;
+        private int _idleServerEvaluationIntervalMs = 1000;
+        private int _connectionLostEvaluationIntervalMs = 200;
+
+        /// <summary>
         /// Buffer size to use while interacting with streams. 
         /// </summary>
         public int StreamBufferSize
@@ -105,31 +122,6 @@ namespace TCP.Client
                 if (value < 1) throw new ArgumentOutOfRangeException("ConnectionLostEvaluationIntervalMs must be one or greater.");
                 _connectionLostEvaluationIntervalMs = value;
             }
-        }
-
-        /// <summary>
-        /// Enable or disable acceptance of invalid SSL certificates.
-        /// </summary>
-        public bool AcceptInvalidCertificates = true;
-
-        /// <summary>
-        /// Enable or disable mutual authentication of SSL client and server.
-        /// </summary>
-        public bool MutuallyAuthenticate = true;
-
-        private int _streamBufferSize = 65536;
-        private int _connectTimeoutMs = 5000;
-        private int _readTimeoutMs = 1000;
-        private int _idleServerTimeoutMs = 0;
-        private int _idleServerEvaluationIntervalMs = 1000;
-        private int _connectionLostEvaluationIntervalMs = 200;
-
-        /// <summary>
-        /// Instantiate the object.
-        /// </summary>
-        public TcpClientSettings()
-        {
-
         }
     }
 }
