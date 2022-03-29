@@ -401,15 +401,19 @@ namespace TCP.Server
         /// <summary>
         /// Stop accepting new connections.
         /// </summary>
-        public void Stop()
+        public void AbortNewConnections()
         {
-            if (!_isListening) throw new InvalidOperationException("TcpServer is not running.");
+            if (!_isListening)
+            {
+                throw new InvalidOperationException("TcpServer is not running.");
+            }
 
             _isListening = false;
             _listener.Stop();
             _listenerTokenSource.Cancel();
             _acceptConnections.Wait();
             _acceptConnections = null;
+            
 
             Logger?.Invoke($"{_header}stopped");
         }
@@ -638,6 +642,14 @@ namespace TCP.Server
             }
 
             await SendInternalAsync(ipPort, contentLength, stream, token).ConfigureAwait(false);
+        }
+
+        public void DisconnectAllClients()
+        {
+            foreach (var clientInfo in _clients)
+            {
+                DisconnectClient(clientInfo.Key);
+            }
         }
 
         /// <summary>

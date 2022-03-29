@@ -31,7 +31,7 @@ namespace TCP.IP.Server
         {
             this.components = new System.ComponentModel.Container();
             this.txtBox_serverInfo = new System.Windows.Forms.TextBox();
-            this.btnStart = new System.Windows.Forms.Button();
+            this.btnStartServerListening = new System.Windows.Forms.Button();
             this.btnSend = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -41,6 +41,8 @@ namespace TCP.IP.Server
             this.ctxMenuClientsList = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.disconnectClientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lstBoxClients = new System.Windows.Forms.CheckedListBox();
+            this.btnAbortNewConnections = new System.Windows.Forms.Button();
+            this.btnStopServer = new System.Windows.Forms.Button();
             this.ctxMenuClientsList.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -52,15 +54,15 @@ namespace TCP.IP.Server
             this.txtBox_serverInfo.TabIndex = 6;
             this.txtBox_serverInfo.Text = "127.0.0.1:9000";
             // 
-            // btnStart
+            // btnStartServerListening
             // 
-            this.btnStart.Location = new System.Drawing.Point(664, 361);
-            this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(185, 46);
-            this.btnStart.TabIndex = 0;
-            this.btnStart.Text = "Start";
-            this.btnStart.UseVisualStyleBackColor = true;
-            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            this.btnStartServerListening.Location = new System.Drawing.Point(664, 361);
+            this.btnStartServerListening.Name = "btnStartServerListening";
+            this.btnStartServerListening.Size = new System.Drawing.Size(185, 46);
+            this.btnStartServerListening.TabIndex = 0;
+            this.btnStartServerListening.Text = "Start listening";
+            this.btnStartServerListening.UseVisualStyleBackColor = true;
+            this.btnStartServerListening.Click += new System.EventHandler(this.btnStart_Click);
             // 
             // btnSend
             // 
@@ -93,7 +95,7 @@ namespace TCP.IP.Server
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(689, 34);
+            this.label4.Location = new System.Drawing.Point(664, 31);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(69, 20);
             this.label4.TabIndex = 5;
@@ -123,13 +125,13 @@ namespace TCP.IP.Server
             this.ctxMenuClientsList.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.disconnectClientToolStripMenuItem});
             this.ctxMenuClientsList.Name = "contextMenuStrip1";
-            this.ctxMenuClientsList.Size = new System.Drawing.Size(211, 56);
+            this.ctxMenuClientsList.Size = new System.Drawing.Size(152, 28);
             this.ctxMenuClientsList.Text = "Menu";
             // 
             // disconnectClientToolStripMenuItem
             // 
             this.disconnectClientToolStripMenuItem.Name = "disconnectClientToolStripMenuItem";
-            this.disconnectClientToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.disconnectClientToolStripMenuItem.Size = new System.Drawing.Size(151, 24);
             this.disconnectClientToolStripMenuItem.Text = "Disconnect";
             this.disconnectClientToolStripMenuItem.Click += new System.EventHandler(this.disconnectClientToolStripMenuItem_Click);
             // 
@@ -137,16 +139,39 @@ namespace TCP.IP.Server
             // 
             this.lstBoxClients.ContextMenuStrip = this.ctxMenuClientsList;
             this.lstBoxClients.FormattingEnabled = true;
-            this.lstBoxClients.Location = new System.Drawing.Point(664, 86);
+            this.lstBoxClients.Location = new System.Drawing.Point(664, 66);
+            this.lstBoxClients.MultiColumn = true;
             this.lstBoxClients.Name = "lstBoxClients";
-            this.lstBoxClients.Size = new System.Drawing.Size(169, 136);
+            this.lstBoxClients.Size = new System.Drawing.Size(185, 136);
             this.lstBoxClients.TabIndex = 9;
+            // 
+            // btnAbortNewConnections
+            // 
+            this.btnAbortNewConnections.Location = new System.Drawing.Point(664, 295);
+            this.btnAbortNewConnections.Name = "btnAbortNewConnections";
+            this.btnAbortNewConnections.Size = new System.Drawing.Size(185, 46);
+            this.btnAbortNewConnections.TabIndex = 10;
+            this.btnAbortNewConnections.Text = "Abort new connections";
+            this.btnAbortNewConnections.UseVisualStyleBackColor = true;
+            this.btnAbortNewConnections.Click += new System.EventHandler(this.btnAbortNewConnections_Click);
+            // 
+            // btnStopServer
+            // 
+            this.btnStopServer.Location = new System.Drawing.Point(664, 228);
+            this.btnStopServer.Name = "btnStopServer";
+            this.btnStopServer.Size = new System.Drawing.Size(185, 46);
+            this.btnStopServer.TabIndex = 11;
+            this.btnStopServer.Text = "Stop server";
+            this.btnStopServer.UseVisualStyleBackColor = true;
+            this.btnStopServer.Click += new System.EventHandler(this.btnStopServer_Click);
             // 
             // Server
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(886, 452);
+            this.Controls.Add(this.btnStopServer);
+            this.Controls.Add(this.btnAbortNewConnections);
             this.Controls.Add(this.lstBoxClients);
             this.Controls.Add(this.txtMessage);
             this.Controls.Add(this.txtbInfo);
@@ -155,7 +180,7 @@ namespace TCP.IP.Server
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnSend);
-            this.Controls.Add(this.btnStart);
+            this.Controls.Add(this.btnStartServerListening);
             this.MaximizeBox = false;
             this.Name = "Server";
             this.Text = "TCP.Server";
@@ -168,7 +193,7 @@ namespace TCP.IP.Server
 
         #endregion
 
-        private System.Windows.Forms.Button btnStart;
+        private System.Windows.Forms.Button btnStartServerListening;
         private System.Windows.Forms.Button btnSend;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
@@ -179,6 +204,8 @@ namespace TCP.IP.Server
         private System.Windows.Forms.ContextMenuStrip ctxMenuClientsList;
         private System.Windows.Forms.ToolStripMenuItem disconnectClientToolStripMenuItem;
         private System.Windows.Forms.CheckedListBox lstBoxClients;
+        private System.Windows.Forms.Button btnAbortNewConnections;
+        private System.Windows.Forms.Button btnStopServer;
     }
 }
 
