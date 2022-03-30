@@ -56,7 +56,7 @@ namespace TCP.Server
         /// <summary>
         /// Tcp server events.
         /// </summary>
-        public TcpServerEvents Events
+        public TcpServerEventsHandler Events
         {
             get
             {
@@ -64,7 +64,7 @@ namespace TCP.Server
             }
             set
             {
-                if (value == null) _events = new TcpServerEvents();
+                if (value == null) _events = new TcpServerEventsHandler();
                 else _events = value;
             }
         }
@@ -103,7 +103,7 @@ namespace TCP.Server
 
         private readonly string _header = "[Tcp.Server] ";
         private TcpServerSettings _settings = new TcpServerSettings();
-        private TcpServerEvents _events = new TcpServerEvents();
+        private TcpServerEventsHandler _events = new TcpServerEventsHandler();
         private TcpKeepAliveSettings _keepalive = new TcpKeepAliveSettings();
         private TcpStatistic _statistics = new TcpStatistic();
 
@@ -413,7 +413,7 @@ namespace TCP.Server
             _listenerTokenSource.Cancel();
             _acceptConnections.Wait();
             _acceptConnections = null;
-            
+
 
             Logger?.Invoke($"{_header}stopped");
         }
@@ -1099,7 +1099,8 @@ namespace TCP.Server
                 else
                 {
                     client.SslStream.Flush();
-                }            }
+                }
+            }
             finally
             {
                 if (client != null) client.sendLock.Release();
@@ -1166,7 +1167,8 @@ namespace TCP.Server
                 if (client != null)
                 {
                     client.sendLock.Release();
-                }            }
+                }
+            }
         }
 
         private void EnableKeepalives()

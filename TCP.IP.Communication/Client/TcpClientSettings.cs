@@ -35,8 +35,15 @@ namespace TCP.Client
             }
             set
             {
-                if (value < 1) throw new ArgumentException("StreamBufferSize must be one or greater.");
-                if (value > 65536) throw new ArgumentException("StreamBufferSize must be less than 65,536.");
+                if (value < 1)
+                {
+                    throw new ArgumentException("StreamBufferSize must be one or greater.");
+                }
+                if (value > 65536)
+                {
+                    throw new ArgumentException("StreamBufferSize must be less than 65,536.");
+                }
+
                 _streamBufferSize = value;
             }
         }
@@ -52,7 +59,10 @@ namespace TCP.Client
             }
             set
             {
-                if (value < 1) throw new ArgumentException("ConnectTimeoutMs must be greater than zero.");
+                if (value < 1)
+                {
+                    throw new ArgumentException("ConnectTimeoutMs must be greater than zero.");
+                }
                 _connectTimeoutMs = value;
             }
         }
@@ -68,7 +78,10 @@ namespace TCP.Client
             }
             set
             {
-                if (value < 1) throw new ArgumentException("ReadTimeoutMs must be greater than zero.");
+                if (value < 1)
+                {
+                    throw new ArgumentException("ReadTimeoutMs must be greater than zero.");
+                }
                 _readTimeoutMs = value;
             }
         }
@@ -87,7 +100,10 @@ namespace TCP.Client
             }
             set
             {
-                if (value < 0) throw new ArgumentException("IdleClientTimeoutMs must be zero or greater.");
+                if (value < 0)
+                {
+                    throw new ArgumentException("IdleClientTimeoutMs must be zero or greater.");
+                }
                 _idleServerTimeoutMs = value;
             }
         }
@@ -103,7 +119,10 @@ namespace TCP.Client
             }
             set
             {
-                if (value < 1) throw new ArgumentOutOfRangeException("IdleServerEvaluationIntervalMs must be one or greater.");
+                if (value < 1)
+                {
+                    throw new ArgumentOutOfRangeException("IdleServerEvaluationIntervalMs must be one or greater.");
+                }
                 _idleServerEvaluationIntervalMs = value;
             }
         }
@@ -119,7 +138,10 @@ namespace TCP.Client
             }
             set
             {
-                if (value < 1) throw new ArgumentOutOfRangeException("ConnectionLostEvaluationIntervalMs must be one or greater.");
+                if (value < 1)
+                {
+                    throw new ArgumentOutOfRangeException("ConnectionLostEvaluationIntervalMs must be one or greater.");
+                }
                 _connectionLostEvaluationIntervalMs = value;
             }
         }

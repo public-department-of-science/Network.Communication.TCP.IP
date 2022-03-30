@@ -8,6 +8,20 @@ namespace TCP.Server
     public class TcpServerSettings
     {
         /// <summary>
+        /// Enable or disable acceptance of invalid SSL certificates.
+        /// </summary>
+        public bool AcceptInvalidCertificates = true;
+
+        /// <summary>
+        /// Enable or disable mutual authentication of SSL client and server.
+        /// </summary>
+        public bool MutuallyAuthenticate = true;
+
+        private int _streamBufferSize = 65536;
+        private int _idleClientTimeoutMs = 0;
+        private int _idleClientEvaluationIntervalMs = 5000;
+
+        /// <summary>
         /// Buffer size to use while interacting with streams. 
         /// </summary>
         public int StreamBufferSize
@@ -18,8 +32,14 @@ namespace TCP.Server
             }
             set
             {
-                if (value < 1) throw new ArgumentException("StreamBufferSize must be one or greater.");
-                if (value > 65536) throw new ArgumentException("StreamBufferSize must be less than or equal to 65,536.");
+                if (value < 1)
+                {
+                    throw new ArgumentException("StreamBufferSize must be one or greater.");
+                }
+                if (value > 65536)
+                {
+                    throw new ArgumentException("StreamBufferSize must be less than or equal to 65,536.");
+                }
                 _streamBufferSize = value;
             }
         }
@@ -38,7 +58,10 @@ namespace TCP.Server
             }
             set
             {
-                if (value < 0) throw new ArgumentException("IdleClientTimeoutMs must be zero or greater.");
+                if (value < 0)
+                {
+                    throw new ArgumentException("IdleClientTimeoutMs must be zero or greater.");
+                }
                 _idleClientTimeoutMs = value;
             }
         }
@@ -54,31 +77,12 @@ namespace TCP.Server
             }
             set
             {
-                if (value < 1) throw new ArgumentOutOfRangeException("IdleClientEvaluationIntervalMs must be one or greater.");
+                if (value < 1)
+                {
+                    throw new ArgumentOutOfRangeException("IdleClientEvaluationIntervalMs must be one or greater.");
+                }
                 _idleClientEvaluationIntervalMs = value;
             }
-        }
-
-        /// <summary>
-        /// Enable or disable acceptance of invalid SSL certificates.
-        /// </summary>
-        public bool AcceptInvalidCertificates = true;
-
-        /// <summary>
-        /// Enable or disable mutual authentication of SSL client and server.
-        /// </summary>
-        public bool MutuallyAuthenticate = true;
-
-        private int _streamBufferSize = 65536;
-        private int _idleClientTimeoutMs = 0;
-        private int _idleClientEvaluationIntervalMs = 5000;
-
-        /// <summary>
-        /// Instantiate the object.
-        /// </summary>
-        public TcpServerSettings()
-        {
-
         }
     }
 }

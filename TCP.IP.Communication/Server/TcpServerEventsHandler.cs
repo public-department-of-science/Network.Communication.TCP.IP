@@ -6,7 +6,7 @@ namespace TCP.Server
     /// <summary>
     /// Tcp server events.
     /// </summary>
-    public class TcpServerEvents
+    public class TcpServerEventsHandler
     {
         /// <summary>
         /// Event to call when a client connects.
