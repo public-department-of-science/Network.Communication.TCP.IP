@@ -2,7 +2,7 @@
 using System.Text;
 using System.Windows.Forms;
 using TCP.EventArguments;
-using TCP.Server;
+using TCP.IP.Communication.Server;
 
 namespace TCP.IP.Server
 {

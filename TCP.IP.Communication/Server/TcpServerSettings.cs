@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TCP.Server
+namespace TCP.Server.Settings
 {
     /// <summary>
     /// Tcp server settings.
