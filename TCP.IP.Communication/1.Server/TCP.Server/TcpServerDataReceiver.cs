@@ -21,7 +21,7 @@ namespace TCP.IP.Communication.Server
             {
                 try
                 {
-                    if (!IsClientConnected(client.Client))
+                    if (!IsClientConnected(client.TcpClient))
                     {
                         Logger?.Invoke($"{_header}client {ipPort} disconnected");
                         break;

@@ -8,11 +8,13 @@ namespace TCP.Client.Metadata
     internal class ClientMetadata : IDisposable
     {
         private TcpClient tcpClient;
+
         private NetworkStream networkStream;
         private SslStream sslStream;
+
         private string requestedPort = string.Empty;
 
-        internal TcpClient Client => tcpClient;
+        internal TcpClient TcpClient => tcpClient;
 
         internal NetworkStream NetworkStream => networkStream;
 
@@ -31,7 +33,6 @@ namespace TCP.Client.Metadata
         internal SemaphoreSlim receiveLock = new SemaphoreSlim(1, 1);
 
         internal CancellationTokenSource TokenSource { get; set; }
-
         internal CancellationToken Token { get; set; }
 
         internal ClientMetadata(TcpClient tcpClient)

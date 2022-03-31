@@ -191,7 +191,6 @@ namespace TCP.IP.Communication.Server
             }
 
             long bytesRemaining = contentLength;
-            int bytesRead = 0;
             byte[] buffer = new byte[_settings.StreamBufferSize];
 
             try
@@ -200,7 +199,7 @@ namespace TCP.IP.Communication.Server
 
                 while (bytesRemaining > 0)
                 {
-                    bytesRead = stream.Read(buffer, 0, buffer.Length);
+                    int bytesRead = stream.Read(buffer, 0, buffer.Length);
                     if (bytesRead > 0)
                     {
                         if (!_ssl)

@@ -3,7 +3,6 @@ using System.Net.Sockets;
 using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
-using TCP.Client;
 using TCP.Client.Metadata;
 using TCP.Statistic;
 
@@ -82,11 +81,10 @@ namespace TCP.IP.Communication.Server
         {
             try
             {
-                await client.SslStream.AuthenticateAsServerAsync(
-                    _sslCertificate,
-                    _settings.MutuallyAuthenticate,
+                await client.SslStream.AuthenticateAsServerAsync(_sslCertificate, _settings.MutuallyAuthenticate,
                     SslProtocols.Tls12,
-                    !_settings.AcceptInvalidCertificates).ConfigureAwait(false);
+                    !_settings.AcceptInvalidCertificates)
+                    .ConfigureAwait(false);
 
                 if (!client.SslStream.IsEncrypted)
                 {
