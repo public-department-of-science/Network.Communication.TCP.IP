@@ -1,5 +1,6 @@
 ﻿using System;
 using TCP.Client;
+using TCP.Client.Metadata;
 
 namespace TCP.IP.Communication.Server
 {

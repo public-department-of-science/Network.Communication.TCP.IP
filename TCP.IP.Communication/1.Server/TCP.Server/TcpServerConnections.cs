@@ -2,7 +2,7 @@
 using System.Net.Security;
 using System.Threading;
 using System.Threading.Tasks;
-using TCP.Client;
+using TCP.Client.Metadata;
 using TCP.EventArguments;
 
 namespace TCP.IP.Communication.Server

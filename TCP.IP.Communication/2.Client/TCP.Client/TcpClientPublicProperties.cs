@@ -1,5 +1,7 @@
 ﻿using System.Net;
 using TCP.Client;
+using TCP.Client.EventsHandler;
+using TCP.Client.Settings;
 using TCP.Settings;
 using TCP.Statistic;
 

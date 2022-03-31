@@ -7,6 +7,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 using TCP.Client;
+using TCP.Client.Metadata;
 using TCP.Common;
 using TCP.Server.EventsHandler;
 using TCP.Server.Settings;

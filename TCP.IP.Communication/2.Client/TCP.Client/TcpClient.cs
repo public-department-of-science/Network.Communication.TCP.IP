@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TCP.Client;
+using TCP.Client.EventsHandler;
+using TCP.Client.Settings;
 using TCP.Common;
 using TCP.Enums;
 using TCP.EventArguments;

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Text;
 using System.Windows.Forms;
-using TCP.Client;
 using TCP.EventArguments;
+using TCP.IP.Communication.Client;
 
 namespace TCP.IP.Client.Server
 {

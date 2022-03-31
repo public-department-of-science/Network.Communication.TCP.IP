@@ -3,16 +3,16 @@ using System.Net.Security;
 using System.Net.Sockets;
 using System.Threading;
 
-namespace TCP.Client
+namespace TCP.Client.Metadata
 {
     internal class ClientMetadata : IDisposable
     {
-        private System.Net.Sockets.TcpClient tcpClient;
+        private TcpClient tcpClient;
         private NetworkStream networkStream;
         private SslStream sslStream;
         private string requestedPort = string.Empty;
 
-        internal System.Net.Sockets.TcpClient Client => tcpClient;
+        internal TcpClient Client => tcpClient;
 
         internal NetworkStream NetworkStream => networkStream;
 
@@ -34,7 +34,7 @@ namespace TCP.Client
 
         internal CancellationToken Token { get; set; }
 
-        internal ClientMetadata(System.Net.Sockets.TcpClient tcpClient)
+        internal ClientMetadata(TcpClient tcpClient)
         {
             if (tcpClient == null)
             {

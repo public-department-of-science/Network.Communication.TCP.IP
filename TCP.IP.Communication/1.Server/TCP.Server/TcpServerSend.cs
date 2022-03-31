@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TCP.Client;
+using TCP.Client.Metadata;
 
 namespace TCP.IP.Communication.Server
 {
