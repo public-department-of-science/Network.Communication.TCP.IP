@@ -40,7 +40,7 @@ namespace TCP.IP.Communication.Server
                     }
 
                     _clients.TryAdd(clientIp, client);
-                    _clientsLastSeen.TryAdd(clientIp, DateTime.Now);
+                    _clientsLastSeen.TryAdd(clientIp, DateTime.UtcNow);
                     Logger?.Invoke($"{_header}starting data receiver for: {clientIp}");
                     _events.HandleClientConnected(this, new ConnectionEventArgs(clientIp));
 

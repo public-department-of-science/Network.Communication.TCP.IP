@@ -33,7 +33,7 @@ namespace TCP.IP.Communication.Server
                 if (!_clientsTimedout.ContainsKey(ipPort))
                 {
                     Logger?.Invoke($"{_header}kicking: {ipPort}");
-                    _clientsKicked.TryAdd(ipPort, DateTime.Now);
+                    _clientsKicked.TryAdd(ipPort, DateTime.UtcNow);
                 }
             }
 

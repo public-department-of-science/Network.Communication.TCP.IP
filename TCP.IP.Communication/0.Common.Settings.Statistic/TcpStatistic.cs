@@ -7,7 +7,7 @@ namespace TCP.Statistic
     /// </summary>
     public class TcpStatistic
     {
-        private DateTime utcTime = DateTime.Now.ToUniversalTime();
+        private DateTime utcTime = DateTime.UtcNow;
         private long receivedBytes = 0;
         private long sentBytes = 0;
 
@@ -29,7 +29,7 @@ namespace TCP.Statistic
         {
             get
             {
-                return DateTime.Now.ToUniversalTime() - utcTime;
+                return DateTime.UtcNow - utcTime;
             }
         }
 
@@ -47,7 +47,7 @@ namespace TCP.Statistic
                 receivedBytes = value;
             }
         }
-         
+
         /// <summary>
         /// The number of bytes sent.
         /// </summary>
@@ -83,8 +83,8 @@ namespace TCP.Statistic
         /// </summary>
         public void Reset()
         {
-            receivedBytes = 0; 
-            sentBytes = 0; 
+            receivedBytes = 0;
+            sentBytes = 0;
         }
     }
 }

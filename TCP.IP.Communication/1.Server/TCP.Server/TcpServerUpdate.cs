@@ -11,7 +11,7 @@ namespace TCP.IP.Communication.Server
                 _clientsLastSeen.TryRemove(ipPort, out _);
             }
 
-            _clientsLastSeen.TryAdd(ipPort, DateTime.Now);
+            _clientsLastSeen.TryAdd(ipPort, DateTime.UtcNow);
         }
     }
 }

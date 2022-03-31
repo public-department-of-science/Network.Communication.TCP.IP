@@ -51,7 +51,7 @@ namespace TCP.Client
         private CancellationTokenSource _tokenSource = new CancellationTokenSource();
         private CancellationToken _token;
 
-        private DateTime _lastActivity = DateTime.Now;
+        private DateTime _lastActivity = DateTime.UtcNow;
         private bool _isTimeout = false;
 
         /// <summary>
@@ -367,7 +367,7 @@ namespace TCP.Client
             }
 
             _isConnected = true;
-            _lastActivity = DateTime.Now;
+            _lastActivity = DateTime.UtcNow;
             _isTimeout = false;
             _events.HandleConnected(this, new ConnectionEventArgs(ServerIpPort));
             _dataReceiver = Task.Run(() => DataReceiver(_token), _token);
@@ -526,7 +526,7 @@ namespace TCP.Client
             }
 
             _isConnected = true;
-            _lastActivity = DateTime.Now;
+            _lastActivity = DateTime.UtcNow;
             _isTimeout = false;
             _events.HandleConnected(this, new ConnectionEventArgs(ServerIpPort));
             _dataReceiver = Task.Run(() => DataReceiver(_token), _token);
@@ -811,7 +811,7 @@ namespace TCP.Client
                             byte[] data = task.Result;
                             if (data != null)
                             {
-                                _lastActivity = DateTime.Now;
+                                _lastActivity = DateTime.UtcNow;
                                 _events.HandleDataReceived(this, new DataReceivedEventArgs(ServerIpPort, data));
                                 _statistics.ReceivedBytes += data.Length;
 
@@ -1060,7 +1060,7 @@ namespace TCP.Client
                 }
 
                 DateTime timeoutTime = _lastActivity.AddMilliseconds(_settings.IdleServerTimeoutMs);
-                if (DateTime.Now > timeoutTime)
+                if (DateTime.UtcNow > timeoutTime)
                 {
                     Logger?.Invoke($"{_header}disconnecting from {ServerIpPort} due to timeout");
                     _isConnected = false;

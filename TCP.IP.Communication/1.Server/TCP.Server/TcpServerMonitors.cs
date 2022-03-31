@@ -18,12 +18,12 @@ namespace TCP.IP.Communication.Server
 
                 try
                 {
-                    DateTime idleTimestamp = DateTime.Now.AddMilliseconds(-1.0 * _settings.IdleClientTimeoutMs);
+                    DateTime idleTimestamp = DateTime.UtcNow.AddMilliseconds(-1.0 * _settings.IdleClientTimeoutMs);
                     foreach (KeyValuePair<string, DateTime> curr in _clientsLastSeen)
                     {
                         if (curr.Value < idleTimestamp)
                         {
-                            _clientsTimedout.TryAdd(curr.Key, DateTime.Now);
+                            _clientsTimedout.TryAdd(curr.Key, DateTime.UtcNow);
                             Logger?.Invoke($"{_header} disconnecting {curr.Key} due to timeout");
                             DisconnectClient(curr.Key);
                         }
