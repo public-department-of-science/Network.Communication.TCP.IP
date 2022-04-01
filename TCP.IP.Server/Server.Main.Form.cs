@@ -105,7 +105,7 @@ namespace TCP.IP.Server
         {
             this.Invoke((MethodInvoker)delegate
             {
-                txtbInfo.Text += $"{e.IpPort} connected. Reason: {e.Reason}. {Environment.NewLine}";
+                txtbInfo.Text += $"{e.IpPort} connected. Status: {e.Status}. {Environment.NewLine}";
                 lstBoxClients.Items.Add(e.IpPort);
             });
         }

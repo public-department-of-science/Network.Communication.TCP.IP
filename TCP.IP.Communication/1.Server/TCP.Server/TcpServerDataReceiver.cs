@@ -75,15 +75,15 @@ namespace TCP.IP.Communication.Server
 
             if (_clientsKicked.ContainsKey(ipPort))
             {
-                _events.HandleClientDisconnected(this, new DisconnectionEventArgs(ipPort, DisconnectionStatus.KickedOut_ByServer));
+                _events.HandleClientDisconnected(this, new DisconnectionEventArgs(ipPort, DisconnectionReason.KickedOut_ByServer));
             }
             else if (_clientsTimedout.ContainsKey(client.IpPort))
             {
-                _events.HandleClientDisconnected(this, new DisconnectionEventArgs(ipPort, DisconnectionStatus.NoResponse_Timeout));
+                _events.HandleClientDisconnected(this, new DisconnectionEventArgs(ipPort, DisconnectionReason.NoResponse_Timeout));
             }
             else
             {
-                _events.HandleClientDisconnected(this, new DisconnectionEventArgs(ipPort, DisconnectionStatus.DisconnectOK_ByClient));
+                _events.HandleClientDisconnected(this, new DisconnectionEventArgs(ipPort, DisconnectionReason.DisconnectOK_ByClient));
             }
 
             _clients.TryRemove(ipPort, out _);

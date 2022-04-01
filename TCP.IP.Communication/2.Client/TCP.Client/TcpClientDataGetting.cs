@@ -26,7 +26,8 @@ namespace TCP.IP.Communication.Client
             {
                 try
                 {
-                    await DataReadAsync(token).ContinueWith(async task =>
+                    await DataReadAsync(token)
+                        .ContinueWith(async task =>
                     {
                         if (task.IsCanceled)
                         {
@@ -93,11 +94,11 @@ namespace TCP.IP.Communication.Client
 
             if (!_isTimeout)
             {
-                _events.HandleClientDisconnected(this, new DisconnectionEventArgs(ServerIpPort, DisconnectionStatus.DisconnectOK_ByClient));
+                _events.HandleClientDisconnected(this, new DisconnectionEventArgs(ServerIpPort, DisconnectionReason.DisconnectOK_ByClient));
             }
             else
             {
-                _events.HandleClientDisconnected(this, new DisconnectionEventArgs(ServerIpPort, DisconnectionStatus.NoResponse_Timeout));
+                _events.HandleClientDisconnected(this, new DisconnectionEventArgs(ServerIpPort, DisconnectionReason.NoResponse_Timeout));
             }
 
             Dispose();

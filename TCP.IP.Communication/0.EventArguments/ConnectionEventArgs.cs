@@ -13,15 +13,12 @@ namespace TCP.EventArguments
         /// </summary>
         public string IpPort { get; }
 
-        /// <summary>
-        /// The reason for the disconnection, if any.
-        /// </summary>
-        public ConnectionStatus Reason { get; }
+        public ConnectionStatus Status { get; }
 
-        internal ConnectionEventArgs(string ipPort, ConnectionStatus reason = ConnectionStatus.Undefined)
+        internal ConnectionEventArgs(string ipPort, ConnectionStatus status)
         {
             IpPort = ipPort;
-            Reason = reason;
+            Status = status;
         }
     }
 }

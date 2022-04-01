@@ -91,7 +91,10 @@ namespace TCP.IP.Communication.Client
                     }
                 }
 
-                if (_keepalive.EnableTcpKeepAlives) EnableKeepalives();
+                if (_keepalive.EnableTcpKeepAlives)
+                {
+                    EnableKeepalives();
+                }
             }
             catch (Exception)
             {
@@ -101,7 +104,7 @@ namespace TCP.IP.Communication.Client
             _isConnected = true;
             _lastActivity = DateTime.UtcNow;
             _isTimeout = false;
-            _events.HandleConnected(this, new ConnectionEventArgs(ServerIpPort));
+            _events.HandleConnected(this, new ConnectionEventArgs(ServerIpPort, Enums.ConnectionStatus.ConnectToServerOK));
             _dataReceiver = Task.Run(() => DataReceiver(_token), _token);
             _idleServerMonitor = Task.Run(IdleServerMonitor, _token);
             _connectionMonitor = Task.Run(ConnectedMonitor, _token);
@@ -260,7 +263,7 @@ namespace TCP.IP.Communication.Client
             _isConnected = true;
             _lastActivity = DateTime.UtcNow;
             _isTimeout = false;
-            _events.HandleConnected(this, new ConnectionEventArgs(ServerIpPort));
+            _events.HandleConnected(this, new ConnectionEventArgs(ServerIpPort, Enums.ConnectionStatus.ConnectToServerOK_AfterRetries));
             _dataReceiver = Task.Run(() => DataReceiver(_token), _token);
             _idleServerMonitor = Task.Run(IdleServerMonitor, _token);
             _connectionMonitor = Task.Run(ConnectedMonitor, _token);
