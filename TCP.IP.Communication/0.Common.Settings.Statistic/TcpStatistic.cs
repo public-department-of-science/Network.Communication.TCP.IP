@@ -78,10 +78,7 @@ namespace TCP.Statistic
             return ret;
         }
 
-        /// <summary>
-        /// Reset statistics other than StartTime and UpTime.
-        /// </summary>
-        public void Reset()
+        public void ResetDataCounter()
         {
             receivedBytes = 0;
             sentBytes = 0;
