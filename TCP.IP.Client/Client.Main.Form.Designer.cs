@@ -41,6 +41,8 @@ namespace TCP.IP.Client.Server
             this.connectionStatusTimer = new System.Windows.Forms.Timer(this.components);
             this.connectionStatusStrip = new System.Windows.Forms.StatusStrip();
             this.connectionStatusLbl = new System.Windows.Forms.ToolStripStatusLabel();
+            this.btnSendObject = new System.Windows.Forms.Button();
+            this.btnClearInfo = new System.Windows.Forms.Button();
             this.connectionStatusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -138,11 +140,33 @@ namespace TCP.IP.Client.Server
             this.connectionStatusLbl.Size = new System.Drawing.Size(151, 20);
             this.connectionStatusLbl.Text = "toolStripStatusLabel1";
             // 
+            // btnSendObject
+            // 
+            this.btnSendObject.Location = new System.Drawing.Point(318, 413);
+            this.btnSendObject.Name = "btnSendObject";
+            this.btnSendObject.Size = new System.Drawing.Size(119, 56);
+            this.btnSendObject.TabIndex = 9;
+            this.btnSendObject.Text = "Send object";
+            this.btnSendObject.UseVisualStyleBackColor = true;
+            this.btnSendObject.Click += new System.EventHandler(this.btnSendObject_Click);
+            // 
+            // btnClearInfo
+            // 
+            this.btnClearInfo.Location = new System.Drawing.Point(89, 76);
+            this.btnClearInfo.Name = "btnClearInfo";
+            this.btnClearInfo.Size = new System.Drawing.Size(51, 29);
+            this.btnClearInfo.TabIndex = 10;
+            this.btnClearInfo.Text = "Clear";
+            this.btnClearInfo.UseVisualStyleBackColor = true;
+            this.btnClearInfo.Click += new System.EventHandler(this.btnClearInfo_Click);
+            // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(812, 506);
+            this.Controls.Add(this.btnClearInfo);
+            this.Controls.Add(this.btnSendObject);
             this.Controls.Add(this.connectionStatusStrip);
             this.Controls.Add(this.btnDisconnect);
             this.Controls.Add(this.btnConnect);
@@ -177,6 +201,8 @@ namespace TCP.IP.Client.Server
         private System.Windows.Forms.Timer connectionStatusTimer;
         private System.Windows.Forms.StatusStrip connectionStatusStrip;
         private System.Windows.Forms.ToolStripStatusLabel connectionStatusLbl;
+        private System.Windows.Forms.Button btnSendObject;
+        private System.Windows.Forms.Button btnClearInfo;
     }
 }
 

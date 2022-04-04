@@ -43,6 +43,7 @@ namespace TCP.IP.Server
             this.lstBoxClients = new System.Windows.Forms.CheckedListBox();
             this.btnAbortNewConnections = new System.Windows.Forms.Button();
             this.btnStopServer = new System.Windows.Forms.Button();
+            this.btnClearInfo = new System.Windows.Forms.Button();
             this.ctxMenuClientsList.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -165,11 +166,22 @@ namespace TCP.IP.Server
             this.btnStopServer.UseVisualStyleBackColor = true;
             this.btnStopServer.Click += new System.EventHandler(this.btnStopServer_Click);
             // 
+            // btnClearInfo
+            // 
+            this.btnClearInfo.Location = new System.Drawing.Point(68, 86);
+            this.btnClearInfo.Name = "btnClearInfo";
+            this.btnClearInfo.Size = new System.Drawing.Size(52, 29);
+            this.btnClearInfo.TabIndex = 12;
+            this.btnClearInfo.Text = "Clear";
+            this.btnClearInfo.UseVisualStyleBackColor = true;
+            this.btnClearInfo.Click += new System.EventHandler(this.btnClearInfo_Click);
+            // 
             // Server
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(886, 452);
+            this.Controls.Add(this.btnClearInfo);
             this.Controls.Add(this.btnStopServer);
             this.Controls.Add(this.btnAbortNewConnections);
             this.Controls.Add(this.lstBoxClients);
@@ -206,6 +218,7 @@ namespace TCP.IP.Server
         private System.Windows.Forms.CheckedListBox lstBoxClients;
         private System.Windows.Forms.Button btnAbortNewConnections;
         private System.Windows.Forms.Button btnStopServer;
+        private System.Windows.Forms.Button btnClearInfo;
     }
 }
 

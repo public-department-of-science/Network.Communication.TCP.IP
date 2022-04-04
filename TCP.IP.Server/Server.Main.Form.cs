@@ -131,5 +131,10 @@ namespace TCP.IP.Server
                 }
             });
         }
+
+        private void btnClearInfo_Click(object sender, EventArgs e)
+        {
+            txtbInfo.Text = string.Empty;
+        }
     }
 }

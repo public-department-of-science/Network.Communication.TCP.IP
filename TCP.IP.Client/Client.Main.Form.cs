@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Text.Json;
 using System.Windows.Forms;
 using TCP.EventArguments;
 using TCP.IP.Communication.Client;
@@ -74,6 +75,7 @@ namespace TCP.IP.Client.Server
             tcpClient.Events.Disconnected += Events_Disconnected;
             btnSend.Enabled = false;
             btnDisconnect.Enabled = false;
+            btnSendObject.Enabled = false;
         }
 
         private void Events_Disconnected(object sender, DisconnectionEventArgs e)
@@ -107,6 +109,7 @@ namespace TCP.IP.Client.Server
                 btnDisconnect.Enabled = true;
                 btnConnect.Enabled = false;
                 btnSend.Enabled = true;
+                btnSendObject.Enabled = true;
 
                 connectionStatusLbl.Text = "Connected";
             }
@@ -115,9 +118,41 @@ namespace TCP.IP.Client.Server
                 btnDisconnect.Enabled = false;
                 btnConnect.Enabled = true;
                 btnSend.Enabled = false;
-                
+                btnSendObject.Enabled = false;
+
                 connectionStatusLbl.Text = "Disconnected";
             }
+        }
+
+        private void btnClearInfo_Click(object sender, EventArgs e)
+        {
+            txtbInfo.Text = string.Empty;
+        }
+
+        private void btnSendObject_Click(object sender, EventArgs e)
+        {
+            ClientScoreConfiguration myClass = new ClientScoreConfiguration
+            {
+                CPU_Score = 7,
+                GPU_Score = 9,
+                CPU_GPU_BuiltIn_Score = 123,
+                TaskType = "test task with math problem to solve",
+                ExecutionTimeMark = DateTime.UtcNow,
+            };
+
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            byte[] jsonUtf8Bytes = JsonSerializer.SerializeToUtf8Bytes(myClass, options);
+            tcpClient.Send(jsonUtf8Bytes);
+        }
+
+        public class ClientScoreConfiguration
+        {
+            public int CPU_Score { get; set; }
+            public int GPU_Score { get; set; }
+            public int CPU_GPU_BuiltIn_Score { get; set; }
+
+            public string TaskType { get; set; }
+            public DateTime ExecutionTimeMark { get; set; }
         }
     }
 }
