@@ -1,0 +1,3 @@
+[submodule "ThirdPartProjects"]
+	path = ThirdPartProjects
+	url = https://github.com/m4rs-mt/ILGPU.git
