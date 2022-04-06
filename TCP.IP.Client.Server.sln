@@ -49,9 +49,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonitorProgress", "Third.Pa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleWriteLine", "Third.Part.References\ILGPU\Samples\SimpleWriteLine\SimpleWriteLine.csproj", "{A95D4A20-E45A-43CE-9EE9-F57EFABA3D1A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Analyzer.Run.Library", "Third.Part.References\grammar-analyzer\GrammarAnalyzer\Analyzer.Run.Library\Analyzer.Run.Library.csproj", "{C2916587-005D-42DB-BC36-B8DECFD89CCB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Analyzer.Run.Library", "Third.Part.References\grammar-analyzer\GrammarAnalyzer\Analyzer.Run.Library\Analyzer.Run.Library.csproj", "{CAA2A079-22BF-4677-B912-1D90A7C92CBB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grammar.Analyzer.Library", "Third.Part.References\grammar-analyzer\GrammarAnalyzer\Grammar.Analyzer.Library\Grammar.Analyzer.Library.csproj", "{2A486A35-9966-46AA-8621-588139D19692}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grammar.Analyzer.Library", "Third.Part.References\grammar-analyzer\GrammarAnalyzer\Grammar.Analyzer.Library\Grammar.Analyzer.Library.csproj", "{56F901F2-95B1-4AAD-9862-D9C89F258389}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -115,14 +115,14 @@ Global
 		{A95D4A20-E45A-43CE-9EE9-F57EFABA3D1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A95D4A20-E45A-43CE-9EE9-F57EFABA3D1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A95D4A20-E45A-43CE-9EE9-F57EFABA3D1A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C2916587-005D-42DB-BC36-B8DECFD89CCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C2916587-005D-42DB-BC36-B8DECFD89CCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C2916587-005D-42DB-BC36-B8DECFD89CCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C2916587-005D-42DB-BC36-B8DECFD89CCB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2A486A35-9966-46AA-8621-588139D19692}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2A486A35-9966-46AA-8621-588139D19692}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2A486A35-9966-46AA-8621-588139D19692}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2A486A35-9966-46AA-8621-588139D19692}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAA2A079-22BF-4677-B912-1D90A7C92CBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAA2A079-22BF-4677-B912-1D90A7C92CBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAA2A079-22BF-4677-B912-1D90A7C92CBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAA2A079-22BF-4677-B912-1D90A7C92CBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56F901F2-95B1-4AAD-9862-D9C89F258389}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56F901F2-95B1-4AAD-9862-D9C89F258389}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56F901F2-95B1-4AAD-9862-D9C89F258389}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56F901F2-95B1-4AAD-9862-D9C89F258389}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -148,8 +148,8 @@ Global
 		{C896C177-0F46-44F7-9BFE-B49ED149E045} = {3590E5B7-7C68-435E-8E04-21B41590ADE4}
 		{8B896A49-A5CF-4EC4-A59A-AD46F7C7BD69} = {3590E5B7-7C68-435E-8E04-21B41590ADE4}
 		{A95D4A20-E45A-43CE-9EE9-F57EFABA3D1A} = {3590E5B7-7C68-435E-8E04-21B41590ADE4}
-		{C2916587-005D-42DB-BC36-B8DECFD89CCB} = {00ECAED4-C4CF-4E56-953C-947B81035352}
-		{2A486A35-9966-46AA-8621-588139D19692} = {00ECAED4-C4CF-4E56-953C-947B81035352}
+		{CAA2A079-22BF-4677-B912-1D90A7C92CBB} = {00ECAED4-C4CF-4E56-953C-947B81035352}
+		{56F901F2-95B1-4AAD-9862-D9C89F258389} = {00ECAED4-C4CF-4E56-953C-947B81035352}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {06390D9E-5E6E-4BF3-A5DE-797BE6574B4B}
