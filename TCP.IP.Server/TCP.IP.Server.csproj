@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TCP.Communication\TCP.Communication\TCP.Communication.csproj" />
     <ProjectReference Include="..\TCP.IP.Communication\TCP.IP.Communication.csproj" />
   </ItemGroup>
 
