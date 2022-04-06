@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31624.102
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TCP.IP.Client", "TCP.IP.Client\TCP.IP.Client.csproj", "{F8D0FEE9-D120-49A3-8EC7-CD57AEF9EFBD}"
 EndProject
@@ -24,6 +24,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeechRecognitionGeneration", "Samples\SpeechRecognitionGeneration\SpeechRecognitionGeneration.csproj", "{04590DF4-C9A6-4A75-8933-F573EF713765}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlexibleBordersMenu", "Samples\FlexibleBordersMenu\FlexibleBordersMenu.csproj", "{0A1C83F0-9836-4CEE-95C5-D9565E6575E9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.Third.Part.References", "2.Third.Part.References", "{45264686-F0D0-409F-A33F-C08BDF010DCE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

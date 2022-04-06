@@ -1,3 +1,7 @@
-[submodule "Third.Part.References"]
+
+[submodule "Third.Part.References/ILGPU"]
 	path = Third.Part.References/ILGPU
 	url = https://github.com/m4rs-mt/ILGPU.git
+[submodule "Third.Part.References/grammar-analyzer"]
+	path = Third.Part.References/grammar-analyzer
+	url = https://github.com/public-department-of-science/grammar-analyzer.git
