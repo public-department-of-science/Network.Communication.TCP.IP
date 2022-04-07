@@ -2,12 +2,13 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TCP.IP.Communication\TCP.IP.Communication.csproj" />
+    <ProjectReference Include="..\Third.Part.References\ILGPU\Src\ILGPU\ILGPU.csproj" />
   </ItemGroup>
 
 </Project>
