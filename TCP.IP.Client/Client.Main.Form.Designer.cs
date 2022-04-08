@@ -43,6 +43,7 @@ namespace TCP.IP.Client.Server
             this.connectionStatusLbl = new System.Windows.Forms.ToolStripStatusLabel();
             this.btnSendObject = new System.Windows.Forms.Button();
             this.btnClearInfo = new System.Windows.Forms.Button();
+            this.btnPCPerfTestRun = new System.Windows.Forms.Button();
             this.connectionStatusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -160,11 +161,23 @@ namespace TCP.IP.Client.Server
             this.btnClearInfo.UseVisualStyleBackColor = true;
             this.btnClearInfo.Click += new System.EventHandler(this.btnClearInfo_Click);
             // 
+            // btnPCPerfTestRun
+            // 
+            this.btnPCPerfTestRun.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.btnPCPerfTestRun.Location = new System.Drawing.Point(36, 127);
+            this.btnPCPerfTestRun.Name = "btnPCPerfTestRun";
+            this.btnPCPerfTestRun.Size = new System.Drawing.Size(104, 45);
+            this.btnPCPerfTestRun.TabIndex = 11;
+            this.btnPCPerfTestRun.Text = "PC perf test";
+            this.btnPCPerfTestRun.UseVisualStyleBackColor = false;
+            this.btnPCPerfTestRun.Click += new System.EventHandler(this.btnPCPerfTestRun_Click);
+            // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(812, 506);
+            this.Controls.Add(this.btnPCPerfTestRun);
             this.Controls.Add(this.btnClearInfo);
             this.Controls.Add(this.btnSendObject);
             this.Controls.Add(this.connectionStatusStrip);
@@ -203,6 +216,7 @@ namespace TCP.IP.Client.Server
         private System.Windows.Forms.ToolStripStatusLabel connectionStatusLbl;
         private System.Windows.Forms.Button btnSendObject;
         private System.Windows.Forms.Button btnClearInfo;
+        private System.Windows.Forms.Button btnPCPerfTestRun;
     }
 }
 

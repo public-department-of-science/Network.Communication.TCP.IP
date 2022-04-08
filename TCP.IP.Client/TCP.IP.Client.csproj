@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PC.Calculation.Performance.Test\PC.Calculation.Performance.Test.csproj" />
     <ProjectReference Include="..\TCP.IP.Communication\TCP.IP.Communication.csproj" />
     <ProjectReference Include="..\Third.Part.References\ILGPU\Src\ILGPU\ILGPU.csproj" />
   </ItemGroup>

@@ -145,14 +145,10 @@ namespace TCP.IP.Client.Server
             tcpClient.Send(jsonUtf8Bytes);
         }
 
-        public class ClientScoreConfiguration
+        private void btnPCPerfTestRun_Click(object sender, EventArgs e)
         {
-            public int CPU_Score { get; set; }
-            public int GPU_Score { get; set; }
-            public int CPU_GPU_BuiltIn_Score { get; set; }
-
-            public string TaskType { get; set; }
-            public DateTime ExecutionTimeMark { get; set; }
+            PCPerformanceTestForm pCPerformanceTestForm = new PCPerformanceTestForm();
+            pCPerformanceTestForm.ShowDialog();
         }
     }
 }
