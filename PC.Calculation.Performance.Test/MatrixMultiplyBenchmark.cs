@@ -146,12 +146,14 @@ namespace PC.Calculation.Performance.Test
 
             foreach (var device in context)
             {
+
                 using var accelerator = device.CreateAccelerator(context);
 
                 sw.Restart();
                 var acceleratedResult = MatrixMultiplyAccelerated(accelerator, a, b);
                 sw.Stop();
                 Debug.Assert(MatrixEqual(acceleratedResult, expectedResult));
+
                 benchmarkResults.AppendLine($"- Accelerated on {accelerator.AcceleratorType.ToString()} {accelerator.Name}: {sw.ElapsedMilliseconds.ToString()}ms");
 
                 sw.Restart();

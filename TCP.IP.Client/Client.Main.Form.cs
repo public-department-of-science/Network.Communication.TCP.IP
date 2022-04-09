@@ -131,7 +131,7 @@ namespace TCP.IP.Client.Server
 
         private void btnSendObject_Click(object sender, EventArgs e)
         {
-            ClientScoreConfiguration myClass = new ClientScoreConfiguration
+            ClientPCBenchmarkScore myClass = new ClientPCBenchmarkScore
             {
                 CPU_Score = 7,
                 GPU_Score = 9,
