@@ -1,124 +1,83 @@
 ﻿using ILGPU;
-using ILGPU.Runtime;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
 
 namespace PC.Calculation.Performance.Test
 {
-    public class MatrixMultiplyBenchmark
+    public partial class MatrixMultiplyBenchmark
     {
-        private static StringBuilder benchmarkResults = new StringBuilder();
-
-        /// <summary>
-        /// Main entry point
-        /// </summary>
-        public static string MatrixMultiplyBenchmarkRun()
+        static void MathKernel(
+               Index1D index,                  // The global thread index (1D in this case)
+               ArrayView<float> singleView,    // A view of floats to store float results from GPUMath
+               ArrayView<double> doubleView,   // A view of doubles to store double results from GPUMath
+               ArrayView<double> doubleView2)  // A view of doubles to store double results from .Net Math
         {
-            benchmarkResults.Clear();
+            // Note the different returns type of GPUMath.Sqrt and Math.Sqrt.
+            singleView[index] = IntrinsicMath.Abs(index);
+            doubleView[index] = IntrinsicMath.Clamp(index, 0.0, 12.0);
 
-            // Performs a sanity check on the matrix multiply implementations against known inputs and output.
-            var sanityMatrixA = new float[4, 3]
-            {
-                {  1,   2,   3 },
-                {  4,   5,   6 },
-                {  7,   8,   9 },
-                { 10,  11,  12 },
-            };
-
-            var sanityMatrixB = new float[3, 5]
-            {
-                { 13, 14, 15, 16, 17 },
-                { 18, 19, 20, 21, 22 },
-                { 23, 24, 25, 26, 27 },
-            };
-
-            var sanityMatrixC = new float[4, 5]
-            {
-                { 118, 124, 130, 136, 142 },
-                { 280, 295, 310, 325, 340 },
-                { 442, 466, 490, 514, 538 },
-                { 604, 637, 670, 703, 736 },
-            };
-
-            RunMatrixMultiply(sanityMatrixA, sanityMatrixB, sanityMatrixC);
-
-            // Prepare random matrices
-            const int m = 200;
-            const int n = 200;
-            const int k = 200;
-
-            var aMatrix = CreateRandomMatrix(m, k);
-            var bMatrix = CreateRandomMatrix(k, n);
-            var cMatrix = MatrixMultiplyNaive(aMatrix, bMatrix);
-
-            RunMatrixMultiply(aMatrix, bMatrix, cMatrix);
-
-            var resultingString = benchmarkResults.ToString();
-            benchmarkResults.Clear();
-            return resultingString;
-        }
-
-        #region Helper functions
-
-        /// <summary>
-        /// Creates a matrix populated with random values.
-        /// </summary>
-        /// <param name="rows">The number of rows in the matrix</param>
-        /// <param name="columns">The number of columns in the matrix</param>
-        /// <returns>A matrix populated with random values</returns>
-        [SuppressMessage(
-            "Security",
-            "CA5394:Do not use insecure randomness",
-            Justification = "Only used for testing")]
-        static float[,] CreateRandomMatrix(int rows, int columns)
-        {
-            var rnd = new Random();
-            var matrix = new float[rows, columns];
-
-            for (var i = 0; i < rows; i++)
-            {
-                for (var j = 0; j < columns; j++)
-                    matrix[i, j] = rnd.Next(minValue: -100, maxValue: 100);
-            }
-
-            return matrix;
+            // Note that use can safely use functions from the Math class as long as they have a counterpart
+            // in the IntrinsicMath class.
+            doubleView2[index] = Math.Min(0.2, index);
         }
 
         /// <summary>
-        /// Compares two matrices for equality.
+        /// Launches a simple math kernel.
         /// </summary>
-        /// <param name="a">A dense MxN matrix</param>
-        /// <param name="b">A dense MxN matrix</param>
-        /// <returns>True if the matrices are equal</returns>
-        static bool MatrixEqual(float[,] a, float[,] b)
+        static void Main()
         {
-            var ma = a.GetLength(0);
-            var na = a.GetLength(1);
-            var mb = b.GetLength(0);
-            var nb = b.GetLength(1);
+            // using var context1 = Context.Create(builder => builder.Cuda().Profiling());
 
-            if (ma != mb || na != nb)
-            {
-                Debug.WriteLine($"Matrix dimensions do not match: [{ma}x{na}] vs [{mb}x{nb}]");
-                return false;
-            }
+            // Create main context
+            using var context = Context.CreateDefault();
 
-            for (var i = 0; i < ma; i++)
+            // For each available device...
+            var mappedDevicesByType = context.Devices.GroupBy(x => x.AcceleratorType);
+
+            Stopwatch stopwatch = new Stopwatch();
+
+            int initialPoint = 4;
+            long twoMinutes = 120_000;
+            double twentyPercents = 0.2;
+            double thirtyPercents = 0.3;
+            int maxMatrixSize = 100_000;
+
+            //List<(ProcessingUnitType, AlgoType, int, int)> naiveExecution = new List<(ProcessingUnitType, AlgoType, int, int)>();
+            //List<(ProcessingUnitType, AlgoType, int, int)> cpuExecution = new List<(ProcessingUnitType, AlgoType, int, int)>();
+            //List<(ProcessingUnitType, AlgoType, int, int)> openClExecution = new List<(ProcessingUnitType, AlgoType, int, int)>();
+            //List<(ProcessingUnitType, AlgoType, int, int)> gpuExecution = new List<(ProcessingUnitType, AlgoType, int, int)>();
+
+            foreach (var devicesInGroup in mappedDevicesByType)
             {
-                for (var j = 0; j < na; j++)
+                foreach (var device in devicesInGroup)
                 {
-                    var actual = a[i, j];
-                    var expected = b[i, j];
-                    if (actual != expected)
+                    var matrixSize = initialPoint;
+                    var previousIteration = stopwatch.ElapsedMilliseconds;
+                    var nextIteration = stopwatch.ElapsedMilliseconds;
+
+                    do
                     {
-                        Debug.WriteLine($"Error at element location [{i}, {j}]: {actual} found, {expected} expected");
-                        return false;
-                    }
+                        previousIteration = nextIteration;
+                        // place to prepare context and thing around matrix
+                        {
+
+                        }
+
+                        stopwatch.Restart();
+                        // the place where to call our 
+                        {
+                            int m = matrixSize, n = matrixSize, k = matrixSize;
+                            var aMatrix = MatrixGenerateRandom.CreateRandomMatrix(m, k);
+                            var bMatrix = MatrixGenerateRandom.CreateRandomMatrix(k, n);
+                            var cMatrix = MatrixMultiply.MatrixMultiplyNaive(aMatrix, bMatrix);
+
+                            RunMatrixMultiply(aMatrix, bMatrix, cMatrix);
+                        }
+                        stopwatch.Stop();
+
+                        nextIteration = stopwatch.ElapsedMilliseconds;
+                    } while (nextIteration - previousIteration > twoMinutes);
                 }
             }
-
-            return true;
         }
 
         /// <summary>
@@ -131,230 +90,35 @@ namespace PC.Calculation.Performance.Test
             var kb = b.GetLength(0);
             var n = b.GetLength(1);
 
-            benchmarkResults.AppendLine($"Running matrix multiplication on [{m.ToString()}x{ka.ToString()}] * [{kb.ToString()}x{n.ToString()}]");
+            Console.WriteLine($"Running matrix multiplication on [{m}x{ka}] * [{kb}x{n}]");
             var sw = new Stopwatch();
 
             // Naive implementation
-            //sw.Restart();
-            //var naiveResult = MatrixMultiplyNaive(a, b);
-            //sw.Stop();
-            //Debug.Assert(MatrixEqual(naiveResult, expectedResult));
-            //benchmarkResults.AppendLine($"- Naive : {sw.ElapsedMilliseconds.ToString()}ms");
+            sw.Restart();
+            var naiveResult = MatrixMultiply.MatrixMultiplyNaive(a, b);
+            sw.Stop();
+            Debug.Assert(MatrixHelper.MatrixEqual(naiveResult, expectedResult));
+            Console.WriteLine($"- Naive implementation: {sw.ElapsedMilliseconds}ms");
 
             // Accelerated implementations
             using var context = Context.CreateDefault();
 
             foreach (var device in context)
             {
-
                 using var accelerator = device.CreateAccelerator(context);
 
                 sw.Restart();
-                var acceleratedResult = MatrixMultiplyAccelerated(accelerator, a, b);
+                var acceleratedResult = MatrixMultiply.MatrixMultiplyAccelerated(accelerator, a, b);
                 sw.Stop();
-                Debug.Assert(MatrixEqual(acceleratedResult, expectedResult));
-
-                benchmarkResults.AppendLine($"- Accelerated on {accelerator.AcceleratorType.ToString()} {accelerator.Name}: {sw.ElapsedMilliseconds.ToString()}ms");
+                Debug.Assert(MatrixHelper.MatrixEqual(acceleratedResult, expectedResult));
+                Console.WriteLine($"- Accelerated implementation on {accelerator}: {sw.ElapsedMilliseconds}ms");
 
                 sw.Restart();
-                var acceleratedTiledResult = MatrixMultiplyTiled(accelerator, a, b);
+                var acceleratedTiledResult = MatrixMultiply.MatrixMultiplyTiled(accelerator, a, b);
                 sw.Stop();
-                Debug.Assert(MatrixEqual(acceleratedTiledResult, expectedResult));
-                benchmarkResults.AppendLine($"- Tiled on {accelerator.AcceleratorType.ToString()} {accelerator.Name}: {sw.ElapsedMilliseconds}ms");
+                Debug.Assert(MatrixHelper.MatrixEqual(acceleratedTiledResult, expectedResult));
+                Console.WriteLine($"- Tiled implementation on {accelerator}: {sw.ElapsedMilliseconds}ms");
             }
         }
-
-        #endregion
-
-        #region Naive algorithm
-
-        /// <summary>
-        /// Multiplies two dense matrices and returns the resultant matrix.
-        /// </summary>
-        /// <param name="accelerator">The Accelerator to run the multiplication on</param>
-        /// <param name="a">A dense MxK matrix</param>
-        /// <param name="b">A dense KxN matrix</param>
-        /// <returns>A dense MxN matrix</returns>
-        static float[,] MatrixMultiplyNaive(float[,] a, float[,] b)
-        {
-            var m = a.GetLength(0);
-            var ka = a.GetLength(1);
-            var kb = b.GetLength(0);
-            var n = b.GetLength(1);
-
-            if (ka != kb)
-                throw new ArgumentException($"Cannot multiply {m}x{ka} matrix by {n}x{kb} matrix", nameof(b));
-
-            var c = new float[m, n];
-
-            for (var x = 0; x < m; x++)
-            {
-                for (var y = 0; y < n; y++)
-                {
-                    c[x, y] = 0;
-
-                    for (var z = 0; z < ka; z++)
-                        c[x, y] += a[x, z] * b[z, y];
-                }
-            }
-
-            return c;
-        }
-
-        #endregion
-
-        #region Accelerated algorithm
-
-        /// <summary>
-        /// Multiplies two dense matrices and returns the resultant matrix.
-        /// </summary>
-        /// <param name="accelerator">The Accelerator to run the multiplication on</param>
-        /// <param name="a">A dense MxK matrix</param>
-        /// <param name="b">A dense KxN matrix</param>
-        /// <returns>A dense MxN matrix</returns>
-        static float[,] MatrixMultiplyAccelerated(Accelerator accelerator, float[,] a, float[,] b)
-        {
-            var m = a.GetLength(0);
-            var ka = a.GetLength(1);
-            var kb = b.GetLength(0);
-            var n = b.GetLength(1);
-
-            if (ka != kb)
-                throw new ArgumentException($"Cannot multiply {m}x{ka} matrix by {n}x{kb} matrix", nameof(b));
-
-            var kernel = accelerator.LoadAutoGroupedStreamKernel<
-                Index2D,
-                ArrayView2D<float, Stride2D.DenseX>,
-                ArrayView2D<float, Stride2D.DenseX>,
-                ArrayView2D<float, Stride2D.DenseX>>(
-                MatrixMultiplyAcceleratedKernel);
-
-            using var aBuffer = accelerator.Allocate2DDenseX<float>(new Index2D(m, ka));
-            using var bBuffer = accelerator.Allocate2DDenseX<float>(new Index2D(ka, n));
-            using var cBuffer = accelerator.Allocate2DDenseX<float>(new Index2D(m, n));
-            aBuffer.CopyFromCPU(a);
-            bBuffer.CopyFromCPU(b);
-
-            kernel(cBuffer.Extent.ToIntIndex(), aBuffer.View, bBuffer.View, cBuffer.View);
-
-            // Reads data from the GPU buffer into a new CPU array.
-            // Implicitly calls accelerator.DefaultStream.Synchronize() to ensure
-            // that the kernel and memory copy are completed first.
-            return cBuffer.GetAsArray2D();
-        }
-
-        /// <summary>
-        /// The matrix multiplication kernel that runs on the accelerated device.
-        /// </summary>
-        /// <param name="index">Current matrix index</param>
-        /// <param name="aView">An input matrix of size MxK</param>
-        /// <param name="bView">An input matrix of size KxN</param>
-        /// <param name="cView">An output matrix of size MxN</param>
-        static void MatrixMultiplyAcceleratedKernel(
-            Index2D index,
-            ArrayView2D<float, Stride2D.DenseX> aView,
-            ArrayView2D<float, Stride2D.DenseX> bView,
-            ArrayView2D<float, Stride2D.DenseX> cView)
-        {
-            var x = index.X;
-            var y = index.Y;
-            var sum = 0.0f;
-
-            for (var i = 0; i < aView.IntExtent.Y; i++)
-                sum += aView[new Index2D(x, i)] * bView[new Index2D(i, y)];
-
-            cView[index] = sum;
-        }
-
-        #endregion
-
-        #region Tiled algorithm
-
-        /// <summary>
-        /// Size of the tile (NxN).
-        /// </summary>
-        const int TILE_SIZE = 2;
-
-        /// <summary>
-        /// Multiplies two dense matrices and returns the resultant matrix (using tiling).
-        /// </summary>
-        /// <param name="accelerator">The Accelerator to run the multiplication on</param>
-        /// <param name="a">A dense MxK matrix</param>
-        /// <param name="b">A dense KxN matrix</param>
-        /// <returns>A dense MxN matrix</returns>
-        static float[,] MatrixMultiplyTiled(Accelerator accelerator, float[,] a, float[,] b)
-        {
-            var m = a.GetLength(0);
-            var ka = a.GetLength(1);
-            var kb = b.GetLength(0);
-            var n = b.GetLength(1);
-
-            if (ka != kb)
-                throw new ArgumentException($"Cannot multiply {m}x{ka} matrix by {n}x{kb} matrix", nameof(b));
-
-            var kernel = accelerator.LoadStreamKernel<
-                ArrayView2D<float, Stride2D.DenseX>,
-                ArrayView2D<float, Stride2D.DenseX>,
-                ArrayView2D<float, Stride2D.DenseX>>(
-                MatrixMultiplyTiledKernel);
-            var groupSize = new Index2D(TILE_SIZE, TILE_SIZE);
-            var numGroups = new Index2D((m + TILE_SIZE - 1) / TILE_SIZE, (n + TILE_SIZE - 1) / TILE_SIZE);
-
-            using var aBuffer = accelerator.Allocate2DDenseX<float>(new Index2D(m, ka));
-            using var bBuffer = accelerator.Allocate2DDenseX<float>(new Index2D(ka, n));
-            using var cBuffer = accelerator.Allocate2DDenseX<float>(new Index2D(m, n));
-            aBuffer.CopyFromCPU(a);
-            bBuffer.CopyFromCPU(b);
-
-            kernel((numGroups, groupSize), aBuffer, bBuffer, cBuffer);
-
-            // Reads data from the GPU buffer into a new CPU array.
-            // Implicitly calls accelerator.DefaultStream.Synchronize() to ensure
-            // that the kernel and memory copy are completed first.
-            return cBuffer.GetAsArray2D();
-        }
-
-        /// <summary>
-        /// The tiled matrix multiplication kernel that runs on the accelerated device.
-        /// </summary>
-        /// <param name="aView">An input matrix of size MxK</param>
-        /// <param name="bView">An input matrix of size KxN</param>
-        /// <param name="cView">An output matrix of size MxN</param>
-        static void MatrixMultiplyTiledKernel(
-            ArrayView2D<float, Stride2D.DenseX> aView,
-            ArrayView2D<float, Stride2D.DenseX> bView,
-            ArrayView2D<float, Stride2D.DenseX> cView)
-        {
-            var global = Grid.GlobalIndex.XY;
-            var x = Group.IdxX;
-            var y = Group.IdxY;
-
-            var aTile = SharedMemory.Allocate2D<float, Stride2D.DenseX>(new Index2D(TILE_SIZE, TILE_SIZE), new Stride2D.DenseX(TILE_SIZE));
-            var bTile = SharedMemory.Allocate2D<float, Stride2D.DenseX>(new Index2D(TILE_SIZE, TILE_SIZE), new Stride2D.DenseX(TILE_SIZE));
-            var sum = 0.0f;
-
-            for (var i = 0; i < aView.IntExtent.X; i += TILE_SIZE)
-            {
-                if (global.X < aView.IntExtent.X && y + i < aView.IntExtent.Y)
-                    aTile[x, y] = aView[global.X, y + i];
-                else
-                    aTile[x, y] = 0;
-
-                if (x + i < bView.IntExtent.X && global.Y < bView.IntExtent.Y)
-                    bTile[x, y] = bView[x + i, global.Y];
-                else
-                    bTile[x, y] = 0;
-                Group.Barrier();
-
-                for (var k = 0; k < TILE_SIZE; k++)
-                    sum += aTile[new Index2D(x, k)] * bTile[new Index2D(k, y)];
-                Group.Barrier();
-            }
-
-            if (global.X < cView.IntExtent.X && global.Y < cView.IntExtent.Y)
-                cView[global] = sum;
-        }
-
-        #endregion
     }
 }

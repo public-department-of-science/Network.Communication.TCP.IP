@@ -131,14 +131,14 @@ namespace TCP.IP.Client.Server
 
         private void btnSendObject_Click(object sender, EventArgs e)
         {
-            ClientPCBenchmarkScore myClass = new ClientPCBenchmarkScore
-            {
-                CPU_Score = 7,
-                GPU_Score = 9,
-                CPU_GPU_BuiltIn_Score = 123,
-                TaskType = "test task with math problem to solve",
-                ExecutionTimeMark = DateTime.UtcNow,
-            };
+            //ClientPCBenchmarkScore myClass = new ClientPCBenchmarkScore
+            //{
+            //    CPU_Score = 7,
+            //    GPU_Score = 9,
+            //    CPU_GPU_BuiltIn_Score = 123,
+            //    TaskType = "test task with math problem to solve",
+            //    ExecutionTimeMark = DateTime.UtcNow,
+            //};
 
             var options = new JsonSerializerOptions { WriteIndented = true };
             byte[] jsonUtf8Bytes = JsonSerializer.SerializeToUtf8Bytes(myClass, options);
