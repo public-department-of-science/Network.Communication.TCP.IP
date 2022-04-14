@@ -38,7 +38,7 @@ namespace PC.Calculation.Performance.Test
             }
 
             return c;
-        } 
+        }
         #endregion
 
         #region Tiled

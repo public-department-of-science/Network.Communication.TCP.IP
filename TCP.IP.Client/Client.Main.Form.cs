@@ -140,9 +140,9 @@ namespace TCP.IP.Client.Server
             //    ExecutionTimeMark = DateTime.UtcNow,
             //};
 
-            var options = new JsonSerializerOptions { WriteIndented = true };
-            byte[] jsonUtf8Bytes = JsonSerializer.SerializeToUtf8Bytes(myClass, options);
-            tcpClient.Send(jsonUtf8Bytes);
+            //var options = new JsonSerializerOptions { WriteIndented = true };
+            //byte[] jsonUtf8Bytes = JsonSerializer.SerializeToUtf8Bytes(nu, options);
+            //tcpClient.Send(jsonUtf8Bytes);
         }
 
         private void btnPCPerfTestRun_Click(object sender, EventArgs e)

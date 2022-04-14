@@ -1,11 +1,8 @@
 ﻿namespace PC.Calculation.Performance.Test
 {
-    public partial class MatrixMultiplyBenchmark
+    public enum ProcessingUnitType
     {
-        public enum ProcessingUnitType
-        {
-            CPU,
-            GPU,
-        }
+        CPU,
+        GPU,
     }
 }

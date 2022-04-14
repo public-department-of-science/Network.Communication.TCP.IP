@@ -34,6 +34,10 @@
             this.txtBoxMeasurementsInfo = new System.Windows.Forms.RichTextBox();
             this.lblDevices = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.pctBox = new System.Windows.Forms.PictureBox();
+            this.txtBoxBenchmarkResult = new System.Windows.Forms.TextBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pctBox)).BeginInit();
             this.SuspendLayout();
             // 
             // btnGetDevices
@@ -71,7 +75,7 @@
             this.txtBoxMeasurementsInfo.Location = new System.Drawing.Point(592, 32);
             this.txtBoxMeasurementsInfo.Name = "txtBoxMeasurementsInfo";
             this.txtBoxMeasurementsInfo.ReadOnly = true;
-            this.txtBoxMeasurementsInfo.Size = new System.Drawing.Size(561, 215);
+            this.txtBoxMeasurementsInfo.Size = new System.Drawing.Size(561, 180);
             this.txtBoxMeasurementsInfo.TabIndex = 5;
             this.txtBoxMeasurementsInfo.Text = "";
             // 
@@ -93,11 +97,30 @@
             this.label1.TabIndex = 7;
             this.label1.Text = "Benchmark measurements";
             // 
+            // pctBox
+            // 
+            this.pctBox.Location = new System.Drawing.Point(592, 245);
+            this.pctBox.Name = "pctBox";
+            this.pctBox.Size = new System.Drawing.Size(561, 281);
+            this.pctBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pctBox.TabIndex = 8;
+            this.pctBox.TabStop = false;
+            // 
+            // txtBoxBenchmarkResult
+            // 
+            this.txtBoxBenchmarkResult.Location = new System.Drawing.Point(592, 551);
+            this.txtBoxBenchmarkResult.Name = "txtBoxBenchmarkResult";
+            this.txtBoxBenchmarkResult.ReadOnly = true;
+            this.txtBoxBenchmarkResult.Size = new System.Drawing.Size(561, 27);
+            this.txtBoxBenchmarkResult.TabIndex = 9;
+            // 
             // PCPerformanceTestForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1250, 450);
+            this.ClientSize = new System.Drawing.Size(1250, 615);
+            this.Controls.Add(this.txtBoxBenchmarkResult);
+            this.Controls.Add(this.pctBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblDevices);
             this.Controls.Add(this.txtBoxMeasurementsInfo);
@@ -106,6 +129,7 @@
             this.Controls.Add(this.btnGetDevices);
             this.Name = "PCPerformanceTestForm";
             this.Text = "PCPerformanceTestForm";
+            ((System.ComponentModel.ISupportInitialize)(this.pctBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -119,5 +143,8 @@
         private System.Windows.Forms.RichTextBox txtBoxMeasurementsInfo;
         private System.Windows.Forms.Label lblDevices;
         private System.Windows.Forms.Label label1;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.PictureBox pctBox;
+        private System.Windows.Forms.TextBox txtBoxBenchmarkResult;
     }
 }

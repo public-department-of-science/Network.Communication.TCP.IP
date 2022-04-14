@@ -35,7 +35,12 @@ namespace TCP.IP.Client
                         // Create accelerator for the given device.
                         // Note that all accelerators have to be disposed before the global context is disposed
                         using var accelerator = device.CreateAccelerator(context);
-                        chLstBox.Items.Add($"Accelerator: {device.AcceleratorType}, {accelerator.Name}");
+
+                        this.Invoke((MethodInvoker)delegate
+                        {
+                            chLstBox.Items.Add($"Accelerator: {device.AcceleratorType}, {accelerator.Name}");
+                        });
+
                         // PrintAcceleratorInfo(accelerator);
                         Console.WriteLine();
                     }
@@ -49,9 +54,23 @@ namespace TCP.IP.Client
             btnRunTest.Enabled = false;
             await Task.Run(() =>
             {
-                var benchmarkResults = MatrixMultiplyBenchmark.MatrixMultiplyBenchmarkRun();
-                txtBoxMeasurementsInfo.Text += benchmarkResults;
-                btnRunTest.Enabled = true;
+                var iterations = MatrixMultiplyBenchmark.Run();
+
+                List<Point> points = new List<Point>();
+                foreach (var iteration in iterations)
+                {
+                    points.Add(new Point(iteration.Key, (int)iteration.Value.ms));
+                }
+
+                Graphics g = pctBox.CreateGraphics();
+                Pen b = new Pen(Color.Black);
+                g.DrawLines(b, points.ToArray());
+                this.Invoke((MethodInvoker)delegate
+                {
+                    btnRunTest.Enabled = true;
+                });
+
+                // txtBoxMeasurementsInfo.Text += benchmarkResults;
             });
         }
 
