@@ -2,7 +2,7 @@
 
 namespace TCP.IP.Client
 {
-    internal class ClientPCBenchmarkScore
+    public class ClientPCBenchmarkScore
     {
         public BenchmarkTestType TaskType { get; set; }
         public AcceleratorType AcceleratorType { get; set; }

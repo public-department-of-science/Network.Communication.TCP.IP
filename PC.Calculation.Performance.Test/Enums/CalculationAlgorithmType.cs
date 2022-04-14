@@ -1,6 +1,6 @@
 ﻿namespace TCP.IP.Client.Benchmarking
 {
-    internal enum CalculationAlgorithmType
+    public enum CalculationAlgorithmType
     {
         Naive,
         Accelereated,

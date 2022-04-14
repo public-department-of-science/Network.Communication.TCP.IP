@@ -1,6 +1,6 @@
 ﻿namespace TCP.IP.Client.Benchmarking
 {
-    internal enum AcceleratorType
+    public enum AcceleratorType
     {
         /// <summary>
         /// Represents a CPU accelerator.

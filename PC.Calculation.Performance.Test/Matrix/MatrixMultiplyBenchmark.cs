@@ -66,9 +66,8 @@ namespace PC.Calculation.Performance.Test
 
             Dictionary<int, (long, long)> iterations = new Dictionary<int, (long, long)>();
             Stopwatch totalTime = new Stopwatch();
-            //            using var context = Context.Create(builder => builder.Cuda().Profiling());
-            using var context = Context.Create(builder => builder.OpenCL());
-            using var cudaAccelerator = context.GetCLDevice(1).CreateAccelerator(context);
+            using var context = Context.Create(builder => builder.Cuda().Profiling());
+            using var cudaAccelerator = context.GetCudaDevice(0).CreateAccelerator(context);
 
             do
             {

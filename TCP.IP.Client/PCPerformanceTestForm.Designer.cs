@@ -34,9 +34,9 @@
             this.txtBoxMeasurementsInfo = new System.Windows.Forms.RichTextBox();
             this.lblDevices = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.pctBox = new System.Windows.Forms.PictureBox();
             this.txtBoxBenchmarkResult = new System.Windows.Forms.TextBox();
+            this.plotViewIterations = new OxyPlot.WindowsForms.PlotView();
             ((System.ComponentModel.ISupportInitialize)(this.pctBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -114,11 +114,24 @@
             this.txtBoxBenchmarkResult.Size = new System.Drawing.Size(561, 27);
             this.txtBoxBenchmarkResult.TabIndex = 9;
             // 
+            // plotViewIterations
+            // 
+            this.plotViewIterations.Location = new System.Drawing.Point(22, 338);
+            this.plotViewIterations.Name = "plotViewIterations";
+            this.plotViewIterations.PanCursor = System.Windows.Forms.Cursors.Hand;
+            this.plotViewIterations.Size = new System.Drawing.Size(498, 188);
+            this.plotViewIterations.TabIndex = 10;
+            this.plotViewIterations.Text = "plotView1";
+            this.plotViewIterations.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
+            this.plotViewIterations.ZoomRectangleCursor = System.Windows.Forms.Cursors.SizeNWSE;
+            this.plotViewIterations.ZoomVerticalCursor = System.Windows.Forms.Cursors.SizeNS;
+            // 
             // PCPerformanceTestForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1250, 615);
+            this.Controls.Add(this.plotViewIterations);
             this.Controls.Add(this.txtBoxBenchmarkResult);
             this.Controls.Add(this.pctBox);
             this.Controls.Add(this.label1);
@@ -143,8 +156,8 @@
         private System.Windows.Forms.RichTextBox txtBoxMeasurementsInfo;
         private System.Windows.Forms.Label lblDevices;
         private System.Windows.Forms.Label label1;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.PictureBox pctBox;
         private System.Windows.Forms.TextBox txtBoxBenchmarkResult;
+        private OxyPlot.WindowsForms.PlotView plotViewIterations;
     }
 }

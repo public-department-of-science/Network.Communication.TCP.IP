@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using System.Windows.Forms;
 using TCP.EventArguments;
+using TCP.IP.Client.Benchmarking;
 using TCP.IP.Communication.Client;
 
 namespace TCP.IP.Client.Server
@@ -131,18 +132,14 @@ namespace TCP.IP.Client.Server
 
         private void btnSendObject_Click(object sender, EventArgs e)
         {
-            //ClientPCBenchmarkScore myClass = new ClientPCBenchmarkScore
-            //{
-            //    CPU_Score = 7,
-            //    GPU_Score = 9,
-            //    CPU_GPU_BuiltIn_Score = 123,
-            //    TaskType = "test task with math problem to solve",
-            //    ExecutionTimeMark = DateTime.UtcNow,
-            //};
+            ClientPCBenchmarkScore testObject = new ClientPCBenchmarkScore
+            {
+                TaskType = BenchmarkTestType.MatrixMultiply,
+            };
 
-            //var options = new JsonSerializerOptions { WriteIndented = true };
-            //byte[] jsonUtf8Bytes = JsonSerializer.SerializeToUtf8Bytes(nu, options);
-            //tcpClient.Send(jsonUtf8Bytes);
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            byte[] jsonUtf8Bytes = JsonSerializer.SerializeToUtf8Bytes(testObject, options);
+            tcpClient.Send(jsonUtf8Bytes);
         }
 
         private void btnPCPerfTestRun_Click(object sender, EventArgs e)

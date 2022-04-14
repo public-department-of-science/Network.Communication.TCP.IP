@@ -1,5 +1,7 @@
 ﻿using ILGPU;
 using ILGPU.Runtime;
+using OxyPlot;
+using OxyPlot.Series;
 using PC.Calculation.Performance.Test;
 using System;
 using System.Collections.Generic;
@@ -52,6 +54,11 @@ namespace TCP.IP.Client
         private async void btnRunTest_Click(object sender, EventArgs e)
         {
             btnRunTest.Enabled = false;
+
+            var myModel = new PlotModel { Title = "Example 1" };
+            myModel.Series.Add(new FunctionSeries(Math.Cos, 0, 10, 0.1, "cos(x)"));
+            this.plotViewIterations.Model = myModel;
+
             await Task.Run(() =>
             {
                 var iterations = MatrixMultiplyBenchmark.Run();
