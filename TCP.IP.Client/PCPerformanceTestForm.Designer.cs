@@ -116,12 +116,14 @@
             // 
             // plotViewIterations
             // 
+            this.plotViewIterations.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.plotViewIterations.Cursor = System.Windows.Forms.Cursors.Cross;
             this.plotViewIterations.Location = new System.Drawing.Point(22, 338);
             this.plotViewIterations.Name = "plotViewIterations";
             this.plotViewIterations.PanCursor = System.Windows.Forms.Cursors.Hand;
             this.plotViewIterations.Size = new System.Drawing.Size(498, 188);
             this.plotViewIterations.TabIndex = 10;
-            this.plotViewIterations.Text = "plotView1";
+            this.plotViewIterations.Text = "plotView";
             this.plotViewIterations.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
             this.plotViewIterations.ZoomRectangleCursor = System.Windows.Forms.Cursors.SizeNWSE;
             this.plotViewIterations.ZoomVerticalCursor = System.Windows.Forms.Cursors.SizeNS;

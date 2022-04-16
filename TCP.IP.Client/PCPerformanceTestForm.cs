@@ -55,25 +55,26 @@ namespace TCP.IP.Client
         {
             btnRunTest.Enabled = false;
 
-            var myModel = new PlotModel { Title = "Example 1" };
-            myModel.Series.Add(new FunctionSeries(Math.Cos, 0, 10, 0.1, "cos(x)"));
-            this.plotViewIterations.Model = myModel;
 
             await Task.Run(() =>
             {
                 var iterations = MatrixMultiplyBenchmark.Run();
 
-                List<Point> points = new List<Point>();
+                var myModel = new PlotModel { Title = "Example 1" };
+                LineSeries mseconds = new LineSeries();
+                LineSeries ticks = new LineSeries() { Color = OxyColor.Parse("234,23,17,50") };
                 foreach (var iteration in iterations)
                 {
-                    points.Add(new Point(iteration.Key, (int)iteration.Value.ms));
+                    mseconds.Points.Add(new DataPoint(iteration.Key, iteration.Value.ms));
+                    ticks.Points.Add(new DataPoint(iteration.Key, iteration.Value.ticks / 10000));
                 }
 
-                Graphics g = pctBox.CreateGraphics();
-                Pen b = new Pen(Color.Black);
-                g.DrawLines(b, points.ToArray());
+                myModel.Series.Add(mseconds);
+                myModel.Series.Add(ticks);
+
                 this.Invoke((MethodInvoker)delegate
                 {
+                    this.plotViewIterations.Model = myModel;
                     btnRunTest.Enabled = true;
                 });
 

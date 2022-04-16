@@ -38,7 +38,7 @@ namespace PC.Calculation.Performance.Test
             Stopwatch stopwatch = new Stopwatch();
 
             int initialPoint = 4;
-            long totalRunTime_2min = 120_000;
+            long totalRunTime_2min = 12_000;
             double ten = 0.1;
             double thirtyPercents = 0.3;
             int maxMatrixSize = 100_000;
@@ -66,7 +66,7 @@ namespace PC.Calculation.Performance.Test
 
             Dictionary<int, (long, long)> iterations = new Dictionary<int, (long, long)>();
             Stopwatch totalTime = new Stopwatch();
-            using var context = Context.Create(builder => builder.Cuda().Profiling());
+            using var context = Context.Create(builder => builder.Cuda());
             using var cudaAccelerator = context.GetCudaDevice(0).CreateAccelerator(context);
 
             do
