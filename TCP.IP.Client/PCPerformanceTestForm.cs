@@ -17,6 +17,8 @@ namespace TCP.IP.Client
 {
     public partial class PCPerformanceTestForm : Form
     {
+        private const int oneSecond_Ticks = 10_000;
+
         public PCPerformanceTestForm()
         {
             InitializeComponent();
@@ -55,22 +57,29 @@ namespace TCP.IP.Client
         {
             btnRunTest.Enabled = false;
 
-
             await Task.Run(() =>
             {
-                var iterations = MatrixMultiplyBenchmark.Run();
+                BenchmarkContext benchmarkContext = new BenchmarkContext();
+                var data = benchmarkContext.Run();
 
-                var myModel = new PlotModel { Title = "Example 1" };
-                LineSeries mseconds = new LineSeries();
-                LineSeries ticks = new LineSeries() { Color = OxyColor.Parse("234,23,17,50") };
-                foreach (var iteration in iterations)
+                var myModel = new PlotModel { Title = "Benchmark experiment run" };
+
+                foreach (var iteration in data)
                 {
-                    mseconds.Points.Add(new DataPoint(iteration.Key, iteration.Value.ms));
-                    ticks.Points.Add(new DataPoint(iteration.Key, iteration.Value.ticks / 10000));
+                    var buildLine = new LineSeries()
+                    {
+                        Color = OxyColor.Parse(iteration.GraphicColor),
+                        SeriesGroupName = iteration.CurrentRunName,
+                        Title = iteration.CurrentRunName,
+                        LegendKey = iteration.CurrentRunName,
+                        LineLegendPosition = LineLegendPosition.End,
+                    };
+                    foreach (var item in iteration.iteration)
+                    {
+                        buildLine.Points.Add(new DataPoint(item.Key, item.Value / oneSecond_Ticks));
+                    }
+                    myModel.Series.Add(buildLine);
                 }
-
-                myModel.Series.Add(mseconds);
-                myModel.Series.Add(ticks);
 
                 this.Invoke((MethodInvoker)delegate
                 {

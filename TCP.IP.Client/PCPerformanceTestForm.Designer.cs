@@ -34,15 +34,12 @@
             this.txtBoxMeasurementsInfo = new System.Windows.Forms.RichTextBox();
             this.lblDevices = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.pctBox = new System.Windows.Forms.PictureBox();
-            this.txtBoxBenchmarkResult = new System.Windows.Forms.TextBox();
             this.plotViewIterations = new OxyPlot.WindowsForms.PlotView();
-            ((System.ComponentModel.ISupportInitialize)(this.pctBox)).BeginInit();
             this.SuspendLayout();
             // 
             // btnGetDevices
             // 
-            this.btnGetDevices.Location = new System.Drawing.Point(22, 245);
+            this.btnGetDevices.Location = new System.Drawing.Point(22, 213);
             this.btnGetDevices.Name = "btnGetDevices";
             this.btnGetDevices.Size = new System.Drawing.Size(144, 55);
             this.btnGetDevices.TabIndex = 0;
@@ -52,17 +49,20 @@
             // 
             // chLstBox
             // 
+            this.chLstBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.chLstBox.Enabled = false;
             this.chLstBox.FormattingEnabled = true;
             this.chLstBox.Location = new System.Drawing.Point(22, 32);
             this.chLstBox.Name = "chLstBox";
             this.chLstBox.ScrollAlwaysVisible = true;
-            this.chLstBox.Size = new System.Drawing.Size(498, 180);
+            this.chLstBox.Size = new System.Drawing.Size(442, 158);
             this.chLstBox.TabIndex = 3;
             // 
             // btnRunTest
             // 
-            this.btnRunTest.Location = new System.Drawing.Point(202, 245);
+            this.btnRunTest.Location = new System.Drawing.Point(320, 213);
             this.btnRunTest.Name = "btnRunTest";
             this.btnRunTest.Size = new System.Drawing.Size(144, 55);
             this.btnRunTest.TabIndex = 4;
@@ -72,15 +72,21 @@
             // 
             // txtBoxMeasurementsInfo
             // 
-            this.txtBoxMeasurementsInfo.Location = new System.Drawing.Point(592, 32);
+            this.txtBoxMeasurementsInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtBoxMeasurementsInfo.Location = new System.Drawing.Point(550, 32);
             this.txtBoxMeasurementsInfo.Name = "txtBoxMeasurementsInfo";
             this.txtBoxMeasurementsInfo.ReadOnly = true;
-            this.txtBoxMeasurementsInfo.Size = new System.Drawing.Size(561, 180);
+            this.txtBoxMeasurementsInfo.Size = new System.Drawing.Size(762, 158);
             this.txtBoxMeasurementsInfo.TabIndex = 5;
             this.txtBoxMeasurementsInfo.Text = "";
             // 
             // lblDevices
             // 
+            this.lblDevices.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblDevices.AutoSize = true;
             this.lblDevices.Location = new System.Drawing.Point(22, 9);
             this.lblDevices.Name = "lblDevices";
@@ -90,6 +96,9 @@
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(592, 9);
             this.label1.Name = "label1";
@@ -97,31 +106,17 @@
             this.label1.TabIndex = 7;
             this.label1.Text = "Benchmark measurements";
             // 
-            // pctBox
-            // 
-            this.pctBox.Location = new System.Drawing.Point(592, 245);
-            this.pctBox.Name = "pctBox";
-            this.pctBox.Size = new System.Drawing.Size(561, 281);
-            this.pctBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pctBox.TabIndex = 8;
-            this.pctBox.TabStop = false;
-            // 
-            // txtBoxBenchmarkResult
-            // 
-            this.txtBoxBenchmarkResult.Location = new System.Drawing.Point(592, 551);
-            this.txtBoxBenchmarkResult.Name = "txtBoxBenchmarkResult";
-            this.txtBoxBenchmarkResult.ReadOnly = true;
-            this.txtBoxBenchmarkResult.Size = new System.Drawing.Size(561, 27);
-            this.txtBoxBenchmarkResult.TabIndex = 9;
-            // 
             // plotViewIterations
             // 
+            this.plotViewIterations.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.plotViewIterations.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.plotViewIterations.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.plotViewIterations.Location = new System.Drawing.Point(22, 338);
+            this.plotViewIterations.Location = new System.Drawing.Point(22, 288);
             this.plotViewIterations.Name = "plotViewIterations";
             this.plotViewIterations.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotViewIterations.Size = new System.Drawing.Size(498, 188);
+            this.plotViewIterations.Size = new System.Drawing.Size(1290, 434);
             this.plotViewIterations.TabIndex = 10;
             this.plotViewIterations.Text = "plotView";
             this.plotViewIterations.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
@@ -132,10 +127,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1250, 615);
+            this.ClientSize = new System.Drawing.Size(1369, 746);
             this.Controls.Add(this.plotViewIterations);
-            this.Controls.Add(this.txtBoxBenchmarkResult);
-            this.Controls.Add(this.pctBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblDevices);
             this.Controls.Add(this.txtBoxMeasurementsInfo);
@@ -144,7 +137,6 @@
             this.Controls.Add(this.btnGetDevices);
             this.Name = "PCPerformanceTestForm";
             this.Text = "PCPerformanceTestForm";
-            ((System.ComponentModel.ISupportInitialize)(this.pctBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -158,8 +150,6 @@
         private System.Windows.Forms.RichTextBox txtBoxMeasurementsInfo;
         private System.Windows.Forms.Label lblDevices;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.PictureBox pctBox;
-        private System.Windows.Forms.TextBox txtBoxBenchmarkResult;
         private OxyPlot.WindowsForms.PlotView plotViewIterations;
     }
 }

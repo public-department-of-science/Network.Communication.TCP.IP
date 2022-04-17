@@ -132,9 +132,8 @@ namespace TCP.IP.Client.Server
 
         private void btnSendObject_Click(object sender, EventArgs e)
         {
-            ClientPCBenchmarkScore testObject = new ClientPCBenchmarkScore
+            IterationInfo testObject = new IterationInfo
             {
-                TaskType = BenchmarkTestType.MatrixMultiply,
             };
 
             var options = new JsonSerializerOptions { WriteIndented = true };

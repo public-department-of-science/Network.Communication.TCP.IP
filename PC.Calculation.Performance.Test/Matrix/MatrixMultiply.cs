@@ -55,7 +55,7 @@ namespace PC.Calculation.Performance.Test
         /// <param name="a">A dense MxK matrix</param>
         /// <param name="b">A dense KxN matrix</param>
         /// <returns>A dense MxN matrix</returns>
-        internal static float[,] MatrixMultiplyTiled(Accelerator accelerator, float[,] a, float[,] b)
+        internal static float[,] AcceleratedTiled(Accelerator accelerator, float[,] a, float[,] b)
         {
             var m = a.GetLength(0);
             var ka = a.GetLength(1);
@@ -139,7 +139,7 @@ namespace PC.Calculation.Performance.Test
         /// <param name="a">A dense MxK matrix</param>
         /// <param name="b">A dense KxN matrix</param>
         /// <returns>A dense MxN matrix</returns>
-        internal static float[,] MatrixMultiplyAccelerated(Accelerator accelerator, float[,] a, float[,] b)
+        internal static float[,] Accelerated(Accelerator accelerator, float[,] a, float[,] b)
         {
             var m = a.GetLength(0);
             var ka = a.GetLength(1);
@@ -194,5 +194,20 @@ namespace PC.Calculation.Performance.Test
         }
 
         #endregion
+
+        static void MathKernel(
+            Index1D index,                  // The global thread index (1D in this case)
+            ArrayView<float> singleView,    // A view of floats to store float results from GPUMath
+            ArrayView<double> doubleView,   // A view of doubles to store double results from GPUMath
+            ArrayView<double> doubleView2)  // A view of doubles to store double results from .Net Math
+        {
+            // Note the different returns type of GPUMath.Sqrt and Math.Sqrt.
+            singleView[index] = IntrinsicMath.Abs(index);
+            doubleView[index] = IntrinsicMath.Clamp(index, 0.0, 12.0);
+
+            // Note that use can safely use functions from the Math class as long as they have a counterpart
+            // in the IntrinsicMath class.
+            doubleView2[index] = Math.Min(0.2, index);
+        }
     }
 }
