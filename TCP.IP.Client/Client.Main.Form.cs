@@ -74,6 +74,7 @@ namespace TCP.IP.Client.Server
             tcpClient.Events.Connected += Events_Connected;
             tcpClient.Events.DataReceived += Events_DataReceived;
             tcpClient.Events.Disconnected += Events_Disconnected;
+
             btnSend.Enabled = false;
             btnDisconnect.Enabled = false;
             btnSendObject.Enabled = false;

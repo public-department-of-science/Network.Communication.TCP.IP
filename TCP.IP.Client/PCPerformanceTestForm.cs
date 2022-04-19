@@ -57,10 +57,12 @@ namespace TCP.IP.Client
         {
             btnRunTest.Enabled = false;
 
+            int.TryParse(txtBox_runMaxTime.Text, out int iterationRunTimeMlSec);
+
             await Task.Run(() =>
             {
                 BenchmarkContext benchmarkContext = new BenchmarkContext();
-                var data = benchmarkContext.Run();
+                var data = benchmarkContext.Run(iterationRunTimeMlSec);
 
                 var myModel = new PlotModel { Title = "Benchmark experiment run" };
 
@@ -89,6 +91,26 @@ namespace TCP.IP.Client
 
                 // txtBoxMeasurementsInfo.Text += benchmarkResults;
             });
+        }
+
+        private void btnRunTest_Click(object sender, KeyPressEventArgs e)
+        {
+            char ch = e.KeyChar;
+            if (!char.IsDigit(ch) && ch != 8 && ch != 46)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtBox_runMaxTime_TextChanged(object sender, EventArgs e)
+        {
+            int.TryParse(txtBox_runMaxTime.Text, out int result);
+            txtBox_iterationMaxRunTimeInSec.Text = (result / 1_000).ToString();
+        }
+
+        private void PCPerformanceTestForm_Load(object sender, EventArgs e)
+        {
+            txtBox_runMaxTime_TextChanged(sender, e);
         }
 
         //static void PrintAcceleratorInfo(Accelerator accelerator)

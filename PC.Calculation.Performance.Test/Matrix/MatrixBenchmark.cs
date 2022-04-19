@@ -18,14 +18,15 @@ namespace PC.Calculation.Performance.Test
         private const double oneDotTwo = 1.2;
 
         private const int initialPoint = 4;
-        private const long totalRunTime_2min = 120_000;
+        private static long iterationRunTimeMlSec = 60_000;
         private const double dotOne = 0.1;
         private const double ten = dotOne;
         private const double thirtyPercents = 0.3;
         private const int computeAvailability = 100_000;
 
-        public static (Dictionary<int, long> data, int maxMatrixSize) Naive()
+        public static (Dictionary<int, long> data, int maxMatrixSize) Naive(int userIterationRunTimeMlSec)
         {
+            iterationRunTimeMlSec = userIterationRunTimeMlSec;
             var matrixSize = initialPoint;
 
             Stopwatch iterationsStopwatch = new Stopwatch();
@@ -109,7 +110,7 @@ namespace PC.Calculation.Performance.Test
                 iterationsCount++;
 
                 iterations.Add(matrixSize, iterationsStopwatch.ElapsedTicks);
-            } while (totalRunTime.ElapsedMilliseconds < totalRunTime_2min || matrixSize >= computeAvailability);
+            } while (totalRunTime.ElapsedMilliseconds < iterationRunTimeMlSec || matrixSize >= computeAvailability);
 
             totalRunTime.Stop();
             stuckCounter = 0;
@@ -117,8 +118,10 @@ namespace PC.Calculation.Performance.Test
             return (data: iterations, maxMatrixSize: maxComputeAvailability);
         }
 
-        public static (Dictionary<int, long> data, int maxMatrixSize) IterationsExperiment(Func<Accelerator, float[,], float[,], float[,]> method, Accelerator cpuAccelerator)
+        public static (Dictionary<int, long> data, int maxMatrixSize)
+            IterationsExperiment(Func<Accelerator, float[,], float[,], float[,]> method, Accelerator cpuAccelerator, int userIterationRunTimeMlSec)
         {
+            iterationRunTimeMlSec = userIterationRunTimeMlSec;
             var matrixSize = initialPoint;
 
             Stopwatch iterationsStopwatch = new Stopwatch();
@@ -202,7 +205,7 @@ namespace PC.Calculation.Performance.Test
                 iterationsCount++;
 
                 iterations.Add(matrixSize, iterationsStopwatch.ElapsedTicks);
-            } while (totalRunTime.ElapsedMilliseconds < totalRunTime_2min || matrixSize >= computeAvailability);
+            } while (totalRunTime.ElapsedMilliseconds < iterationRunTimeMlSec || matrixSize >= computeAvailability);
 
             totalRunTime.Stop();
             stuckCounter = 0;

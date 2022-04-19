@@ -15,11 +15,11 @@ namespace PC.Calculation.Performance.Test
             return benchmark;
         }
 
-        public List<IterationInfo> Run()
+        public List<IterationInfo> Run(int iterationRunTimeMlSec)
         {
             var resultedData = new List<IterationInfo>();
 
-            var currentIteration = MatrixBenchmark.Naive();
+            var currentIteration = MatrixBenchmark.Naive(iterationRunTimeMlSec);
             resultedData.Add(SaveIterationData(nameof(MatrixBenchmark.Naive), currentIteration.data, currentIteration.maxMatrixSize));
 
             var benchmarkContext = new BenchmarkContext().CreateDefaultBenchmark();
@@ -30,7 +30,7 @@ namespace PC.Calculation.Performance.Test
                 {
                     using var accelerator = device.CreateAccelerator(context);
 
-                    currentIteration = MatrixBenchmark.IterationsExperiment(method, accelerator);
+                    currentIteration = MatrixBenchmark.IterationsExperiment(method, accelerator, iterationRunTimeMlSec);
                     resultedData.Add(SaveIterationData($"{device.Name} {method.Method.Name}", currentIteration.data, currentIteration.maxMatrixSize));
                 }
             }
